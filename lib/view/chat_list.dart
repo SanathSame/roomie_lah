@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
 
 
+
 void main() => runApp(
   MaterialApp(
     title: 'Diabetes App',
@@ -43,28 +44,23 @@ class ChatListPage extends StatefulWidget {
 }
 
 class ChatListPageState extends State<ChatListPage> {
-  final double borderRadius = 10;
-  final double margin = 5;
-  final double padding = 5;
-  final double iconSize = 56;
-  final Color backgroundColor = Color.fromRGBO(180, 180, 180, 0.2);
-  final Color green = Color.fromRGBO(0, 110, 96, 1);
-  final Color pink = Color.fromRGBO(254, 179, 189, 1);
-
 
   // To Test out functionality
-  List<Widget> getRandomWidgetArray(int num){
+  List<Widget> getRandomWidgetArray(int num, height){
 
     List<Widget> widgetList = [];
 
     for (int i=0; i<num; ++i){
       String name = "Atul";
-      String lastMessage = "Hello";
+      String lastMessage = "Hello00000000000000000000000000000000000";
       String time = "8:00 PM";
 
-      Widget chatPreview = new ChatPreview(name, lastMessage, time);
+      Widget chatPreview = new InkWell(
+        onTap: (){},
+        child: ChatPreview(name, lastMessage, time),
+      );
       widgetList.add(chatPreview);
-      widgetList.add(SizedBox(height: 20));
+      widgetList.add(SizedBox(height: 0.015 * height));
     }
 
     return widgetList;
@@ -72,6 +68,8 @@ class ChatListPageState extends State<ChatListPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +79,7 @@ class ChatListPageState extends State<ChatListPage> {
       SingleChildScrollView(
         child: Column(
           children:
-            getRandomWidgetArray(30),
+            getRandomWidgetArray(30, height),
             ),
         ),);
   }
