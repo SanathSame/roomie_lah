@@ -1,36 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
+import 'package:roomie_lah/widgets/AppBar.dart';
+import 'package:roomie_lah/constants.dart';
 
 
 
 void main() => runApp(
   MaterialApp(
-    title: 'Diabetes App',
+    title: 'RoomieLah',
     home: ChatListPage(),
     theme: ThemeData(
-      // Define the default brightness and colors.
-      primaryColor: Colors.teal.shade800,
-      backgroundColor: Colors.pink.shade100,
-
-      // Define the default font family.
-      fontFamily: 'Roboto',
-
-      // Define the default TextTheme. Use this to specify the default
-      // text styling for headlines, titles, bodies of text, and more.
-      textTheme: TextTheme(
-          headline3: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black),
-          headline4: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.teal.shade800),
-          headline5: TextStyle(fontSize: 40, color: Colors.teal.shade800),
-          headline6: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: Colors.black)),
+      primaryColor: kPrimaryColor,
+      scaffoldBackgroundColor: Colors.white,
     ),
   ),
 );
@@ -72,14 +53,19 @@ class ChatListPageState extends State<ChatListPage> {
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Chat"),
+      appBar: PreferredSize(
+        preferredSize: Size(
+          MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height * 0.1, // 10% of the height
+        ),
+        child: appBar(title: "Chat"
+        ),
       ),
       body:
       SingleChildScrollView(
         child: Column(
           children:
-            getRandomWidgetArray(30, height),
+            getRandomWidgetArray(10, height),
             ),
         ),);
   }

@@ -58,7 +58,8 @@ class ChatPreview extends StatelessWidget {
           Spacer(),
           Opacity(
               opacity: 0.64,
-              child: Text(this._time)),
+              child: Text(this._time, style:
+                TextStyle(fontSize: 0.025 * width),)),
         ],
       ),
     );

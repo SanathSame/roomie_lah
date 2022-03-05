@@ -17,6 +17,7 @@ class appBar extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return AppBar(
       key: key,
+      centerTitle: true,
       title: Text(title, style: kLargeBoldText, textAlign: TextAlign.center),
       backgroundColor: color,
       actions: [],
