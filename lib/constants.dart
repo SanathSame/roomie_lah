@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 const kPrimaryColor = Color(0xFF5DB075); // Opacity, R, G, B
 
 final TextStyle kSmallText =
