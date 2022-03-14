@@ -4,7 +4,6 @@ import 'package:roomie_lah/widgets/AppBar.dart';
 import 'package:roomie_lah/constants.dart';
 
 
-
 void main() => runApp(
   MaterialApp(
     title: 'RoomieLah',
@@ -13,7 +12,7 @@ void main() => runApp(
       primaryColor: kPrimaryColor,
       scaffoldBackgroundColor: Colors.white,
     ),
-  ),
+  )
 );
 
 
@@ -61,8 +60,7 @@ class ChatListPageState extends State<ChatListPage> {
         child: appBar(title: "Chat"
         ),
       ),
-      body:
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children:
             getRandomWidgetArray(10, height),
