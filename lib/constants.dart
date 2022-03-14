@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 const kPrimaryColor = Color(0xFF5DB075); // Opacity, R, G, B
 
 const IconData sunny_snowing = IconData(0xf0576, fontFamily: 'MaterialIcons');
