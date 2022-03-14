@@ -14,10 +14,10 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class ChatPreview extends StatelessWidget {
 
-  Image _profilePic;
-  String _name;
-  String _lastMessage;
-  String _time;
+  late Image _profilePic;
+  late String _name;
+  late String _lastMessage;
+  late String _time;
 
 
   ChatPreview(String name, String lastMessage, String time){
