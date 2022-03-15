@@ -1,7 +1,10 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:roomie_lah/entity/user.dart';
 import 'package:roomie_lah/constants.dart';
+import 'package:roomie_lah/widgets/AppBar.dart';
 import 'package:roomie_lah/widgets/NavBar.dart';
 
 void main() => runApp(MaterialApp(
@@ -60,19 +63,9 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     width = MediaQuery.of(context).size.width;
     CardController controller;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 5.0,
-        backgroundColor: Colors.teal,
-        title: Center(
-          child: Text(
-            'RECOMMENDATIONS',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 2.0,
-                fontSize: 23.0),
-          ),
-        ),
+      appBar: appBar(
+        title: "RECOMMENDATIONS",
+        key: UniqueKey(),
       ),
       body: new Center(
         child: Container(
