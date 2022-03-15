@@ -5,20 +5,20 @@ import "package:roomie_lah/constants.dart";
 import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
+import "package:roomie_lah/screens/recommendation_screen.dart";
 import 'package:flutter_svg/flutter_svg.dart';
-void main() => runApp(
-    MaterialApp(
+
+void main() => runApp(MaterialApp(
       title: 'RoomieLah',
       home: LoginScreen(),
       theme: ThemeData(
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-    )
-);
+    ));
 
 class LoginScreen extends StatefulWidget {
-  static String id = "login_page";
+  static String id = "login_screen";
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -55,39 +55,22 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       body: Container(
-        width: double.infinity,
+        width: size.width,
         height: size.height,
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Image.asset(
-                "assets/images/main_top.png",
-                width: size.width * 0.35,
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Image.asset(
-                "assets/images/login_bottom.png",
-                width: size.width * 0.4,
-              ),
-            ),
             SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.03),
-                  SvgPicture.asset(
-                    "assets/icons/login.svg",
-                    height: size.height * 0.3,
+                  SizedBox(height: size.height * 0.03, width: size.width),
+                  Image.asset(
+                    "assets/images/RoomieLah_logo.png",
+                    height: size.height * 0.1,
                   ),
                   SizedBox(height: size.height * 0.03),
                   RoundedInputField(
-                    key: UniqueKey(),
                     hintText: "Enter Your Username",
                     onChanged: (value) {
                       enteredUsername = value;
@@ -98,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     width: size.width * 0.5,
                     decoration: BoxDecoration(
-                      color: kPrimaryLightColor,
+                      color: kPrimaryColor,
                       borderRadius: BorderRadius.circular(29),
                       border: Border.all(color: Colors.white),
                     ),
@@ -131,28 +114,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  RoundedButton(
-                    text: "LOGIN",
-                    key: UniqueKey(),
-                    press: () async {
-                      // var login = await LoginMgr.loginToSystem(
-                      //     enteredUsername, enteredPassword);
-                      // var login = true;
-                      // if (login && enteredPassword != "password") {
-                      //   print('Login successful');
-                      //   Navigator.popAndPushNamed(context, HomeScreen.id);
-                      // } else if (login && enteredPassword == 'password') {
-                      //   print("first time login");
-                      //   Navigator.pushNamed(context, FirstLogin.id,
-                      //       arguments: enteredUsername);
-                      // } else {
-                      //   showDialog(
-                      //       context: context,
-                      //       builder: (BuildContext context) => buildPopUp(
-                      //           "Error",
-                      //           'Please enter correct username and/or password.'));
-                      // }
-                    },
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: kPrimaryColor,
+                        primary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
+                    onPressed: () =>
+                        {Navigator.pushNamed(context, RecommendationScreen.id)},
+                    child: Text(
+                      "Login",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                   SizedBox(height: size.height * 0.03),
                 ],

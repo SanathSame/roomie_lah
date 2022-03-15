@@ -6,19 +6,17 @@ import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
 
-void main() => runApp(
-    MaterialApp(
+void main() => runApp(MaterialApp(
       title: 'RoomieLah',
       home: SignupScreen(),
       theme: ThemeData(
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-    )
-);
+    ));
 
 class SignupScreen extends StatefulWidget {
-  static String id = "signup_page";
+  static String id = "signup_screen";
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -66,13 +64,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 children: <Widget>[
                   SizedBox(height: size.height * 0.03),
                   Image.asset(
-                    // TODO: Add image asset
                     "assets/images/RoomieLah_logo.png",
                     height: size.height * 0.1,
                   ),
                   SizedBox(height: size.height * 0.03),
                   RoundedInputField(
-                    key: UniqueKey(),
                     hintText: "Enter Your Username",
                     onChanged: (value) {
                       enteredUsername = value;
@@ -117,9 +113,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   RoundedButton(
-                    key:UniqueKey(),
                     text: "LOGIN",
-                    press: (){},
+                    press: () {},
                   ),
                   SizedBox(height: size.height * 0.03),
                 ],
