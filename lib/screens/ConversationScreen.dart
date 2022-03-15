@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:roomie_lah/widgets/ChatAppBar.dart';
 import 'package:roomie_lah/constants.dart';
 
+void main() => runApp(
+    MaterialApp(
+      title: 'RoomieLah',
+      home: ConversationScreen(),
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+    )
+);
+
 class ConversationScreen extends StatefulWidget{
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -159,7 +170,10 @@ class _ConversationScreenState extends State<ConversationScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ChatAppBar(context),
+      appBar: PreferredSize(
+        preferredSize: MediaQuery.of(context).size,
+        child: ChatAppBar(context),
+      ),
       body:
       Container(
         child:

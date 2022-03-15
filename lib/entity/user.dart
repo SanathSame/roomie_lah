@@ -10,13 +10,14 @@ class User {
   List<String> _tags;
 
   User(
-      {String fullName,
-      String password,
-      int age,
-      String universityName,
-      String tagLine,
-      Image profilePicture,
-      List<String> tags})
+      {
+        required String fullName,
+        required String password,
+        required int age,
+        required String universityName,
+        required String tagLine,
+        //required Image profilePicture,
+        required List<String> tags})
       : _fullName = fullName,
         _password = password,
         _age = age,

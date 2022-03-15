@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:roomie_lah/entity/user.dart';
+import 'package:roomie_lah/constants.dart';
+void main() => runApp(
+    MaterialApp(
+      title: 'RoomieLah',
+      home: RecommendationScreen(),
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+    )
+);
 
 class RecommendationScreen extends StatefulWidget {
   static const String id = 'recommendation_screen';

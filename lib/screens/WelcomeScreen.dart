@@ -3,6 +3,18 @@ import 'dart:ui';
 import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
 
+void main() => runApp(
+    MaterialApp(
+      title: 'RoomieLah',
+      home: WelcomeScreen(),
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+    )
+);
+
+
 class WelcomeScreen extends StatelessWidget {
   static final String id = 'welcome_page';
   @override

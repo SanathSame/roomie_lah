@@ -5,21 +5,26 @@ import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
 import 'package:multiselect/multiselect.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: MyApp(),
-  ));
-}
+void main() => runApp(
+    MaterialApp(
+      title: 'RoomieLah',
+      home: PreferencesScreen(),
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+    )
+);
 
-class MyApp extends StatefulWidget {
+class PreferencesScreen extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _PreferenceScreenState createState() => _PreferenceScreenState();
 }
 
 enum SingingCharacter { Day, Night }
 enum Singing { StayingIn, GoingOut }
 
-class _MyAppState extends State<MyApp> {
+class _PreferenceScreenState extends State<PreferencesScreen> {
   List<String> _selectedItems = [];
 
   SingingCharacter? _character = SingingCharacter.Day;

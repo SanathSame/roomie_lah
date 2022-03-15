@@ -4,6 +4,18 @@ import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
 import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
+import "package:roomie_lah/widgets/rounded_input_field.dart";
+import 'package:flutter_svg/flutter_svg.dart';
+void main() => runApp(
+    MaterialApp(
+      title: 'RoomieLah',
+      home: LoginScreen(),
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+    )
+);
 
 class LoginScreen extends StatefulWidget {
   static String id = "login_page";
@@ -75,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: size.height * 0.03),
                   RoundedInputField(
+                    key: UniqueKey(),
                     hintText: "Enter Your Username",
                     onChanged: (value) {
                       enteredUsername = value;
@@ -120,23 +133,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   RoundedButton(
                     text: "LOGIN",
+                    key: UniqueKey(),
                     press: () async {
-                      var login = await LoginMgr.loginToSystem(
-                          enteredUsername, enteredPassword);
-                      if (login && enteredPassword != "password") {
-                        print('Login successful');
-                        Navigator.popAndPushNamed(context, HomeScreen.id);
-                      } else if (login && enteredPassword == 'password') {
-                        print("first time login");
-                        Navigator.pushNamed(context, FirstLogin.id,
-                            arguments: enteredUsername);
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) => buildPopUp(
-                                "Error",
-                                'Please enter correct username and/or password.'));
-                      }
+                      // var login = await LoginMgr.loginToSystem(
+                      //     enteredUsername, enteredPassword);
+                      // var login = true;
+                      // if (login && enteredPassword != "password") {
+                      //   print('Login successful');
+                      //   Navigator.popAndPushNamed(context, HomeScreen.id);
+                      // } else if (login && enteredPassword == 'password') {
+                      //   print("first time login");
+                      //   Navigator.pushNamed(context, FirstLogin.id,
+                      //       arguments: enteredUsername);
+                      // } else {
+                      //   showDialog(
+                      //       context: context,
+                      //       builder: (BuildContext context) => buildPopUp(
+                      //           "Error",
+                      //           'Please enter correct username and/or password.'));
+                      // }
                     },
                   ),
                   SizedBox(height: size.height * 0.03),
