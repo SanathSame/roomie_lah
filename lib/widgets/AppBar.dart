@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
 
-
-class appBar extends StatelessWidget {
+class appBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color color, textColor;
-
+  Size get preferredSize => Size(
+        200,
+        65,
+      );
   const appBar({
     required Key key,
     required this.title,
@@ -16,12 +18,18 @@ class appBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return AppBar(
-      key: key,
-      centerTitle: true,
-      title: Text(title, style: kLargeBoldText, textAlign: TextAlign.center),
-      backgroundColor: color,
-      actions: [],
+    return PreferredSize(
+      preferredSize: Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height * 0.075, // 10% of the height
+      ),
+      child: AppBar(
+        key: key,
+        centerTitle: true,
+        title: Text(title, style: kLargeBoldText, textAlign: TextAlign.center),
+        backgroundColor: color,
+        actions: [],
+      ),
     );
   }
 }

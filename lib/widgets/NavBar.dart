@@ -12,7 +12,7 @@ class BasicBottomNavBar extends StatefulWidget {
 }
 
 class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
-  static int _selectedIndex = 0;
+  static int _selectedIndex = 1;
 
   //TODO: change to profile page
   static String _profileScreenID = LoginScreen.id;

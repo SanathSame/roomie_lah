@@ -51,15 +51,9 @@ class ChatListPageState extends State<ChatListPage> {
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height * 0.1, // 10% of the height
-        ),
-        child: appBar(
-          title: "Chat",
-          key: UniqueKey(),
-        ),
+      appBar: appBar(
+        title: "Chat",
+        key: UniqueKey(),
       ),
       body: SingleChildScrollView(
         child: Column(
