@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:multiselect/multiselect.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+import 'EditProfileUI.dart';
+import 'UserProfileUI.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -15,24 +18,67 @@ class MyApp extends StatefulWidget {
 
 enum DayNight { Day, Night }
 enum InOut { StayingIn, GoingOut }
-enum Gender { Male, Female, Nonbinary }
-
+enum Smoking { Yes, No }
+enum Alcohol { Yes, No }
+enum Veg { veg, Nonveg }
 final username = TextEditingController();
 final age = TextEditingController();
 final university = TextEditingController();
 final nationality = TextEditingController();
 final course = TextEditingController();
+List<String> _selectedItems = [];
+String _gender = "Male";
 bool _validateusername = false;
+bool _validateage = false;
+bool _validateuni = false;
+bool _validatenationality = false;
+bool _validatecourse = false;
+
 String dropdownValue = 'Year One';
 
+getItemAndNavigate(BuildContext context) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => UserProfileUI(
+                username: username.text,
+                age: age.text,
+                university: university.text,
+                course: course.text,
+                nationality: nationality.text,
+                gender: _gender,
+                interests: _selectedItems.toString(),
+              )));
+}
+
 class _MyAppState extends State<MyApp> {
-  List<String> _selectedItems = [];
-
   DayNight? _character = DayNight.Day;
-  Gender? _gender = Gender.Male;
 
+  Smoking? _smoking = Smoking.No;
+  Alcohol _alcohol = Alcohol.No;
+  Veg _veg = Veg.veg;
   InOut? _in = InOut.StayingIn;
   void onSubmit() async {
+    setState(() {
+      username.text.isEmpty
+          ? _validateusername = true
+          : _validateusername = false;
+      age.text.isEmpty ? _validateage = true : _validateage = false;
+      university.text.isEmpty ? _validateuni = true : _validateuni = false;
+      nationality.text.isEmpty
+          ? _validatenationality = true
+          : _validatenationality = false;
+      course.text.isEmpty ? _validatecourse = true : _validatecourse = false;
+
+      if ((_validateusername == false) &&
+          (_validateuni == false) &&
+          (_validatenationality == false) &&
+          (_validateage == false) &&
+          (_validatecourse == false) &&
+          _selectedItems.isEmpty == false) {
+        getItemAndNavigate(context);
+      }
+    });
     if (_selectedItems.isEmpty) {
       errorAlertDialog(context);
     }
@@ -64,14 +110,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.teal,
           elevation: 5.0,
-          title: Text('Preferences', textAlign: TextAlign.center),
+          title: Text('Preferences'),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -81,6 +125,7 @@ class _MyAppState extends State<MyApp> {
                   SizedBox(height: 20),
                   Text('Enter your profile details',
                       style: kLargeBoldText, textAlign: TextAlign.center),
+                  SizedBox(height: 10.0),
                   //Username
                   ListTile(
                     leading: const Icon(Icons.person),
@@ -115,7 +160,7 @@ class _MyAppState extends State<MyApp> {
                       autocorrect: true,
                       decoration: new InputDecoration(
                         errorText:
-                            _validateusername ? 'Value Can\'t Be Empty' : null,
+                            _validateage ? 'Value Can\'t Be Empty' : null,
                         border: InputBorder.none,
                         hintText: 'Enter your age',
                         filled: true,
@@ -141,7 +186,7 @@ class _MyAppState extends State<MyApp> {
                       autocorrect: true,
                       decoration: new InputDecoration(
                         errorText:
-                            _validateusername ? 'Value Can\'t Be Empty' : null,
+                            _validateuni ? 'Value Can\'t Be Empty' : null,
                         border: InputBorder.none,
                         hintText: 'Enter the name of your university',
                         filled: true,
@@ -166,8 +211,9 @@ class _MyAppState extends State<MyApp> {
                       controller: nationality,
                       autocorrect: true,
                       decoration: new InputDecoration(
-                        errorText:
-                            _validateusername ? 'Value Can\'t Be Empty' : null,
+                        errorText: _validatenationality
+                            ? 'Value Can\'t Be Empty'
+                            : null,
                         border: InputBorder.none,
                         hintText: 'Enter your nationality',
                         filled: true,
@@ -192,7 +238,7 @@ class _MyAppState extends State<MyApp> {
                       autocorrect: true,
                       decoration: new InputDecoration(
                         errorText:
-                            _validateusername ? 'Value Can\'t Be Empty' : null,
+                            _validatecourse ? 'Value Can\'t Be Empty' : null,
                         border: InputBorder.none,
                         hintText: 'Enter your course',
                         filled: true,
@@ -210,50 +256,13 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                   ),
-                  ListTile(leading: Icon(gender), title: Text('Gender')),
-                  ListTile(
-                    title: Text('Male'),
-                    leading: Radio<Gender>(
-                      value: Gender.Male,
-                      groupValue: _gender,
-                      activeColor: Colors.black,
-                      onChanged: (Gender? value) {
-                        setState(() {
-                          _gender = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Female'),
-                    leading: Radio<Gender>(
-                      value: Gender.Female,
-                      groupValue: _gender,
-                      activeColor: Colors.black,
-                      onChanged: (Gender? value) {
-                        setState(() {
-                          _gender = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Non-binary'),
-                    leading: Radio<Gender>(
-                      value: Gender.Nonbinary,
-                      groupValue: _gender,
-                      activeColor: Colors.black,
-                      onChanged: (Gender? value) {
-                        setState(() {
-                          _gender = value;
-                        });
-                      },
-                    ),
-                  ),
                   Row(children: <Widget>[
                     SizedBox(width: 20.0),
-                    Text('Enter your year of study', style: kMediumText),
+                    Icon(Icons.home_work_outlined),
                     SizedBox(width: 20.0),
+                    Text('Enter your year of study',
+                        style: TextStyle(color: Colors.black, fontSize: 15.0)),
+                    SizedBox(width: 50.0),
                     DropdownButton<String>(
                       value: dropdownValue,
                       icon: const Icon(Icons.arrow_downward),
@@ -282,7 +291,46 @@ class _MyAppState extends State<MyApp> {
                       }).toList(),
                     ),
                   ]),
-
+                  ListTile(leading: Icon(gender), title: Text('Gender')),
+                  ListTile(
+                    title: Text('Male'),
+                    leading: Radio<String>(
+                      value: "Male",
+                      groupValue: _gender,
+                      activeColor: Colors.black,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Female'),
+                    leading: Radio<String>(
+                      value: "Female",
+                      groupValue: _gender,
+                      activeColor: Colors.black,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Non-binary'),
+                    leading: Radio<String>(
+                      value: "Non Binary",
+                      groupValue: _gender,
+                      activeColor: Colors.black,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                    ),
+                  ),
                   SizedBox(height: 20.0),
                   Text('Enter your profile preferences',
                       style: kLargeBoldText, textAlign: TextAlign.center),
@@ -372,88 +420,88 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                   ListTile(
-                      leading: Icon(Icons.wb_sunny_rounded),
+                      leading: Icon(Icons.adb_outlined),
                       title: Text('Are you a vegetarian or non-vegeterian?')),
                   ListTile(
-                    title: Text('Day'),
-                    leading: Radio<DayNight>(
-                      value: DayNight.Day,
-                      groupValue: _character,
+                    title: Text('Vegetarian'),
+                    leading: Radio<Veg>(
+                      value: Veg.veg,
+                      groupValue: _veg,
                       activeColor: Colors.black,
-                      onChanged: (DayNight? value) {
+                      onChanged: (Veg? value) {
                         setState(() {
-                          _character = value;
+                          _veg = value!;
                         });
                       },
                     ),
                   ),
                   ListTile(
-                    title: Text('Night'),
-                    leading: Radio<DayNight>(
-                      value: DayNight.Night,
-                      groupValue: _character,
+                    title: Text('Non-vegetarian'),
+                    leading: Radio<Veg>(
+                      value: Veg.Nonveg,
+                      groupValue: _veg,
                       activeColor: Colors.black,
-                      onChanged: (DayNight? value) {
+                      onChanged: (Veg? value) {
                         setState(() {
-                          _character = value;
+                          _veg = value!;
                         });
                       },
                     ),
                   ),
                   ListTile(
-                      leading: Icon(Icons.wb_sunny_rounded),
+                      leading: Icon(Icons.no_drinks),
                       title: Text('Do you drink alcohol?')),
                   ListTile(
-                    title: Text('Day'),
-                    leading: Radio<DayNight>(
-                      value: DayNight.Day,
-                      groupValue: _character,
+                    title: Text('Yes'),
+                    leading: Radio<Alcohol>(
+                      value: Alcohol.Yes,
+                      groupValue: _alcohol,
                       activeColor: Colors.black,
-                      onChanged: (DayNight? value) {
+                      onChanged: (Alcohol? value) {
                         setState(() {
-                          _character = value;
+                          _alcohol = value!;
                         });
                       },
                     ),
                   ),
                   ListTile(
-                    title: Text('Night'),
-                    leading: Radio<DayNight>(
-                      value: DayNight.Night,
-                      groupValue: _character,
+                    title: Text('No'),
+                    leading: Radio<Alcohol>(
+                      value: Alcohol.No,
+                      groupValue: _alcohol,
                       activeColor: Colors.black,
-                      onChanged: (DayNight? value) {
+                      onChanged: (Alcohol? value) {
                         setState(() {
-                          _character = value;
+                          _alcohol = value!;
                         });
                       },
                     ),
                   ),
                   ListTile(
-                      leading: Icon(Icons.wb_sunny_rounded),
+                      leading: Icon(Icons.smoke_free),
                       title: Text('Do you smoke`?')),
                   ListTile(
-                    title: Text('Day'),
-                    leading: Radio<DayNight>(
-                      value: DayNight.Day,
-                      groupValue: _character,
+                    title: Text('Yes'),
+                    leading: Radio<Smoking>(
+                      value: Smoking.Yes,
+                      groupValue: _smoking,
                       activeColor: Colors.black,
-                      onChanged: (DayNight? value) {
+                      onChanged: (Smoking? value) {
                         setState(() {
-                          _character = value;
+                          _smoking = value;
                         });
                       },
                     ),
                   ),
                   ListTile(
-                    title: Text('Night'),
-                    leading: Radio<DayNight>(
-                      value: DayNight.Night,
-                      groupValue: _character,
+                    title: Text('No'),
+                    leading: Radio<Smoking>(
+                      value: Smoking.No,
+                      groupValue: _smoking,
                       activeColor: Colors.black,
-                      onChanged: (DayNight? value) {
+                      onChanged: (Smoking? value) {
                         setState(() {
-                          _character = value;
+                          _smoking = value;
                         });
                       },
                     ),
