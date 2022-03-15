@@ -162,16 +162,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
           color: Color(0xff656865),
           child: Column(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.75,
-                width: MediaQuery.of(context).size.width,
-                child: SingleChildScrollView(
-                  child: messageList(this.msgs),
+              Expanded(
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: messageList(this.msgs),
+                  ),
                 ),
               ),
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: messageBox(Colors.white, messageController)),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                    child: messageBox(Colors.white, messageController)),
+              ),
             ],
           )),
     );
