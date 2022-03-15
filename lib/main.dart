@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
+import 'package:roomie_lah/screens/LoginScreen.dart';
 import 'package:roomie_lah/screens/WelcomeScreen.dart';
 
 void main() {
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: WelcomeScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
+        LoginScreen.id: (context) => LoginScreen()
       },
     );
   }
