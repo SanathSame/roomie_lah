@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       body: Container(
-        width: double.infinity,
+        width: size.width,
         height: size.height,
         child: Stack(
           alignment: Alignment.center,
@@ -53,9 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.03),
+                  SizedBox(height: size.height * 0.03, width: size.width),
                   Image.asset(
-                    // TODO: Add image asset
                     "assets/images/RoomieLah_logo.png",
                     height: size.height * 0.1,
                   ),
