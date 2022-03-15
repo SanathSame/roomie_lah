@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
- 
+import 'package:roomie_lah/screens/preferences.dart';
+import 'package:roomie_lah/screens/chat_list.dart';
+import 'package:roomie_lah/screens/recommendation_screen.dart';
+import 'package:roomie_lah/screens/LoginScreen.dart';
+
 class BasicBottomNavBar extends StatefulWidget {
   const BasicBottomNavBar({Key? key}) : super(key: key);
 
@@ -8,46 +12,55 @@ class BasicBottomNavBar extends StatefulWidget {
 }
 
 class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
-  int _selectedIndex = 0;
+  static int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    //add pages
+  //TODO: change to profile page
+  static String _profileScreenID = LoginScreen.id;
+  static String _recommendationScreenID = RecommendationScreen.id;
+  static String _chatListID = ChatListPage.id;
+
+  static List<String> _pages = <String>[
+    _profileScreenID,
+    _recommendationScreenID,
+    _chatListID
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      Navigator.pushNamed(context, _pages[_selectedIndex]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Demo'),
-      ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-           BottomNavigationBarItem(
+    return
+        // Scaffold(
+        // appBar: AppBar(
+        //   title: const Text('BottomNavigationBar Demo'),
+        // ),
+        // body: Center(
+        //   child: _pages.elementAt(_selectedIndex),
+        // ),
+        // bottomNavigationBar:
+        BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Home',
+          label: 'View/Edit Profile',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.create_sharp),
-          label: 'Edit Profile',
+          label: 'Recommendations',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.chat),
           label: 'Chats',
-          ),
-
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
     );
+    // );
   }
 }
