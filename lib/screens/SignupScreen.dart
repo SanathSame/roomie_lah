@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
-import "package:roomie_lah/widgets/appBar.dart";
+import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
 

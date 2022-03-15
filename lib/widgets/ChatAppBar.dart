@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:roomie_lah/constants.dart';
 
 Widget ChatAppBar(BuildContext context) {
   return AppBar(
+    backgroundColor: kPrimaryColor,
     title: Row(
       children: [
         Expanded(child: Text(

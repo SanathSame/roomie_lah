@@ -8,7 +8,7 @@ void main() => runApp(
       home: ConversationScreen(),
       theme: ThemeData(
         primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xff656865),
       ),
     )
 );
@@ -171,7 +171,10 @@ class _ConversationScreenState extends State<ConversationScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: MediaQuery.of(context).size,
+        preferredSize: Size(
+          MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height * 0.075, // 10% of the height
+        ),
         child: ChatAppBar(context),
       ),
       body:
