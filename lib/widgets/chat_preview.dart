@@ -31,7 +31,7 @@ class ChatPreview extends StatelessWidget {
       child: Row(
         children: <Widget>[
           new CircleAvatar(
-            backgroundImage: AssetImage('assets/hasbullah.jpeg'),
+            backgroundImage: AssetImage('assets/images/hasbullah.jpg'),
             radius: 0.03 * max(width, height),
           ),
           Expanded(

@@ -29,7 +29,7 @@ class ChatListPageState extends State<ChatListPage> {
     List<Widget> widgetList = [];
 
     for (int i = 0; i < num; ++i) {
-      String name = "Hajmolah";
+      String name = "Hasbullah";
       String lastMessage = "Hello00000000000000000000000000000000000";
       String time = "8:00 PM";
 

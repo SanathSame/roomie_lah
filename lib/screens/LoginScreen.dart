@@ -57,81 +57,99 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: size.width,
         height: size.height,
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: size.height * 0.03, width: size.width),
-                  Image.asset(
-                    "assets/images/RoomieLah_logo.png",
-                    height: size.height * 0.1,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: size.height * 0.03, width: size.width),
+              Image.asset(
+                "assets/images/RoomieLah_logo.png",
+                height: size.height * 0.2,
+              ),
+              SizedBox(height: size.height * 0.1),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                width: size.width * 0.9,
+                decoration: BoxDecoration(
+                  // color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(29),
+                  border: Border.all(color: kPrimaryColor),
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    enteredUsername = value;
+                  },
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: "Enter your username",
+                    border: InputBorder.none,
                   ),
-                  SizedBox(height: size.height * 0.03),
-                  RoundedInputField(
-                    hintText: "Enter Your Username",
-                    onChanged: (value) {
-                      enteredUsername = value;
-                    },
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    width: size.width * 0.5,
-                    decoration: BoxDecoration(
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                width: size.width * 0.9,
+                decoration: BoxDecoration(
+                  // color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(29),
+                  border: Border.all(color: kPrimaryColor),
+                ),
+                child: TextField(
+                  obscureText: obscureBool,
+                  onChanged: (value) {
+                    enteredPassword = value;
+                  },
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                    icon: Icon(
+                      Icons.lock,
                       color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(29),
-                      border: Border.all(color: Colors.white),
                     ),
-                    child: TextField(
-                      obscureText: obscureBool,
-                      onChanged: (value) {
-                        enteredPassword = value;
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          obscureBool = !obscureBool;
+                        });
                       },
-                      cursorColor: kPrimaryColor,
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        icon: Icon(
-                          Icons.lock,
-                          color: kPrimaryColor,
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscureBool = !obscureBool;
-                            });
-                          },
-                          icon: Icon(
-                            obscureBool
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: kPrimaryColor,
-                          ),
-                        ),
-                        border: InputBorder.none,
+                      icon: Icon(
+                        obscureBool ? Icons.visibility : Icons.visibility_off,
+                        color: kPrimaryColor,
                       ),
                     ),
+                    border: InputBorder.none,
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor: kPrimaryColor,
-                        primary: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
-                    onPressed: () =>
-                        {Navigator.pushNamed(context, RecommendationScreen.id)},
-                    child: Text(
-                      "Login",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                ],
+                ),
               ),
-            ),
-          ],
+              TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    primary: Colors.white,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
+                onPressed: () => {
+                  if (enteredUsername == "username" &&
+                      enteredPassword == "password")
+                    {Navigator.pushNamed(context, RecommendationScreen.id)}
+                  else
+                    {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => buildPopUp("Error",
+                              'Please enter correct username and/or password.'))
+                    }
+                },
+                child: Text(
+                  "Login",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              SizedBox(height: size.height * 0.03),
+            ],
+          ),
         ),
       ),
     );
