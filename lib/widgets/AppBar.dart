@@ -26,7 +26,7 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         key: key,
         centerTitle: true,
-        title: Text(title, style: kLargeBoldText, textAlign: TextAlign.center),
+        title: Text(title, style: kLargeText, textAlign: TextAlign.center),
         backgroundColor: color,
         actions: [],
       ),

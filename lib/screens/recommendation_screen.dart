@@ -64,7 +64,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     CardController controller;
     return Scaffold(
       appBar: appBar(
-        title: "RECOMMENDATIONS",
+        title: "Recommendations",
         key: UniqueKey(),
       ),
       body: new Center(
