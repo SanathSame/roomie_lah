@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:roomie_lah/controllers/swiping_controller.dart';
 import 'package:roomie_lah/entity/user.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
@@ -28,13 +29,24 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
   late double height;
   late double width;
   late bool showFront;
+  late Color bgColor;
+  late User currentUser;
 
   @override
   void initState() {
     super.initState();
+    currentUser = new User(
+        fullName: "Test Test",
+        username: "Test",
+        password: "password",
+        age: 20,
+        universityName: "NTU",
+        tagLine: "tagLine",
+        tags: ["hello1", "hello2", "hello 3"]);
     recommendedProfiles.addAll([
       new User(
           fullName: "Gopal Agarwal",
+          username: "test4",
           age: 20,
           password: "password",
           universityName: "Nanyang Technological University",
@@ -42,6 +54,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           tags: ["hello1", "hello2", "hello 3"]),
       new User(
           fullName: "Aks Tayal",
+          username: "test2",
           age: 21,
           password: "password1",
           universityName: "Singapore Management University",
@@ -49,6 +62,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           tags: ["hello4", "hello5", "hello6"]),
       new User(
           fullName: "Jasraj Singh",
+          username: "test3",
           age: 21,
           password: "password3",
           universityName: "National University of Singapore",
@@ -56,6 +70,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           tags: ["hello7", "hello8", "hello 9"]),
     ]);
     showFront = true;
+    bgColor = Colors.transparent;
   }
 
   Widget build(BuildContext context) {
@@ -69,6 +84,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
       ),
       body: new Center(
         child: Container(
+          color: bgColor,
           height: height * 0.4,
           child: GestureDetector(
             onTap: () {
@@ -103,13 +119,25 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
                 /// Get swiping card's alignment
                 if (align.x < 0) {
                   //Card is LEFT swiping
+
                 } else if (align.x > 0) {
                   //Card is RIGHT swiping
+
                 }
               },
               swipeCompleteCallback:
                   (CardSwipeOrientation orientation, int index) {
-                /// Get orientation & index of swiped card!
+                if (orientation == CardSwipeOrientation.RIGHT) {
+                  print("swiped right");
+                  SwipingController().updateSwipeData(currentUser.username,
+                      recommendedProfiles[index].username, "right");
+                  // SwipingController().checkNewUser("aks_6");
+                  // SwipingController().getAllData();
+                } else if (orientation == CardSwipeOrientation.LEFT) {
+                  print("swiped left");
+                  SwipingController().updateSwipeData(currentUser.username,
+                      recommendedProfiles[index].username, "left");
+                }
               },
             ),
           ),
