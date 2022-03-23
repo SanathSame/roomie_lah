@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roomie_lah/screens/UserProfileScreen.dart';
 import 'package:roomie_lah/screens/preferences.dart';
 import 'package:roomie_lah/screens/chat_list.dart';
 import 'package:roomie_lah/screens/recommendation_screen.dart';
@@ -15,7 +16,7 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
   static int _selectedIndex = 1;
 
   //TODO: change to profile page
-  static String _profileScreenID = LoginScreen.id;
+  static String _profileScreenID = UserProfileUI.id;
   static String _recommendationScreenID = RecommendationScreen.id;
   static String _chatListID = ChatListPage.id;
 
@@ -34,16 +35,7 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('BottomNavigationBar Demo'),
-        // ),
-        // body: Center(
-        //   child: _pages.elementAt(_selectedIndex),
-        // ),
-        // bottomNavigationBar:
-        BottomNavigationBar(
+    return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
