@@ -41,7 +41,8 @@ class ChatListBodyState extends State<ChatListBody> {
     // matchController.addMatch('user2', 'user4');
     // matchController.addMatch('user1', 'user4');
     // matchController.deleteMatch('user2', 'user4');
-    var listOfMatches = await matchController.listMatches('user4');
+    await matchController.addMatch('user9', 'user10');
+    var listOfMatches = await matchController.listMatches('user10');
 
     for (int i = 0; i < listOfMatches.length; ++i) {
       String name = listOfMatches[i];
