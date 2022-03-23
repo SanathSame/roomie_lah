@@ -141,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           builder: (BuildContext context) => buildPopUp("Error",
                               'Please enter correct username and/or password.'))
                     }
+                  // Navigator.pushNamed(context, RecommendationScreen.id)
                 },
                 child: Text(
                   "Login",

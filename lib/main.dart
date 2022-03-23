@@ -9,7 +9,7 @@ import 'package:roomie_lah/screens/preferences.dart';
 import 'package:roomie_lah/screens/SignupScreen.dart';
 import 'package:roomie_lah/screens/LoginScreen.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
