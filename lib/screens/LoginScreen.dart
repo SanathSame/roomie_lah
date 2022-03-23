@@ -131,16 +131,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding:
                         EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
                 onPressed: () => {
-                  if (enteredUsername == "username" &&
-                      enteredPassword == "password")
-                    {Navigator.pushNamed(context, RecommendationScreen.id)}
-                  else
-                    {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) => buildPopUp("Error",
-                              'Please enter correct username and/or password.'))
-                    }
+                  // if (enteredUsername == "username" &&
+                  //     enteredPassword == "password")
+                  //   {Navigator.pushNamed(context, RecommendationScreen.id)}
+                  // else
+                  //   {
+                  //     showDialog(
+                  //         context: context,
+                  //         builder: (BuildContext context) => buildPopUp("Error",
+                  //             'Please enter correct username and/or password.'))
+                  //   }
+                  Navigator.pushNamed(context, RecommendationScreen.id)
                 },
                 child: Text(
                   "Login",

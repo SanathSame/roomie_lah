@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SwipingController {
@@ -32,5 +34,18 @@ class SwipingController {
       swipeDirection: FieldValue.arrayUnion([swipedUser])
     });
     return;
+  }
+
+  // bool method for right swipe to check if other is also right
+  // if yes, show pop up otherwise pass
+  // if yes, add to matches collection
+  Future<bool> checkMatch(String currentUser, String swipedUser) async {
+    var doc = await _swipingCollection.doc(swipedUser).get();
+    var rightSwipes = doc['right'];
+    if (rightSwipes.contains(currentUser)) {
+      print("exists");
+      return true;
+    }
+    return false;
   }
 }

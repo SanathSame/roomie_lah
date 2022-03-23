@@ -37,7 +37,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     super.initState();
     currentUser = new User(
         fullName: "Test Test",
-        username: "Test",
+        username: "test1",
         password: "password",
         age: 20,
         universityName: "NTU",
@@ -46,7 +46,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     recommendedProfiles.addAll([
       new User(
           fullName: "Gopal Agarwal",
-          username: "test4",
+          username: "gopal_19",
           age: 20,
           password: "password",
           universityName: "Nanyang Technological University",
@@ -126,13 +126,29 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
                 }
               },
               swipeCompleteCallback:
-                  (CardSwipeOrientation orientation, int index) {
+                  (CardSwipeOrientation orientation, int index) async{
                 if (orientation == CardSwipeOrientation.RIGHT) {
                   print("swiped right");
                   SwipingController().updateSwipeData(currentUser.username,
                       recommendedProfiles[index].username, "right");
-                  // SwipingController().checkNewUser("aks_6");
-                  // SwipingController().getAllData();
+                  // remove hard-coded username
+                  if (await SwipingController().checkMatch("test1", "gopal_19")) {
+                    // MatchController().addMatch();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Congratulations!'),
+                        content: Text('You have matched with ${recommendedProfiles[index].username}. You can proceed to the Chat Screen to know them further.'),
+                        actions: <Widget>[  
+                         
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 } else if (orientation == CardSwipeOrientation.LEFT) {
                   print("swiped left");
                   SwipingController().updateSwipeData(currentUser.username,
