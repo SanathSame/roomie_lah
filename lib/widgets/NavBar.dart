@@ -17,7 +17,7 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
   //TODO: change to profile page
   static String _profileScreenID = LoginScreen.id;
   static String _recommendationScreenID = RecommendationScreen.id;
-  static String _chatListID = ChatListBody.id;
+  static String _chatListID = ChatListPage.id;
 
   static List<String> _pages = <String>[
     _profileScreenID,

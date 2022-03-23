@@ -109,6 +109,7 @@ class ChatListBodyState extends State<ChatListBody> {
 }
 
 class ChatListPage extends StatelessWidget {
+  static String id = "chat_list";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

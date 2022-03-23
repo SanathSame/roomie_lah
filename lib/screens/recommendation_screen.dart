@@ -7,6 +7,7 @@ import 'package:roomie_lah/entity/user.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
 import 'package:roomie_lah/widgets/NavBar.dart';
+import 'package:roomie_lah/controllers/MatchController.dart';
 
 void main() => runApp(MaterialApp(
       title: 'RoomieLah',
@@ -126,21 +127,22 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
                 }
               },
               swipeCompleteCallback:
-                  (CardSwipeOrientation orientation, int index) async{
+                  (CardSwipeOrientation orientation, int index) async {
                 if (orientation == CardSwipeOrientation.RIGHT) {
                   print("swiped right");
                   SwipingController().updateSwipeData(currentUser.username,
                       recommendedProfiles[index].username, "right");
                   // remove hard-coded username
-                  if (await SwipingController().checkMatch("test1", "gopal_19")) {
-                    // MatchController().addMatch();
+                  if (await SwipingController()
+                      .checkMatch("test1", "gopal_19")) {
+                    MatchController().addMatch("test1", "gopal_19");
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                         title: const Text('Congratulations!'),
-                        content: Text('You have matched with ${recommendedProfiles[index].username}. You can proceed to the Chat Screen to know them further.'),
-                        actions: <Widget>[  
-                         
+                        content: Text(
+                            'You have matched with ${recommendedProfiles[index].username}. You can proceed to the Chat Screen to know them further.'),
+                        actions: <Widget>[
                           TextButton(
                             onPressed: () => Navigator.pop(context, 'OK'),
                             child: const Text('OK'),
