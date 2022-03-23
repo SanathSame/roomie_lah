@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class User {
   String _fullName;
+  String _username;
   String _password;
   int _age;
   String _universityName;
@@ -10,15 +11,16 @@ class User {
   List<String> _tags;
 
   User(
-      {
-        required String fullName,
-        required String password,
-        required int age,
-        required String universityName,
-        required String tagLine,
-        //required Image profilePicture,
-        required List<String> tags})
+      {required String fullName,
+      required String username,
+      required String password,
+      required int age,
+      required String universityName,
+      required String tagLine,
+      //required Image profilePicture,
+      required List<String> tags})
       : _fullName = fullName,
+        _username = username,
         _password = password,
         _age = age,
         _universityName = universityName,
@@ -27,6 +29,7 @@ class User {
         _tags = tags;
 
   String get fullname => _fullName;
+  String get username => _username;
   String get password => _password;
   int get age => _age;
   String get universityName => _universityName;
@@ -36,6 +39,10 @@ class User {
 
   set fullname(String fullName) {
     _fullName = fullName;
+  }
+
+  set username(String userName) {
+    _username = userName;
   }
 
   set password(String password) {

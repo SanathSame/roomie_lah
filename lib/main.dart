@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/screens/WelcomeScreen.dart';
@@ -8,7 +9,9 @@ import 'package:roomie_lah/screens/preferences.dart';
 import 'package:roomie_lah/screens/SignupScreen.dart';
 import 'package:roomie_lah/screens/LoginScreen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 

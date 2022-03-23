@@ -35,6 +35,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     recommendedProfiles.addAll([
       new User(
           fullName: "Gopal Agarwal",
+          username: "gopal_19",
           age: 20,
           password: "password",
           universityName: "Nanyang Technological University",
@@ -42,6 +43,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           tags: ["hello1", "hello2", "hello 3"]),
       new User(
           fullName: "Aks Tayal",
+          username: "aks_6",
           age: 21,
           password: "password1",
           universityName: "Singapore Management University",
@@ -49,6 +51,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           tags: ["hello4", "hello5", "hello6"]),
       new User(
           fullName: "Jasraj Singh",
+          username: "jas_24",
           age: 21,
           password: "password3",
           universityName: "National University of Singapore",
