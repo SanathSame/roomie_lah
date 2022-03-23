@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
@@ -6,6 +8,7 @@ import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/widgets/NavBar.dart';
 import 'package:roomie_lah/screens/ConversationScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:roomie_lah/controllers/ProfilePicController.dart';
 //import 'firebase_options.dart';
 
 void main() async {
@@ -41,20 +44,41 @@ class ChatListBodyState extends State<ChatListBody> {
     // matchController.addMatch('user2', 'user4');
     // matchController.addMatch('user1', 'user4');
     // matchController.deleteMatch('user2', 'user4');
-    await matchController.addMatch('user9', 'user10');
+    //await matchController.addMatch('user9', 'user10');
     var listOfMatches = await matchController.listMatches('user10');
+
+    var users = ["kanye.jpeg", "kanye"];
 
     for (int i = 0; i < listOfMatches.length; ++i) {
       String name = listOfMatches[i];
       String lastMessage = "Hello00000000000000000000000000000000000";
       String time = "8:00 PM";
       Widget chatPreview = new InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, ConversationScreen.id);
+        onTap: () async {
+          AuthenticationController().login('user1@gmail.com', 'password');
+          // final result = await FilePicker.platform.pickFiles(
+          //     allowMultiple: false,
+          //     type: FileType.custom,
+          //     allowedExtensions: ['png', 'jpg', 'jpeg']);
+
+          // if (result == null) {
+          //   print('No File has been picked');
+          //   return;
+          // }
+
+          // final path = result.files.single.path;
+          // final name = result.files.single.name;
+
+          // print(path);
+          // print(name);
+          // await ProfilePicController().uploadFile('user1', path!);
+          // print('Done');
+          //Navigator.pushNamed(context, ConversationScreen.id);
           // MatchController matchController = new MatchController();
           // // matchController.listMatches();
         },
-        child: ChatPreview(name, lastMessage, time),
+        child: ChatPreview(name, lastMessage, time,
+            await ProfilePicController().downloadURL(users[i % 2])),
       );
       widgetList.add(chatPreview);
       widgetList.add(SizedBox(height: 0.015 * height));
