@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
@@ -9,6 +8,7 @@ import 'package:roomie_lah/widgets/NavBar.dart';
 import 'package:roomie_lah/screens/ConversationScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:roomie_lah/controllers/ProfilePicController.dart';
+import 'package:async/async.dart';
 //import 'firebase_options.dart';
 
 void main() async {
@@ -34,28 +34,43 @@ class ChatListBody extends StatefulWidget {
 }
 
 class ChatListBodyState extends State<ChatListBody> {
-  // To Test out functionality
-  Future<List<Widget>> buildMatches(height) async {
-    List<Widget> widgetList = [];
-
-    MatchController matchController = new MatchController();
-    // matchController.addMatch('user1', 'user2');
-    // matchController.addMatch('user1', 'user3');
-    // matchController.addMatch('user2', 'user4');
-    // matchController.addMatch('user1', 'user4');
-    // matchController.deleteMatch('user2', 'user4');
-    //await matchController.addMatch('user9', 'user10');
-    var listOfMatches = await matchController.listMatches('user10');
-
+  Future<List<dynamic>> buildProfilePic(List<String> matches) async {
     var users = ["kanye.jpeg", "kanye"];
+    List<dynamic> imageURLS = List.filled(matches.length, "");
+    imageURLS = List.filled(matches.length, "");
+    print('Before Futures');
+    print(imageURLS);
 
+    FutureGroup futureGroup = FutureGroup();
+    ProfilePicController profilePicController = new ProfilePicController();
+    for (int i = 0; i < matches.length; ++i) {
+      print("Starting future : $i");
+      futureGroup.add(profilePicController.downloadURL(users[i % 2]));
+    }
+    //print("Num threads: $futureGroup");
+    print("Waiting for futures");
+    print("URLS: $imageURLS");
+    futureGroup.close();
+    await futureGroup.future.then((value) => {print(value), imageURLS = value});
+    print("Futures Done... Got URLS");
+    print(imageURLS);
+    return imageURLS;
+  }
+
+  Future<List<Widget>> buildMatches(double height) async {
+    List<Widget> widgetList = [];
+    var listOfMatches = await MatchController().listMatches('user9');
+
+    var profilePicURLs = await buildProfilePic(listOfMatches);
+
+    print(profilePicURLs);
     for (int i = 0; i < listOfMatches.length; ++i) {
       String name = listOfMatches[i];
       String lastMessage = "Hello00000000000000000000000000000000000";
       String time = "8:00 PM";
       Widget chatPreview = new InkWell(
         onTap: () async {
-          AuthenticationController().login('user1@gmail.com', 'password');
+          //AuthenticationController().login('user1@gmail.com', 'password');
           // final result = await FilePicker.platform.pickFiles(
           //     allowMultiple: false,
           //     type: FileType.custom,
@@ -73,17 +88,16 @@ class ChatListBodyState extends State<ChatListBody> {
           // print(name);
           // await ProfilePicController().uploadFile('user1', path!);
           // print('Done');
-          //Navigator.pushNamed(context, ConversationScreen.id);
+          Navigator.pushNamed(context, ConversationScreen.id);
           // MatchController matchController = new MatchController();
           // // matchController.listMatches();
         },
-        child: ChatPreview(name, lastMessage, time,
-            await ProfilePicController().downloadURL(users[i % 2])),
+        child: ChatPreview(name, lastMessage, time, profilePicURLs[i]),
       );
       widgetList.add(chatPreview);
       widgetList.add(SizedBox(height: 0.015 * height));
     }
-
+    print(widgetList.length);
     return widgetList;
   }
 
@@ -102,6 +116,8 @@ class ChatListBodyState extends State<ChatListBody> {
                 children: snapshot.requireData,
               );
             } else {
+              print("Snapshot");
+              print(snapshot.data);
               child = Text("No Matches");
             }
           } else if (snapshot.hasError) {

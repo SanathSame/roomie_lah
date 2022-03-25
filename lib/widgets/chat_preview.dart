@@ -20,6 +20,7 @@ class ChatPreview extends StatelessWidget {
     this._name = name;
     this._lastMessage = lastMessage;
     this._time = time;
+    print('Created Chat Preview :$_profilePicURL');
   }
 
   @override
