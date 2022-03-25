@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
+import 'package:roomie_lah/widgets/Drawer.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
 import 'package:roomie_lah/constants.dart';
@@ -117,6 +118,7 @@ class ChatListPage extends StatelessWidget {
         title: "Chat",
         key: UniqueKey(),
       ),
+      endDrawer: CustomDrawer(),
       body: SingleChildScrollView(child: ChatListBody()),
       bottomNavigationBar: BasicBottomNavBar(),
     );

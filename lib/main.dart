@@ -8,6 +8,8 @@ import 'package:roomie_lah/screens/ConversationScreen.dart';
 import 'package:roomie_lah/screens/preferences.dart';
 import 'package:roomie_lah/screens/SignupScreen.dart';
 import 'package:roomie_lah/screens/LoginScreen.dart';
+import 'package:roomie_lah/screens/UserProfileScreen.dart';
+import 'package:roomie_lah/screens/EditProfileScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,16 @@ class MyApp extends StatelessWidget {
         ChatListPage.id: (context) => ChatListPage(),
         ConversationScreen.id: (context) => ConversationScreen(),
         PreferencesScreen.id: (context) => PreferencesScreen(),
+        UserProfileUI.id: (context) => UserProfileUI(
+              age: '20',
+              course: 'CS',
+              gender: 'Male',
+              interests: '',
+              nationality: 'Indian',
+              university: 'NTU',
+              username: '',
+            ),
+        EditProfileUI.id: (context) => EditProfileUI()
       },
     );
   }

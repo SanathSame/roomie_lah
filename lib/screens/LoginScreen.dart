@@ -6,16 +6,6 @@ import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
 import "package:roomie_lah/screens/recommendation_screen.dart";
-import 'package:flutter_svg/flutter_svg.dart';
-
-void main() => runApp(MaterialApp(
-      title: 'RoomieLah',
-      home: LoginScreen(),
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-    ));
 
 class LoginScreen extends StatefulWidget {
   static String id = "login_screen";
