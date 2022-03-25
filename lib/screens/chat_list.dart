@@ -1,6 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
+import 'package:roomie_lah/entity/ChatPreviewList.dart';
+import 'package:roomie_lah/entity/Matches.dart';
 import 'package:roomie_lah/widgets/Drawer.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
@@ -35,40 +37,38 @@ class ChatListBody extends StatefulWidget {
 }
 
 class ChatListBodyState extends State<ChatListBody> {
-  Future<List<dynamic>> buildProfilePic(List<String> matches) async {
-    var users = ["kanye.jpeg", "kanye"];
-    List<dynamic> imageURLS = List.filled(matches.length, "");
-    imageURLS = List.filled(matches.length, "");
-    print('Before Futures');
-    print(imageURLS);
+  // Future<List<dynamic>> buildProfilePic(List<String> matches) async {
+  //   var users = ["kanye.jpeg", "kanye"];
+  //   List<dynamic> imageURLS = List.filled(matches.length, "");
+  //   imageURLS = List.filled(matches.length, "");
+  //   print('Before Futures');
+  //   print(imageURLS);
 
-    FutureGroup futureGroup = FutureGroup();
-    ProfilePicController profilePicController = new ProfilePicController();
-    for (int i = 0; i < matches.length; ++i) {
-      print("Starting future : $i");
-      futureGroup.add(profilePicController.downloadURL(users[i % 2]));
-    }
-    //print("Num threads: $futureGroup");
-    print("Waiting for futures");
-    print("URLS: $imageURLS");
-    futureGroup.close();
-    await futureGroup.future.then((value) => {print(value), imageURLS = value});
-    print("Futures Done... Got URLS");
-    print(imageURLS);
-    return imageURLS;
-  }
+  //   FutureGroup futureGroup = FutureGroup();
+  //   ProfilePicController profilePicController = new ProfilePicController();
+  //   for (int i = 0; i < matches.length; ++i) {
+  //     print("Starting future : $i");
+  //     futureGroup.add(profilePicController.downloadURL(users[i % 2]));
+  //   }
+  //   //print("Num threads: $futureGroup");
+  //   print("Waiting for futures");
+  //   print("URLS: $imageURLS");
+  //   futureGroup.close();
+  //   await futureGroup.future.then((value) => {print(value), imageURLS = value});
+  //   print("Futures Done... Got URLS");
+  //   print(imageURLS);
+  //   return imageURLS;
+  //  }
 
   Future<List<Widget>> buildMatches(double height) async {
     List<Widget> widgetList = [];
-    var listOfMatches = await MatchController().listMatches('user9');
+    var listOfMatches = Matches().matches;
+    var chatPreviews = ChatPreviewList().chatpreviews;
 
-    var profilePicURLs = await buildProfilePic(listOfMatches);
-
-    print(profilePicURLs);
-    for (int i = 0; i < listOfMatches.length; ++i) {
-      String name = listOfMatches[i];
-      String lastMessage = "Hello00000000000000000000000000000000000";
-      String time = "8:00 PM";
+    for (int i = 0; i < chatPreviews.length; ++i) {
+      String name = chatPreviews[i].username;
+      String lastMessage = chatPreviews[i].lastMessage;
+      String time = chatPreviews[i].timestamp;
       Widget chatPreview = new InkWell(
         onTap: () async {
           //AuthenticationController().login('user1@gmail.com', 'password');
@@ -93,7 +93,8 @@ class ChatListBodyState extends State<ChatListBody> {
           // MatchController matchController = new MatchController();
           // // matchController.listMatches();
         },
-        child: ChatPreview(name, lastMessage, time, profilePicURLs[i]),
+        child:
+            ChatPreview(name, lastMessage, time, chatPreviews[i].profilePicURL),
       );
       widgetList.add(chatPreview);
       widgetList.add(SizedBox(height: 0.015 * height));
@@ -117,7 +118,6 @@ class ChatListBodyState extends State<ChatListBody> {
                 children: snapshot.requireData,
               );
             } else {
-              print("Snapshot");
               print(snapshot.data);
               child = Text("No Matches");
             }

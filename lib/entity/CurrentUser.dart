@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CurrentUser {
-  late String _fullName;
+  late String _name;
   late String _email;
   late String _username;
   late int _age;
@@ -12,6 +12,7 @@ class CurrentUser {
   late String _profilePictureURL;
   late List<String> _tags;
 
+  // Singleton Pattern
   static final CurrentUser _singleton = CurrentUser._internal();
 
   factory CurrentUser() {
@@ -21,7 +22,7 @@ class CurrentUser {
   CurrentUser._internal();
 
   String get email => _email;
-  String get fullname => _fullName;
+  String get name => _name;
   String get username => _username;
   int get age => _age;
   String get universityName => _universityName;
@@ -29,8 +30,8 @@ class CurrentUser {
   String get profilePicURL => _profilePictureURL;
   List<String> get tags => _tags;
 
-  set fullname(String fullName) {
-    _fullName = fullName;
+  set name(String name) {
+    _name = name;
   }
 
   set username(String userName) {
@@ -49,7 +50,7 @@ class CurrentUser {
     _tagLine = tagLine;
   }
 
-  set profilePicture(String profilePictureURL) {
+  set profilePicURL(String profilePictureURL) {
     _profilePictureURL = profilePictureURL;
   }
 

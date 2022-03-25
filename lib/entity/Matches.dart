@@ -9,6 +9,7 @@ class Matches {
 
   set matches(List<String> matches) => _matches = matches;
 
+  // Singleton Pattern
   static final Matches _singleton = Matches._internal();
 
   factory Matches() {

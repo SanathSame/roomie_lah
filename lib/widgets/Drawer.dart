@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "package:roomie_lah/constants.dart";
+import 'package:roomie_lah/entity/CurrentUser.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +32,10 @@ class CustomDrawer extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.2,
                       height: MediaQuery.of(context).size.height * 0.1,
                       child: CircleAvatar(
-                        child: Icon(IconData(0xe809),
-                            size: 50, color: Theme.of(context).primaryColor),
+                        backgroundImage: CurrentUser().profilePicURL == ""
+                            ? AssetImage('assets/images/hasbullah.jpg')
+                                as ImageProvider
+                            : NetworkImage(CurrentUser().profilePicURL),
                         backgroundColor: Theme.of(context).backgroundColor,
                       ),
                     ),
@@ -41,7 +43,7 @@ class CustomDrawer extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
-                      "name",
+                      CurrentUser().username,
                       style: TextStyle(
                         fontSize: 20,
                         color: Color(0xfffafaff),
@@ -51,7 +53,7 @@ class CustomDrawer extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
-                      "email",
+                      CurrentUser().email,
                       style: TextStyle(
                         fontSize: 20,
                         color: Color(0xfffafaff),
@@ -60,13 +62,13 @@ class CustomDrawer extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    Text(
-                      "Phone",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xfffafaff),
-                      ),
-                    ),
+                    // Text(
+                    //   "83581893",
+                    //   style: TextStyle(
+                    //     fontSize: 20,
+                    //     color: Color(0xfffafaff),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

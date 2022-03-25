@@ -82,47 +82,51 @@ class _UserProfileUIState extends State<UserProfileUI> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.teal,
-          centerTitle: true,
-          title: Text("User Profile", style: TextStyle(color: Colors.white)),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, EditProfileUI.id);
-                },
-                icon: Icon(Icons.edit))
-          ],
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        centerTitle: true,
+        title: Text("User Profile", style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, EditProfileUI.id);
+              },
+              icon: Icon(Icons.edit))
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 50.0),
+              Container(
+                height: 420,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: attributes.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.teal[300],
+                        ),
+                        child: Center(
+                            child: Text('${attributes[i]} ${tst[i]}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                    fontFamily: 'FjallaOne',
+                                    color: Colors.white))));
+                  },
+                  separatorBuilder: (BuildContext context, int i) =>
+                      const Divider(),
+                ),
+              )
+            ],
+          ),
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-          child: Column(children: <Widget>[
-            SizedBox(height: 50.0),
-            Container(
-              height: 420,
-              child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemCount: attributes.length,
-                itemBuilder: (BuildContext context, int i) {
-                  return Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.teal[300],
-                      ),
-                      child: Center(
-                          child: Text('${attributes[i]} ${tst[i]}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0,
-                                  fontFamily: 'FjallaOne',
-                                  color: Colors.white))));
-                },
-                separatorBuilder: (BuildContext context, int i) =>
-                    const Divider(),
-              ),
-            )
-          ]),
-        )));
+      ),
+    );
   }
 }
