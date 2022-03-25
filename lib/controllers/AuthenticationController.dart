@@ -41,7 +41,7 @@ class AuthenticationController {
   }
 
   /// Signs user out.
-  static void signOut() {
+  void signOut() {
     _auth.signOut();
   }
 

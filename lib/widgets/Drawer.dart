@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import "package:roomie_lah/constants.dart";
+import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
+import 'package:roomie_lah/screens/LoginScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,13 +64,6 @@ class CustomDrawer extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    // Text(
-                    //   "83581893",
-                    //   style: TextStyle(
-                    //     fontSize: 20,
-                    //     color: Color(0xfffafaff),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -81,9 +76,7 @@ class CustomDrawer extends StatelessWidget {
                   color: Color(0xfffafaff),
                 ),
               ),
-              onTap: () {
-                //Navigator.of(context).pushNamed('/profile');
-              },
+              onTap: () {},
             ),
             Divider(
               color: Colors.black,
@@ -96,9 +89,7 @@ class CustomDrawer extends StatelessWidget {
                   color: Color(0xfffafaff),
                 ),
               ),
-              onTap: () {
-                //Navigator.of(context).pushNamed('/profile');
-              },
+              onTap: () {},
             ),
             Divider(
               color: Colors.black,
@@ -112,7 +103,8 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                //Navigator.of(context).pushNamed('/login');
+                AuthenticationController().signOut();
+                Navigator.pushNamed(context, LoginScreen.id);
               },
             ),
             Divider(

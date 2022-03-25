@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
+import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/controllers/ProfilePicController.dart';
 import 'package:roomie_lah/controllers/UserController.dart';
@@ -136,27 +137,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {
                       spinner = true;
                     }),
-                    if (enteredUsername == "user1@gmail.com" &&
-                        enteredPassword == "password")
-                      {
-                        await UserController().setupProfile(enteredUsername),
-                        setState(() {
-                          spinner = false;
-                        }),
-                        Navigator.pushNamed(context, RecommendationScreen.id)
-                      }
-                    else
-                      {
-                        setState(() {
-                          spinner = true;
-                        }),
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) => buildPopUp(
-                                "Error",
-                                'Please enter correct username and/or password.'))
-                      }
-                    // Navigator.pushNamed(context, RecommendationScreen.id)
+                    await AuthenticationController()
+                        .login(enteredUsername, enteredPassword)
+                        .then(
+                          (success) async => {
+                            if (success)
+                              {
+                                await UserController()
+                                    .setupProfile(enteredUsername),
+                                setState(
+                                  () {
+                                    spinner = false;
+                                  },
+                                ),
+                                Navigator.pushNamed(
+                                    context, RecommendationScreen.id)
+                              }
+                            else
+                              {
+                                setState(() {
+                                  spinner = false;
+                                }),
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => buildPopUp(
+                                      "Error",
+                                      'Please enter correct username and/or password.'),
+                                )
+                              }
+                          },
+                        ),
                   },
                   child: Text(
                     "Login",

@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:roomie_lah/controllers/swiping_controller.dart';
+import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/entity/user.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
+import 'package:roomie_lah/widgets/Drawer.dart';
 import 'package:roomie_lah/widgets/NavBar.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 
@@ -134,8 +136,9 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
                       recommendedProfiles[index].username, "right");
                   // remove hard-coded username
                   if (await SwipingController()
-                      .checkMatch("test1", "gopal_19")) {
-                    MatchController().addMatch("test1", "gopal_19");
+                      .checkMatch(CurrentUser().username, "gopal_19")) {
+                    MatchController()
+                        .addMatch(CurrentUser().username, "gopal_19");
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
@@ -162,6 +165,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
         ),
       ),
       bottomNavigationBar: BasicBottomNavBar(),
+      endDrawer: CustomDrawer(),
     );
   }
 
