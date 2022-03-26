@@ -43,12 +43,11 @@ class ChatListBodyState extends State<ChatListBody> {
     List<Widget> widgetList = [];
 
     print(listOfMatches);
-
+    if (listOfMatches == null) return [];
     var matches = listOfMatches['matches'];
     Matches().matches = matches;
 
     for (int i = 0; i < Matches().matches!.length; ++i) {
-      // Get Name, LastMessage, time, profilePic
       var name = matches[i]['username'];
       var lastMessage = matches[i]['lastMessage'];
       var time = matches[i]['timestamp'];
@@ -57,8 +56,7 @@ class ChatListBodyState extends State<ChatListBody> {
         onTap: () {
           Navigator.pushNamed(context, ConversationScreen.id);
         },
-        child: ChatPreview(name, lastMessage, time,
-            profilePic), //chatPreviews[i].profilePicURL),
+        child: ChatPreview(name, lastMessage, time, profilePic),
       );
       widgetList.add(chatPreview);
       widgetList.add(SizedBox(height: 0.015 * height));
@@ -77,7 +75,6 @@ class ChatListBodyState extends State<ChatListBody> {
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data != null) {
-              print("******************************");
               print(snapshot.data?.data());
               return Column(
                 children: buildMatches(height, snapshot.data?.data()),
