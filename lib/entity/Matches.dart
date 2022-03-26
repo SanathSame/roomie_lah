@@ -3,12 +3,10 @@
 // Matches of current user. Load after login
 
 class Matches {
-  late List<String> _matches;
+  late List<dynamic>? _matches;
+  List<dynamic>? get matches => _matches;
 
-  List<String> get matches => _matches;
-
-  set matches(List<String> matches) => _matches = matches;
-
+  set matches(List<dynamic>? matches) => _matches = matches;
   // Singleton Pattern
   static final Matches _singleton = Matches._internal();
 

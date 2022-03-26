@@ -128,6 +128,8 @@ class _MyAppState extends State<EditProfileUI> {
           child: SingleChildScrollView(
             child: Center(
               child: new Column(
+                // Profile Pic Selection
+
                 children: <Widget>[
                   SizedBox(height: 20),
                   Text('Enter your profile details',

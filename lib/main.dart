@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
+import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/screens/WelcomeScreen.dart';
 import 'package:roomie_lah/screens/recommendation_screen.dart';
 import 'package:roomie_lah/screens/chat_list.dart';
@@ -14,6 +15,11 @@ import 'package:roomie_lah/screens/EditProfileScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await MatchController().addMatch('user1', 'user2');
+  await MatchController().addMatch('user1', 'user3');
+  await MatchController().addMatch('user1', 'user5');
+  await MatchController()
+      .updateLastMessage('user1', 'user2', 'I updated Message', '13:00');
   runApp(MyApp());
 }
 

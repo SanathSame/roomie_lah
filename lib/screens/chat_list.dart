@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/entity/ChatPreviewList.dart';
+import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/entity/Matches.dart';
 import 'package:roomie_lah/widgets/Drawer.dart';
 import 'package:roomie_lah/widgets/chat_preview.dart';
@@ -37,64 +39,26 @@ class ChatListBody extends StatefulWidget {
 }
 
 class ChatListBodyState extends State<ChatListBody> {
-  // Future<List<dynamic>> buildProfilePic(List<String> matches) async {
-  //   var users = ["kanye.jpeg", "kanye"];
-  //   List<dynamic> imageURLS = List.filled(matches.length, "");
-  //   imageURLS = List.filled(matches.length, "");
-  //   print('Before Futures');
-  //   print(imageURLS);
-
-  //   FutureGroup futureGroup = FutureGroup();
-  //   ProfilePicController profilePicController = new ProfilePicController();
-  //   for (int i = 0; i < matches.length; ++i) {
-  //     print("Starting future : $i");
-  //     futureGroup.add(profilePicController.downloadURL(users[i % 2]));
-  //   }
-  //   //print("Num threads: $futureGroup");
-  //   print("Waiting for futures");
-  //   print("URLS: $imageURLS");
-  //   futureGroup.close();
-  //   await futureGroup.future.then((value) => {print(value), imageURLS = value});
-  //   print("Futures Done... Got URLS");
-  //   print(imageURLS);
-  //   return imageURLS;
-  //  }
-
-  Future<List<Widget>> buildMatches(double height) async {
+  List<Widget> buildMatches(double height, listOfMatches) {
     List<Widget> widgetList = [];
-    var listOfMatches = Matches().matches;
-    var chatPreviews = ChatPreviewList().chatpreviews;
 
-    for (int i = 0; i < chatPreviews.length; ++i) {
-      String name = chatPreviews[i].username;
-      String lastMessage = chatPreviews[i].lastMessage;
-      String time = chatPreviews[i].timestamp;
+    print(listOfMatches);
+
+    var matches = listOfMatches['matches'];
+    Matches().matches = matches;
+
+    for (int i = 0; i < Matches().matches!.length; ++i) {
+      // Get Name, LastMessage, time, profilePic
+      var name = matches[i]['username'];
+      var lastMessage = matches[i]['lastMessage'];
+      var time = matches[i]['timestamp'];
+      var profilePic = matches[i]["profilePicURL"];
       Widget chatPreview = new InkWell(
-        onTap: () async {
-          //AuthenticationController().login('user1@gmail.com', 'password');
-          // final result = await FilePicker.platform.pickFiles(
-          //     allowMultiple: false,
-          //     type: FileType.custom,
-          //     allowedExtensions: ['png', 'jpg', 'jpeg']);
-
-          // if (result == null) {
-          //   print('No File has been picked');
-          //   return;
-          // }
-
-          // final path = result.files.single.path;
-          // final name = result.files.single.name;
-
-          // print(path);
-          // print(name);
-          // await ProfilePicController().uploadFile('user1', path!);
-          // print('Done');
+        onTap: () {
           Navigator.pushNamed(context, ConversationScreen.id);
-          // MatchController matchController = new MatchController();
-          // // matchController.listMatches();
         },
-        child:
-            ChatPreview(name, lastMessage, time, chatPreviews[i].profilePicURL),
+        child: ChatPreview(name, lastMessage, time,
+            profilePic), //chatPreviews[i].profilePicURL),
       );
       widgetList.add(chatPreview);
       widgetList.add(SizedBox(height: 0.015 * height));
@@ -107,7 +71,60 @@ class ChatListBodyState extends State<ChatListBody> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
 
-    return FutureBuilder<List<Widget>>(
+    return StreamBuilder(
+        stream: MatchController.matches.doc(CurrentUser().username).snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data != null) {
+              print("******************************");
+              print(snapshot.data?.data());
+              return Column(
+                children: buildMatches(height, snapshot.data?.data()),
+              );
+            } else {
+              return Text("No matches");
+            }
+          }
+          if (snapshot.hasError) {
+            Column(
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ],
+            );
+          }
+          return Container();
+        });
+  }
+}
+
+class ChatListPage extends StatelessWidget {
+  static String id = "chat_list";
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(
+        title: "Chat",
+        key: UniqueKey(),
+      ),
+      endDrawer: CustomDrawer(),
+      body: SingleChildScrollView(child: ChatListBody()),
+      bottomNavigationBar: BasicBottomNavBar(),
+    );
+  }
+}
+
+/*
+
+return FutureBuilder<List<Widget>>(
         future: buildMatches(height),
         builder: (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
           Widget child;
@@ -146,21 +163,4 @@ class ChatListBodyState extends State<ChatListBody> {
           }
           return child;
         });
-  }
-}
-
-class ChatListPage extends StatelessWidget {
-  static String id = "chat_list";
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(
-        title: "Chat",
-        key: UniqueKey(),
-      ),
-      endDrawer: CustomDrawer(),
-      body: SingleChildScrollView(child: ChatListBody()),
-      bottomNavigationBar: BasicBottomNavBar(),
-    );
-  }
-}
+*/

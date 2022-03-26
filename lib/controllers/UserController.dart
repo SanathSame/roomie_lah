@@ -58,30 +58,9 @@ class UserController {
     currentUser.profilePicURL =
         await ProfilePicController().downloadURL(currentUser.username);
 
-    Matches matches = Matches();
+    var matchData = await MatchController().listMatches(currentUser.username);
 
-    matches.matches = await MatchController().listMatches(currentUser.username);
-
-    print(matches.matches);
-
-    List<dynamic> imageURLs = [];
-
-    imageURLs = List.filled(matches.matches.length, "");
-
-    FutureGroup futureGroup = FutureGroup();
-    ProfilePicController profilePicController = new ProfilePicController();
-    for (int i = 0; i < matches.matches.length; ++i) {
-      print("Starting future : $i");
-      futureGroup.add(profilePicController.downloadURL(matches.matches[i]));
-    }
-    futureGroup.close();
-    await futureGroup.future.then((value) => imageURLs = value);
-
-    ChatPreviewList chatPreviewList = ChatPreviewList();
-
-    for (int i = 0; i < matches.matches.length; ++i) {
-      chatPreviewList.addChatPreview(
-          matches.matches[i], imageURLs[i], "Hello", "8:00");
-    }
+    Matches().matches = matchData['matches'];
+    print(Matches().matches);
   }
 }
