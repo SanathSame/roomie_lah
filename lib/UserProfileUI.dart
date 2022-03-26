@@ -13,17 +13,6 @@ class UserProfileUI extends StatefulWidget {
   String gender = "";
   String interests = "";
 
-  UserProfileUI(
-      {Key? key,
-      required this.username,
-      required this.age,
-      required this.university,
-      required this.course,
-      required this.nationality,
-      required this.gender,
-      required this.interests})
-      : super(key: key);
-
   @override
   _UserProfileUIState createState() => _UserProfileUIState();
 }

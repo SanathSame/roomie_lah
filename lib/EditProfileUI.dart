@@ -11,10 +11,15 @@ class EditProfileUI extends StatefulWidget {
 }
 
 enum DayNight { Day, Night }
+
 enum InOut { StayingIn, GoingOut }
+
 enum Smoking { Yes, No }
+
 enum Alcohol { Yes, No }
+
 enum Veg { veg, Nonveg }
+
 final username = TextEditingController();
 final age = TextEditingController();
 final university = TextEditingController();
@@ -32,17 +37,7 @@ String dropdownValue = 'Year One';
 
 getItemAndNavigate(BuildContext context) {
   Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => UserProfileUI(
-                username: username.text,
-                age: age.text,
-                university: university.text,
-                course: course.text,
-                nationality: nationality.text,
-                gender: _gender,
-                interests: _selectedItems.toString(),
-              )));
+      context, MaterialPageRoute(builder: (context) => UserProfileUI()));
 }
 
 class _MyAppState extends State<EditProfileUI> {

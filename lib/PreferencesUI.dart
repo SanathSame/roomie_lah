@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:multiselect/multiselect.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'EditProfileUI.dart';
-import 'UserProfileUI.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,10 +15,15 @@ class MyApp extends StatefulWidget {
 }
 
 enum DayNight { Day, Night }
+
 enum InOut { StayingIn, GoingOut }
+
 enum Smoking { Yes, No }
+
 enum Alcohol { Yes, No }
+
 enum Veg { veg, Nonveg }
+
 final username = TextEditingController();
 final age = TextEditingController();
 final university = TextEditingController();
@@ -33,23 +36,7 @@ bool _validateage = false;
 bool _validateuni = false;
 bool _validatenationality = false;
 bool _validatecourse = false;
-
 String dropdownValue = 'Year One';
-
-getItemAndNavigate(BuildContext context) {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => UserProfileUI(
-                username: username.text,
-                age: age.text,
-                university: university.text,
-                course: course.text,
-                nationality: nationality.text,
-                gender: _gender,
-                interests: _selectedItems.toString(),
-              )));
-}
 
 class _MyAppState extends State<MyApp> {
   DayNight? _character = DayNight.Day;
@@ -127,6 +114,12 @@ class _MyAppState extends State<MyApp> {
                       style: kLargeBoldText, textAlign: TextAlign.center),
                   SizedBox(height: 10.0),
                   //Username
+                  GestureDetector(
+                    onTap: (addProfilePicture()),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('assets/hasbullah.jpeg'),
+                    ),
+                  ),
                   ListTile(
                     leading: const Icon(Icons.person),
                     title: new TextFormField(
@@ -520,4 +513,6 @@ class _MyAppState extends State<MyApp> {
           ),
         ));
   }
+
+  addProfilePicture() {}
 }
