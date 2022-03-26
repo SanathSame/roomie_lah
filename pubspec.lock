@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  enum_to_string:
+    dependency: "direct main"
+    description:
+      name: enum_to_string
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -80,7 +87,11 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.1.3"
+=======
+    version: "0.1.4"
+>>>>>>> 2eb2bc546c6adcb4b50b9e00026dfb2b18d99641
   meta:
     dependency: transitive
     description:
@@ -101,7 +112,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -113,7 +124,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   stack_trace:
     dependency: transitive
     description:
@@ -155,7 +166,11 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.4.8"
+=======
+    version: "0.4.9"
+>>>>>>> 2eb2bc546c6adcb4b50b9e00026dfb2b18d99641
   typed_data:
     dependency: transitive
     description:
@@ -169,7 +184,13 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.1.1"
 sdks:
   dart: ">=2.14.0 <3.0.0"
+=======
+    version: "2.1.2"
+sdks:
+  dart: ">=2.16.0 <3.0.0"
+>>>>>>> 2eb2bc546c6adcb4b50b9e00026dfb2b18d99641
   flutter: ">=1.17.0"
