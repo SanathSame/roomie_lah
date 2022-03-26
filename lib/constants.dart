@@ -4,6 +4,8 @@ const kPrimaryColor = Color(0xFF5DB075); // Opacity, R, G, B
 const kPrimaryLightColor = Color(0xFFAFEEC1);
 
 const IconData sunny_snowing = IconData(0xf0576, fontFamily: 'MaterialIcons');
+const IconData gender = IconData(0xf45c, fontFamily: 'MaterialIcons');
+const IconData uyear = IconData(0xf0251, fontFamily: 'MaterialIcons');
 final TextStyle kSmallText =
     TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white);
 final TextStyle kMediumText =

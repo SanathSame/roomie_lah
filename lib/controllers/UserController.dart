@@ -5,16 +5,41 @@ import 'package:roomie_lah/entity/ChatPreviewList.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/entity/Matches.dart';
 import 'package:async/async.dart';
+import 'package:roomie_lah/entity/user.dart';
 
 class UserController {
   static CollectionReference users =
       FirebaseFirestore.instance.collection('users');
 
+  // String course, String University, bool smoke, drink, day, veg, String profilePic
   Future<void> addUseronSignup(
-      String email, String name, String username) async {
+      String email,
+      String name,
+      String username,
+      String gender,
+      String course,
+      String university,
+      int age,
+      bool smoker,
+      bool drinker,
+      bool dayPerson,
+      bool veg,
+      String profilePicURL) async {
     await users
         .doc(email)
-        .set({'name': name, 'username:': username})
+        .set({
+          'name': name,
+          'username:': username,
+          'course': course,
+          'university': university,
+          'age': age,
+          'gender': gender,
+          'smoke': smoker,
+          'drink': drinker,
+          'dayPerson': dayPerson,
+          'veg': veg,
+          'profilePicURL': profilePicURL
+        })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add  new user: $error"));
   }
@@ -35,6 +60,11 @@ class UserController {
         print('Document does not exist on the database');
       }
     });
+  }
+
+  // TODO: Implement this for Recommendation and Algorithm
+  Future<List<User>> listUsers() async {
+    return [];
   }
 
 // Retrieve important details

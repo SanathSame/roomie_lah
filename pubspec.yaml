@@ -18,10 +18,11 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
   multiselect: ^0.0.4
+  enum_to_string: ^2.0.1
   flutter:
     sdk: flutter
   flutter_tindercard: ^0.2.0
@@ -32,7 +33,6 @@ dependencies:
   flutter_svg: ^1.0.0
   firebase_core: ^1.13.1
   cloud_firestore: ^3.1.10
-  enum_to_string: ^2.0.0
   firebase_storage: ^10.2.9
   firebase_auth: ^3.3.11
   file_picker: ^4.0.3

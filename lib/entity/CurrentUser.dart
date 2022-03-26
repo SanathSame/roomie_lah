@@ -7,10 +7,13 @@ class CurrentUser {
   late String _email;
   late String _username;
   late int _age;
+  late String _gender;
   late String _universityName;
-  late String _tagLine;
   late String _profilePictureURL;
   late List<String> _tags;
+  late bool _smoker;
+  late bool _drinker;
+  late bool _dayPerson;
 
   // Singleton Pattern
   static final CurrentUser _singleton = CurrentUser._internal();
@@ -26,9 +29,12 @@ class CurrentUser {
   String get username => _username;
   int get age => _age;
   String get universityName => _universityName;
-  String get tagLine => _tagLine;
   String get profilePicURL => _profilePictureURL;
   List<String> get tags => _tags;
+  bool get smoker => _smoker;
+  bool get drinker => _drinker;
+  bool get dayPerson => _dayPerson;
+  String get gender => _gender;
 
   set name(String name) {
     _name = name;
@@ -42,12 +48,24 @@ class CurrentUser {
     _age = age;
   }
 
+  set gender(String gender) {
+    _gender = gender;
+  }
+
   set universityName(String universityName) {
     _universityName = universityName;
   }
 
-  set tagLine(String tagLine) {
-    _tagLine = tagLine;
+  set drinker(bool drinker) {
+    _drinker = drinker;
+  }
+
+  set smoker(bool smoker) {
+    _smoker = smoker;
+  }
+
+  set dayPerson(bool dayPerson) {
+    _dayPerson = dayPerson;
   }
 
   set profilePicURL(String profilePictureURL) {

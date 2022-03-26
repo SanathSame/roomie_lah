@@ -22,7 +22,6 @@ void main() async {
 }
 
 class PreferencesScreen extends StatefulWidget {
-  static String id = "preferences";
   @override
   _PreferenceScreenState createState() => _PreferenceScreenState();
 }
@@ -70,7 +69,6 @@ class _PreferenceScreenState extends State<PreferencesScreen> {
       downloadURL = await ProfilePicController()
           .downloadURL("atul"); //CurrentUser().username);
     }
-    CurrentUser().profilePicURL = downloadURL;
     username.text.isEmpty
         ? _validateusername = true
         : _validateusername = false;

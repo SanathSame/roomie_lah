@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
+import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/screens/UserProfileScreen.dart';
+import 'package:roomie_lah/screens/preferences.dart';
 import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
@@ -157,7 +159,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
                 onPressed: () => {
                   if (enteredUsername == reenteredUsername)
-                    {Navigator.pushNamed(context, UserProfileUI.id)}
+                    {
+                      // username is currently email.
+                      CurrentUser().email = enteredUsername,
+                      CurrentUser().username = enteredUsername.split("@")[0],
+                      Navigator.pushNamed(context, PreferencesScreen.id)
+                    }
                   else
                     {
                       showDialog(
