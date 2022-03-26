@@ -66,8 +66,8 @@ class _PreferenceScreenState extends State<PreferencesScreen> {
       showSpinner = true;
     });
     var downloadURL = "";
-    CurrentUser().username = "atul";
-    CurrentUser().email = "atul@gmail.com";
+    // CurrentUser().username = "atul";
+    // CurrentUser().email = "atul@gmail.com";
     if (filePath != "") {
       await ProfilePicController().uploadFile(CurrentUser().username, filePath);
       downloadURL =
