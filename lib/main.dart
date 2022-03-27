@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
               university: 'NTU',
               username: '',
             ),
-        EditProfileScreen.id: (context) => EditProfileScreen(false)
+        EditProfileScreen.id: (context) => EditProfileScreen()
       },
     );
   }

@@ -54,7 +54,7 @@ class _UserProfileUIState extends State<UserProfileUI> {
           IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, EditProfileScreen.id,
-                    arguments: false);
+                    arguments: {'firstTime': true});
               },
               icon: Icon(Icons.edit))
         ],

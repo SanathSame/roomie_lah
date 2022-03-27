@@ -13,20 +13,16 @@ import '../entity/CurrentUser.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: EditProfileScreen(false),
+    home: EditProfileScreen(),
   ));
 }
 
 // ignore: must_be_immutable
 class EditProfileScreen extends StatefulWidget {
   static final String id = "edit_profile";
-  bool firstTime = false;
-  EditProfileScreen(bool firstTime) {
-    firstTime = firstTime;
-  }
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState(firstTime);
+  _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
 enum DayNight { Day, Night }
@@ -65,69 +61,22 @@ bool _validatecourse = false;
 String dropdownValue = 'Year One';
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late bool firstTime = false;
-  _EditProfileScreenState(bool firstTime) {
-    firstTime = firstTime;
-  }
-
   bool showSpinner = false;
   String filePath = "";
   String fileName = "";
-  late DayNight? _character = firstTime
-      ? DayNight.Day
-      : CurrentUser().dayPerson
-          ? DayNight.Day
-          : DayNight.Night;
 
-  late Smoking? _smoking = firstTime
-      ? Smoking.No
-      : CurrentUser().smoker
-          ? Smoking.Yes
-          : Smoking.No;
-  late Alcohol _alcohol = firstTime
-      ? Alcohol.No
-      : CurrentUser().alcohol
-          ? Alcohol.Yes
-          : Alcohol.No;
-  late Veg _veg = firstTime
-      ? Veg.veg
-      : CurrentUser().vegetarian
-          ? Veg.veg
-          : Veg.Nonveg;
+  late DayNight? _character;
+  late Smoking? _smoking;
+  late Alcohol _alcohol;
+  late Veg _veg;
+  late InOut? _in;
 
-  late InOut? _in = firstTime
-      ? InOut.StayingIn
-      : CurrentUser().stayingIn
-          ? InOut.StayingIn
-          : InOut.GoingOut;
+  late DayNight? _characterPref;
+  late Smoking? _smokingPref;
+  late Alcohol _alcoholPref;
+  late Veg _vegPref;
+  late InOut? _inPref;
 
-  late DayNight? _characterPref = firstTime
-      ? DayNight.Day
-      : CurrentUser().dayPerson
-          ? DayNight.Day
-          : DayNight.Night;
-
-  late Smoking? _smokingPref = firstTime
-      ? Smoking.No
-      : CurrentUser().smoker
-          ? Smoking.Yes
-          : Smoking.No;
-  late Alcohol _alcoholPref = firstTime
-      ? Alcohol.No
-      : CurrentUser().alcohol
-          ? Alcohol.Yes
-          : Alcohol.No;
-  late Veg _vegPref = firstTime
-      ? Veg.veg
-      : CurrentUser().vegetarian
-          ? Veg.veg
-          : Veg.Nonveg;
-
-  late InOut? _inPref = firstTime
-      ? InOut.StayingIn
-      : CurrentUser().stayingIn
-          ? InOut.StayingIn
-          : InOut.GoingOut;
   void onSubmit() async {
     setState(() {
       showSpinner = true;
@@ -240,6 +189,65 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map temp = ModalRoute.of(context)?.settings.arguments as Map;
+    bool firstTime = temp['firstTime'];
+
+    _character = firstTime
+        ? DayNight.Day
+        : CurrentUser().dayPerson
+            ? DayNight.Day
+            : DayNight.Night;
+
+    _smoking = firstTime
+        ? Smoking.No
+        : CurrentUser().smoker
+            ? Smoking.Yes
+            : Smoking.No;
+    _alcohol = firstTime
+        ? Alcohol.No
+        : CurrentUser().alcohol
+            ? Alcohol.Yes
+            : Alcohol.No;
+    _veg = firstTime
+        ? Veg.veg
+        : CurrentUser().vegetarian
+            ? Veg.veg
+            : Veg.Nonveg;
+
+    _in = firstTime
+        ? InOut.StayingIn
+        : CurrentUser().stayingIn
+            ? InOut.StayingIn
+            : InOut.GoingOut;
+
+    _characterPref = firstTime
+        ? DayNight.Day
+        : CurrentUser().dayPerson
+            ? DayNight.Day
+            : DayNight.Night;
+
+    _smokingPref = firstTime
+        ? Smoking.No
+        : CurrentUser().smoker
+            ? Smoking.Yes
+            : Smoking.No;
+    _alcoholPref = firstTime
+        ? Alcohol.No
+        : CurrentUser().alcohol
+            ? Alcohol.Yes
+            : Alcohol.No;
+    _vegPref = firstTime
+        ? Veg.veg
+        : CurrentUser().vegetarian
+            ? Veg.veg
+            : Veg.Nonveg;
+
+    _inPref = firstTime
+        ? InOut.StayingIn
+        : CurrentUser().stayingIn
+            ? InOut.StayingIn
+            : InOut.GoingOut;
+
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
@@ -855,9 +863,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       onPressed: (onSubmit),
                       child: Text(
-                          firstTime
-                              ? 'Submit profile preferences'
-                              : 'Edit Profile Preferences',
+                          firstTime ? 'Create' : 'Edit Profile Preferences',
                           style: kMediumText)),
                 ],
               ),
