@@ -1,73 +1,136 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:multiselect/multiselect.dart';
-import 'package:enum_to_string/enum_to_string.dart';
-import 'UserProfileScreen.dart';
+import 'package:roomie_lah/controllers/PreferencesController.dart';
+import 'package:roomie_lah/controllers/ProfilePicController.dart';
+import 'package:roomie_lah/controllers/UserController.dart';
+import 'package:roomie_lah/screens/recommendation_screen.dart';
+import '../entity/CurrentUser.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   runApp(MaterialApp(
-    title: 'RoomieLah',
-    home: EditProfileUI(),
-    theme: ThemeData(
-      primaryColor: kPrimaryColor,
-      scaffoldBackgroundColor: Colors.white,
-    ),
+    home: EditProfileScreen(false),
   ));
 }
 
-class EditProfileUI extends StatefulWidget {
-  static String id = "edit_profile_screen";
+// ignore: must_be_immutable
+class EditProfileScreen extends StatefulWidget {
+  static final String id = "edit_profile";
+  bool firstTime = false;
+  EditProfileScreen(bool firstTime) {
+    firstTime = firstTime;
+  }
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _EditProfileScreenState createState() => _EditProfileScreenState(firstTime);
 }
 
 enum DayNight { Day, Night }
+
 enum InOut { StayingIn, GoingOut }
+
 enum Smoking { Yes, No }
+
 enum Alcohol { Yes, No }
+
 enum Veg { veg, Nonveg }
-final username = TextEditingController();
-final age = TextEditingController();
-final university = TextEditingController();
-final nationality = TextEditingController();
-final course = TextEditingController();
+
+final username = (CurrentUser().name == null)
+    ? TextEditingController()
+    : TextEditingController(text: CurrentUser().name);
+final age = (CurrentUser().age == null)
+    ? TextEditingController()
+    : TextEditingController(text: CurrentUser().age.toString());
+final university = (CurrentUser().name == null)
+    ? TextEditingController()
+    : TextEditingController(text: CurrentUser().universityName);
+final nationality = (CurrentUser().nationality == null)
+    ? TextEditingController()
+    : TextEditingController(text: CurrentUser().nationality);
+final course = (CurrentUser().course == null)
+    ? TextEditingController()
+    : TextEditingController(text: CurrentUser().course);
+
 List<String> _selectedItems = [];
-String _gender = "Male";
+String _gender = (CurrentUser().gender == null) ? "Male" : CurrentUser().gender;
 bool _validateusername = false;
 bool _validateage = false;
 bool _validateuni = false;
 bool _validatenationality = false;
 bool _validatecourse = false;
-
 String dropdownValue = 'Year One';
 
-getItemAndNavigate(BuildContext context) {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => UserProfileUI(
-                username: username.text,
-                age: age.text,
-                university: university.text,
-                course: course.text,
-                nationality: nationality.text,
-                gender: _gender,
-                interests: _selectedItems.toString(),
-              )));
-}
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  late bool firstTime = false;
+  _EditProfileScreenState(bool firstTime) {
+    firstTime = firstTime;
+  }
 
-class _MyAppState extends State<EditProfileUI> {
-  DayNight? _character = DayNight.Day;
+  bool showSpinner = false;
+  String filePath = "";
+  String fileName = "";
+  late DayNight? _character = firstTime
+      ? DayNight.Day
+      : CurrentUser().dayPerson
+          ? DayNight.Day
+          : DayNight.Night;
 
-  Smoking? _smoking = Smoking.No;
-  Alcohol _alcohol = Alcohol.No;
-  Veg _veg = Veg.veg;
-  InOut? _in = InOut.StayingIn;
+  late Smoking? _smoking = firstTime
+      ? Smoking.No
+      : CurrentUser().smoker
+          ? Smoking.Yes
+          : Smoking.No;
+  late Alcohol _alcohol = firstTime
+      ? Alcohol.No
+      : CurrentUser().alcohol
+          ? Alcohol.Yes
+          : Alcohol.No;
+  late Veg _veg = firstTime
+      ? Veg.veg
+      : CurrentUser().vegetarian
+          ? Veg.veg
+          : Veg.Nonveg;
+
+  late InOut? _in = firstTime
+      ? InOut.StayingIn
+      : CurrentUser().stayingIn
+          ? InOut.StayingIn
+          : InOut.GoingOut;
+
+  late DayNight? _characterPref = firstTime
+      ? DayNight.Day
+      : CurrentUser().dayPerson
+          ? DayNight.Day
+          : DayNight.Night;
+
+  late Smoking? _smokingPref = firstTime
+      ? Smoking.No
+      : CurrentUser().smoker
+          ? Smoking.Yes
+          : Smoking.No;
+  late Alcohol _alcoholPref = firstTime
+      ? Alcohol.No
+      : CurrentUser().alcohol
+          ? Alcohol.Yes
+          : Alcohol.No;
+  late Veg _vegPref = firstTime
+      ? Veg.veg
+      : CurrentUser().vegetarian
+          ? Veg.veg
+          : Veg.Nonveg;
+
+  late InOut? _inPref = firstTime
+      ? InOut.StayingIn
+      : CurrentUser().stayingIn
+          ? InOut.StayingIn
+          : InOut.GoingOut;
   void onSubmit() async {
     setState(() {
+      showSpinner = true;
       username.text.isEmpty
           ? _validateusername = true
           : _validateusername = false;
@@ -77,15 +140,74 @@ class _MyAppState extends State<EditProfileUI> {
           ? _validatenationality = true
           : _validatenationality = false;
       course.text.isEmpty ? _validatecourse = true : _validatecourse = false;
+    });
 
-      if ((_validateusername == false) &&
-          (_validateuni == false) &&
-          (_validatenationality == false) &&
-          (_validateage == false) &&
-          (_validatecourse == false) &&
-          _selectedItems.isEmpty == false) {
-        getItemAndNavigate(context);
-      }
+    var downloadURL = "";
+    if (filePath != "") {
+      await ProfilePicController().uploadFile(CurrentUser().username, filePath);
+      downloadURL =
+          await ProfilePicController().downloadURL(CurrentUser().username);
+    }
+    CurrentUser().profilePicURL = downloadURL;
+    if ((_validateusername == false) &&
+        (_validateuni == false) &&
+        (_validatenationality == false) &&
+        (_validateage == false) &&
+        (_validatecourse == false) &&
+        _selectedItems.isEmpty == false) {
+      // Parallel Execution
+      await Future.wait(
+        [
+          UserController().setUserProfile(
+              CurrentUser().email,
+              username.text,
+              CurrentUser().username,
+              _gender,
+              course.text,
+              university.text,
+              int.parse(age.text),
+              _smoking == Smoking.Yes,
+              _alcohol == Alcohol.Yes,
+              _character == DayNight.Day,
+              _veg == Veg.veg,
+              _in == InOut.StayingIn,
+              _selectedItems,
+              downloadURL),
+          PreferencesController().setPreferences(
+            CurrentUser().email,
+            CurrentUser().username,
+            _smokingPref == Smoking.Yes,
+            _alcoholPref == Alcohol.Yes,
+            _characterPref == DayNight.Day,
+            _inPref == InOut.StayingIn,
+            _vegPref == Veg.veg,
+          )
+        ],
+      );
+
+      // Set Singelton User Object
+      CurrentUser currentUser = CurrentUser();
+      currentUser.username = username.text;
+      currentUser.age = int.parse(age.text);
+      currentUser.gender = _gender;
+      currentUser.universityName = university.text;
+      currentUser.course = course.text;
+      currentUser.smoker = _smoking == Smoking.Yes;
+      currentUser.alcohol = _alcohol == Alcohol.Yes;
+      currentUser.dayPerson = _character == DayNight.Day;
+      currentUser.interests = _selectedItems;
+      currentUser.stayinIn = _in == InOut.StayingIn;
+      currentUser.vegetarian = _veg == Veg.veg;
+
+      currentUser.smokePref = _smokingPref == Smoking.Yes;
+      currentUser.alcoholPref = _alcoholPref == Alcohol.Yes;
+      currentUser.dayPersonPref = _characterPref == DayNight.Day;
+      currentUser.stayinInPref = _inPref == InOut.StayingIn;
+      currentUser.vegPref = _vegPref == Veg.veg;
+      Navigator.pushNamed(context, RecommendationScreen.id);
+    }
+    setState(() {
+      showSpinner = false;
     });
     if (_selectedItems.isEmpty) {
       errorAlertDialog(context);
@@ -118,8 +240,11 @@ class _MyAppState extends State<EditProfileUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+      child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.teal,
           elevation: 5.0,
           title: Text('Preferences'),
@@ -128,14 +253,18 @@ class _MyAppState extends State<EditProfileUI> {
           child: SingleChildScrollView(
             child: Center(
               child: new Column(
-                // Profile Pic Selection
-
                 children: <Widget>[
                   SizedBox(height: 20),
                   Text('Enter your profile details',
                       style: kLargeBoldText, textAlign: TextAlign.center),
                   SizedBox(height: 10.0),
                   //Username
+                  GestureDetector(
+                    onTap: (addProfilePicture),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('assets/hasbullah.jpeg'),
+                    ),
+                  ),
                   ListTile(
                     leading: const Icon(Icons.person),
                     title: new TextFormField(
@@ -265,42 +394,49 @@ class _MyAppState extends State<EditProfileUI> {
                       ),
                     ),
                   ),
-                  Row(children: <Widget>[
-                    SizedBox(width: 20.0),
-                    Icon(Icons.home_work_outlined),
-                    SizedBox(width: 20.0),
-                    Text('Enter your year of study',
-                        style: TextStyle(color: Colors.black, fontSize: 15.0)),
-                    SizedBox(width: 50.0),
-                    DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: const Icon(Icons.arrow_downward),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.teal),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.teal,
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: 20.0),
+                      Icon(Icons.home_work_outlined),
+                      SizedBox(width: 20.0),
+                      Text('Enter your year of study',
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 15.0)),
+                      SizedBox(width: 50.0),
+                      DropdownButton<String>(
+                        value: dropdownValue,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.teal),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.teal,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(
+                            () {
+                              dropdownValue = newValue!;
+                            },
+                          );
+                        },
+                        items: <String>[
+                          'Year One',
+                          'Year Two',
+                          'Year Three',
+                          'Year Four',
+                          'Year Five'
+                        ].map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
                       ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                        });
-                      },
-                      items: <String>[
-                        'Year One',
-                        'Year Two',
-                        'Year Three',
-                        'Year Four',
-                        'Year Five'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ]),
-                  ListTile(leading: Icon(Icons.male), title: Text('Gender')),
+                    ],
+                  ),
+                  ListTile(leading: Icon(gender), title: Text('Gender')),
                   ListTile(
                     title: Text('Male'),
                     leading: Radio<String>(
@@ -308,9 +444,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _gender,
                       activeColor: Colors.black,
                       onChanged: (String? value) {
-                        setState(() {
-                          _gender = value!;
-                        });
+                        setState(
+                          () {
+                            _gender = value!;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -321,9 +459,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _gender,
                       activeColor: Colors.black,
                       onChanged: (String? value) {
-                        setState(() {
-                          _gender = value!;
-                        });
+                        setState(
+                          () {
+                            _gender = value!;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -334,14 +474,16 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _gender,
                       activeColor: Colors.black,
                       onChanged: (String? value) {
-                        setState(() {
-                          _gender = value!;
-                        });
+                        setState(
+                          () {
+                            _gender = value!;
+                          },
+                        );
                       },
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  Text('Enter your profile preferences',
+                  Text('Enter your profile',
                       style: kLargeBoldText, textAlign: TextAlign.center),
                   SizedBox(height: 30),
                   ListTile(
@@ -350,9 +492,11 @@ class _MyAppState extends State<EditProfileUI> {
                   ),
                   DropDownMultiSelect(
                     onChanged: (List<String> x) {
-                      setState(() {
-                        _selectedItems = x;
-                      });
+                      setState(
+                        () {
+                          _selectedItems = x;
+                        },
+                      );
                     },
                     options: [
                       'Netflix',
@@ -380,9 +524,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _character,
                       activeColor: Colors.black,
                       onChanged: (DayNight? value) {
-                        setState(() {
-                          _character = value;
-                        });
+                        setState(
+                          () {
+                            _character = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -393,9 +539,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _character,
                       activeColor: Colors.black,
                       onChanged: (DayNight? value) {
-                        setState(() {
-                          _character = value;
-                        });
+                        setState(
+                          () {
+                            _character = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -409,9 +557,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _in,
                       activeColor: Colors.black,
                       onChanged: (InOut? value) {
-                        setState(() {
-                          _in = value;
-                        });
+                        setState(
+                          () {
+                            _in = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -422,9 +572,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _in,
                       activeColor: Colors.black,
                       onChanged: (InOut? value) {
-                        setState(() {
-                          _in = value;
-                        });
+                        setState(
+                          () {
+                            _in = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -438,9 +590,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _veg,
                       activeColor: Colors.black,
                       onChanged: (Veg? value) {
-                        setState(() {
-                          _veg = value!;
-                        });
+                        setState(
+                          () {
+                            _veg = value!;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -451,9 +605,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _veg,
                       activeColor: Colors.black,
                       onChanged: (Veg? value) {
-                        setState(() {
-                          _veg = value!;
-                        });
+                        setState(
+                          () {
+                            _veg = value!;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -467,9 +623,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _alcohol,
                       activeColor: Colors.black,
                       onChanged: (Alcohol? value) {
-                        setState(() {
-                          _alcohol = value!;
-                        });
+                        setState(
+                          () {
+                            _alcohol = value!;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -480,9 +638,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _alcohol,
                       activeColor: Colors.black,
                       onChanged: (Alcohol? value) {
-                        setState(() {
-                          _alcohol = value!;
-                        });
+                        setState(
+                          () {
+                            _alcohol = value!;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -496,9 +656,11 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _smoking,
                       activeColor: Colors.black,
                       onChanged: (Smoking? value) {
-                        setState(() {
-                          _smoking = value;
-                        });
+                        setState(
+                          () {
+                            _smoking = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -509,9 +671,180 @@ class _MyAppState extends State<EditProfileUI> {
                       groupValue: _smoking,
                       activeColor: Colors.black,
                       onChanged: (Smoking? value) {
-                        setState(() {
-                          _smoking = value;
-                        });
+                        setState(
+                          () {
+                            _smoking = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Text(
+                      'Complete these statements for us to better understand your preferences',
+                      style: kLargeBoldText,
+                      textAlign: TextAlign.center),
+                  ListTile(
+                      leading: Icon(Icons.adb_outlined),
+                      title: Text('My ideal roommate would be')),
+                  ListTile(
+                    title: Text('Vegetarian'),
+                    leading: Radio<Veg>(
+                      value: Veg.veg,
+                      groupValue: _vegPref,
+                      activeColor: Colors.black,
+                      onChanged: (Veg? value) {
+                        setState(
+                          () {
+                            _vegPref = value!;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Non-vegetarian'),
+                    leading: Radio<Veg>(
+                      value: Veg.Nonveg,
+                      groupValue: _vegPref,
+                      activeColor: Colors.black,
+                      onChanged: (Veg? value) {
+                        setState(
+                          () {
+                            _vegPref = value!;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.no_drinks),
+                      title: Text('I prefer a roommate who drinks')),
+                  ListTile(
+                    title: Text('Yes'),
+                    leading: Radio<Alcohol>(
+                      value: Alcohol.Yes,
+                      groupValue: _alcoholPref,
+                      activeColor: Colors.black,
+                      onChanged: (Alcohol? value) {
+                        setState(
+                          () {
+                            _alcoholPref = value!;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('No'),
+                    leading: Radio<Alcohol>(
+                      value: Alcohol.No,
+                      groupValue: _alcoholPref,
+                      activeColor: Colors.black,
+                      onChanged: (Alcohol? value) {
+                        setState(
+                          () {
+                            _alcoholPref = value!;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.smoke_free),
+                      title: Text('I do not mind a roommate who smokes')),
+                  ListTile(
+                    title: Text('Yes'),
+                    leading: Radio<Smoking>(
+                      value: Smoking.Yes,
+                      groupValue: _smokingPref,
+                      activeColor: Colors.black,
+                      onChanged: (Smoking? value) {
+                        setState(
+                          () {
+                            _smokingPref = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('No'),
+                    leading: Radio<Smoking>(
+                      value: Smoking.No,
+                      groupValue: _smokingPref,
+                      activeColor: Colors.black,
+                      onChanged: (Smoking? value) {
+                        setState(
+                          () {
+                            _smokingPref = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.wb_sunny_rounded),
+                      title: Text('I prefer a roommate who is a ')),
+                  ListTile(
+                    title: Text('Day Person'),
+                    leading: Radio<DayNight>(
+                      value: DayNight.Day,
+                      groupValue: _characterPref,
+                      activeColor: Colors.black,
+                      onChanged: (DayNight? value) {
+                        setState(
+                          () {
+                            _characterPref = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Night Person'),
+                    leading: Radio<DayNight>(
+                      value: DayNight.Night,
+                      groupValue: _characterPref,
+                      activeColor: Colors.black,
+                      onChanged: (DayNight? value) {
+                        setState(
+                          () {
+                            _characterPref = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.beach_access),
+                      title: Text('I prefer a roommate who would like')),
+                  ListTile(
+                    title: Text('Staying in'),
+                    leading: Radio<InOut>(
+                      value: InOut.StayingIn,
+                      groupValue: _inPref,
+                      activeColor: Colors.black,
+                      onChanged: (InOut? value) {
+                        setState(
+                          () {
+                            _inPref = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Going out'),
+                    leading: Radio<InOut>(
+                      value: InOut.GoingOut,
+                      groupValue: _inPref,
+                      activeColor: Colors.black,
+                      onChanged: (InOut? value) {
+                        setState(
+                          () {
+                            _inPref = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -521,12 +854,37 @@ class _MyAppState extends State<EditProfileUI> {
                         primary: Colors.teal,
                       ),
                       onPressed: (onSubmit),
-                      child: Text('Update profile preferences',
+                      child: Text(
+                          firstTime
+                              ? 'Submit profile preferences'
+                              : 'Edit Profile Preferences',
                           style: kMediumText)),
                 ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
+  }
+
+  addProfilePicture() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg', 'jpeg']);
+
+    if (result == null) {
+      print('No File has been picked');
+      return;
+    }
+
+    setState(() {
+      filePath = result.files.single.path!;
+      fileName = result.files.single.name;
+    });
+
+    print(filePath);
+    print(fileName);
   }
 }

@@ -89,7 +89,8 @@ class _UserProfileUIState extends State<UserProfileUI> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, EditProfileUI.id);
+                Navigator.pushNamed(context, EditProfileScreen.id,
+                    arguments: false);
               },
               icon: Icon(Icons.edit))
         ],

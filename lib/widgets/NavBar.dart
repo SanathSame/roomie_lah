@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/screens/UserProfileScreen.dart';
-import 'package:roomie_lah/screens/preferences.dart';
 import 'package:roomie_lah/screens/chat_list.dart';
 import 'package:roomie_lah/screens/recommendation_screen.dart';
 import 'package:roomie_lah/screens/LoginScreen.dart';

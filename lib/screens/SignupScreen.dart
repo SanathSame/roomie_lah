@@ -6,8 +6,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import "package:roomie_lah/constants.dart";
 import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
+import 'package:roomie_lah/screens/EditProfileScreen.dart';
 import 'package:roomie_lah/screens/UserProfileScreen.dart';
-import 'package:roomie_lah/screens/preferences.dart';
 import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
@@ -178,7 +178,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         CurrentUser currentUser = CurrentUser();
                         currentUser.email = enteredUsername;
                         currentUser.username = enteredPassword.split("@")[0];
-                        Navigator.pushNamed(context, PreferencesScreen.id);
+                        Navigator.pushNamed(context, EditProfileScreen.id,
+                            arguments: true);
                       } else {
                         setState(() {
                           showSpinner = false;

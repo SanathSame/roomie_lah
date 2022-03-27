@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:roomie_lah/screens/EditProfileUI.dart';
+import 'package:roomie_lah/screens/EditProfileScreen.dart';
 import '../constants.dart';
 
 class UserProfileUI extends StatefulWidget {
@@ -54,8 +53,8 @@ class _UserProfileUIState extends State<UserProfileUI> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EditProfileUI()));
+                Navigator.pushNamed(context, EditProfileScreen.id,
+                    arguments: false);
               },
               icon: Icon(Icons.edit))
         ],
