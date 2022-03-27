@@ -132,41 +132,49 @@ class _LoginScreenState extends State<LoginScreen> {
                       primary: Colors.white,
                       padding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
-                  onPressed: () async => {
+                  onPressed: () async {
                     // Successful Login
                     setState(() {
                       spinner = true;
-                    }),
-                    await AuthenticationController()
-                        .login(enteredUsername, enteredPassword)
-                        .then(
-                          (success) async => {
-                            if (success)
-                              {
-                                await UserController()
-                                    .setupProfile(enteredUsername),
-                                setState(
-                                  () {
+                    });
+                    try {
+                      await AuthenticationController()
+                          .login(enteredUsername, enteredPassword)
+                          .then(
+                            (success) async => {
+                              if (success)
+                                {
+                                  await UserController()
+                                      .setupProfile(enteredUsername),
+                                  setState(
+                                    () {
+                                      spinner = false;
+                                    },
+                                  ),
+                                  Navigator.pushNamed(
+                                      context, RecommendationScreen.id)
+                                }
+                              else
+                                {
+                                  setState(() {
                                     spinner = false;
-                                  },
-                                ),
-                                Navigator.pushNamed(
-                                    context, RecommendationScreen.id)
-                              }
-                            else
-                              {
-                                setState(() {
-                                  spinner = false;
-                                }),
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => buildPopUp(
-                                      "Error",
-                                      'Please enter correct username and/or password.'),
-                                )
-                              }
-                          },
-                        ),
+                                  }),
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) => buildPopUp(
+                                        "Error",
+                                        'Please enter correct username and/or password.'),
+                                  )
+                                }
+                            },
+                          );
+                    } catch (e) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            buildPopUp("Error", 'Something went wrong.'),
+                      );
+                    }
                   },
                   child: Text(
                     "Login",
