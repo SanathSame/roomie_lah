@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:roomie_lah/screens/EditProfileScreen.dart';
+import 'dart:async';
 
 class MatchController {
   static CollectionReference matches =
@@ -107,47 +108,86 @@ class MatchController {
     Future.wait(
       [
         matches.doc(leftUser).get().then(
-              (DocumentSnapshot documentSnapshot) async => {
-                if (documentSnapshot.exists)
-                  {
-                    leftMatchesList = documentSnapshot['matches'],
-                    print(leftMatchesList),
-                    for (int i = 0; i < leftMatchesList.length; ++i)
-                      {
-                        if (leftMatchesList[i]['username'] == rightUser)
-                          {
-                            leftMatchesList[i]['lastMessage'] = lastMessage,
-                            leftMatchesList[i]['timestamp'] = timestamp,
-                            await matches
-                                .doc(leftUser)
-                                .set({'matches': leftMatchesList})
-                          }
-                      }
-                  }
-              },
-            ),
+          (DocumentSnapshot documentSnapshot) async {
+            if (documentSnapshot.exists) {
+              leftMatchesList = documentSnapshot['matches'];
+              print(leftMatchesList);
+              for (int i = 0; i < leftMatchesList.length; ++i) {
+                if (leftMatchesList[i]['username'] == rightUser) {
+                  leftMatchesList[i]['lastMessage'] = lastMessage;
+                  leftMatchesList[i]['timestamp'] = timestamp;
+                  await matches.doc(leftUser).set({'matches': leftMatchesList});
+                  return;
+                }
+              }
+            }
+          },
+        ),
         matches.doc(rightUser).get().then(
-              (DocumentSnapshot documentSnapshot) async => {
-                if (documentSnapshot.exists)
-                  {
-                    rightMatchesList = documentSnapshot['matches'],
-                    print(rightMatchesList),
-                    for (int i = 0; i < rightMatchesList.length; ++i)
-                      {
-                        if (rightMatchesList[i]['username'] == leftUser)
-                          {
-                            rightMatchesList[i]['lastMessage'] = lastMessage,
-                            rightMatchesList[i]['timestamp'] = timestamp,
-                            await matches
-                                .doc(rightUser)
-                                .set({'matches': rightMatchesList})
-                          }
-                      }
-                  }
-              },
-            ),
+          (DocumentSnapshot documentSnapshot) async {
+            if (documentSnapshot.exists) {
+              rightMatchesList = documentSnapshot['matches'];
+              print(rightMatchesList);
+              for (int i = 0; i < rightMatchesList.length; ++i) {
+                if (rightMatchesList[i]['username'] == leftUser) {
+                  rightMatchesList[i]['lastMessage'] = lastMessage;
+                  rightMatchesList[i]['timestamp'] = timestamp;
+                  await matches
+                      .doc(rightUser)
+                      .set({'matches': rightMatchesList});
+                  return;
+                }
+              }
+            }
+          },
+        ),
       ],
     );
+  }
+
+  Future<void> editProfilePic(String username, String url) async {
+    var doc = await matches.doc(username).get();
+    if (!doc.exists) {
+      return;
+    }
+
+    var matchesList = [];
+    await matches
+        .doc(username)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        matchesList = documentSnapshot['matches'];
+        var futures = <Future>[];
+
+        for (int i = 0; i < matchesList.length; ++i) {
+          var user = matchesList[i]['username'];
+          futures.add(updateProfilePic(user, username, url));
+        }
+
+        await Future.wait(futures);
+      }
+    }).catchError((onError) => {print(onError)});
+  }
+
+  Future<void> updateProfilePic(
+      String username, String userToChange, String url) async {
+    var matchesList = [];
+    await matches
+        .doc(username)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        matchesList = documentSnapshot['matches'];
+        for (int i = 0; i < matchesList.length; ++i) {
+          if (matchesList[i]['username'] == userToChange) {
+            matchesList[i]['profilePic'] = url;
+            await matches.doc(username).set({'matches': matchesList});
+            return;
+          }
+        }
+      }
+    });
   }
 }
 
