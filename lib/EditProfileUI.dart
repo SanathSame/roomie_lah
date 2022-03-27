@@ -494,6 +494,155 @@ class _MyAppState extends State<EditProfileUI> {
                       },
                     ),
                   ),
+                  Text(
+                      'Complete these statements for us to better understand your preferences',
+                      style: kLargeBoldText,
+                      textAlign: TextAlign.center),
+                  ListTile(
+                      leading: Icon(Icons.adb_outlined),
+                      title: Text('My ideal roommate would be')),
+                  ListTile(
+                    title: Text('Vegetarian'),
+                    leading: Radio<Veg>(
+                      value: Veg.veg,
+                      groupValue: _veg,
+                      activeColor: Colors.black,
+                      onChanged: (Veg? value) {
+                        setState(() {
+                          _veg = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Non-vegetarian'),
+                    leading: Radio<Veg>(
+                      value: Veg.Nonveg,
+                      groupValue: _veg,
+                      activeColor: Colors.black,
+                      onChanged: (Veg? value) {
+                        setState(() {
+                          _veg = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.no_drinks),
+                      title: Text('I prefer a roommate who drinks')),
+                  ListTile(
+                    title: Text('Yes'),
+                    leading: Radio<Alcohol>(
+                      value: Alcohol.Yes,
+                      groupValue: _alcohol,
+                      activeColor: Colors.black,
+                      onChanged: (Alcohol? value) {
+                        setState(() {
+                          _alcohol = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('No'),
+                    leading: Radio<Alcohol>(
+                      value: Alcohol.No,
+                      groupValue: _alcohol,
+                      activeColor: Colors.black,
+                      onChanged: (Alcohol? value) {
+                        setState(() {
+                          _alcohol = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.smoke_free),
+                      title: Text('I do not mind a roommate who smokes')),
+                  ListTile(
+                    title: Text('Yes'),
+                    leading: Radio<Smoking>(
+                      value: Smoking.Yes,
+                      groupValue: _smoking,
+                      activeColor: Colors.black,
+                      onChanged: (Smoking? value) {
+                        setState(() {
+                          _smoking = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('No'),
+                    leading: Radio<Smoking>(
+                      value: Smoking.No,
+                      groupValue: _smoking,
+                      activeColor: Colors.black,
+                      onChanged: (Smoking? value) {
+                        setState(() {
+                          _smoking = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.wb_sunny_rounded),
+                      title: Text('I prefer a roommate who is a ')),
+                  ListTile(
+                    title: Text('Day Person'),
+                    leading: Radio<DayNight>(
+                      value: DayNight.Day,
+                      groupValue: _character,
+                      activeColor: Colors.black,
+                      onChanged: (DayNight? value) {
+                        setState(() {
+                          _character = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Night Person'),
+                    leading: Radio<DayNight>(
+                      value: DayNight.Night,
+                      groupValue: _character,
+                      activeColor: Colors.black,
+                      onChanged: (DayNight? value) {
+                        setState(() {
+                          _character = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.beach_access),
+                      title: Text('I prefer a roommate who would like')),
+                  ListTile(
+                    title: Text('Staying in'),
+                    leading: Radio<InOut>(
+                      value: InOut.StayingIn,
+                      groupValue: _in,
+                      activeColor: Colors.black,
+                      onChanged: (InOut? value) {
+                        setState(() {
+                          _in = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Going out'),
+                    leading: Radio<InOut>(
+                      value: InOut.GoingOut,
+                      groupValue: _in,
+                      activeColor: Colors.black,
+                      onChanged: (InOut? value) {
+                        setState(() {
+                          _in = value;
+                        });
+                      },
+                    ),
+                  ),
                   SizedBox(height: 30),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
