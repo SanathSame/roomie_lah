@@ -67,6 +67,7 @@ class _PreferenceScreenState extends State<PreferencesScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.teal,
         elevation: 5.0,
         title: Text('Preferences', textAlign: TextAlign.center),

@@ -60,6 +60,7 @@ class _UserProfileUIState extends State<UserProfileUI> {
 
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.teal,
           centerTitle: true,
           title: Text("User Profile", style: TextStyle(color: Colors.white)),
