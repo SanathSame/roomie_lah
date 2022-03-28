@@ -6,6 +6,7 @@ import "package:roomie_lah/widgets/AppBar.dart";
 import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
 import "package:roomie_lah/screens/recommendation_screen.dart";
+import "package:roomie_lah/screens/SignupScreen.dart";
 
 class LoginScreen extends StatefulWidget {
   static String id = "login_screen";
@@ -31,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 5.0,
         backgroundColor: kPrimaryColor,
         title: Center(
@@ -114,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              SizedBox(height: size.height * 0.03),
               TextButton(
                 style: TextButton.styleFrom(
                     backgroundColor: kPrimaryColor,
@@ -138,7 +141,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.01),
+              TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    primary: kPrimaryColor,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
+                onPressed: () =>
+                    {Navigator.pushNamed(context, SignupScreen.id)},
+                child: Text(
+                  "First time user? Signup here",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
             ],
           ),
         ),

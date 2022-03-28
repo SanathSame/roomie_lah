@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
 import 'package:roomie_lah/screens/UserProfileScreen.dart';
@@ -15,8 +15,9 @@ class SignupScreen extends StatefulWidget {
   _SignupScreenState createState() => _SignupScreenState();
 }
 
+String enteredEmail = "";
+String domain = "";
 String enteredUsername = "";
-String reenteredUsername = "";
 String enteredPassword = "";
 bool obscureBool = true;
 
@@ -33,6 +34,7 @@ class _SignupScreenState extends State<SignupScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 5.0,
         backgroundColor: kPrimaryColor,
         title: Center(
@@ -71,11 +73,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 child: TextField(
                   onChanged: (value) {
-                    enteredUsername = value;
+                    enteredEmail = value;
+                    domain = enteredEmail.substring(enteredEmail.indexOf("@"));
                   },
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
-                    hintText: "Enter your username",
+                    hintText: "Enter your e-mail",
                     border: InputBorder.none,
                   ),
                 ),
@@ -91,11 +94,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 child: TextField(
                   onChanged: (value) {
-                    reenteredUsername = value;
+                    enteredUsername = value;
                   },
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
-                    hintText: "Re-enter your username",
+                    hintText: "Enter your username",
                     border: InputBorder.none,
                   ),
                 ),
@@ -143,14 +146,15 @@ class _SignupScreenState extends State<SignupScreen> {
                     padding:
                         EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
                 onPressed: () => {
-                  if (enteredUsername == reenteredUsername)
+                  // TODO: If domain is valid, then continue, else show error
+                  if (true)
                     {Navigator.pushNamed(context, UserProfileUI.id)}
                   else
                     {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => buildPopUp("Error",
-                              'Re-entered username does not match the original entry.'))
+                              'Signup with university email address only.'))
                     }
                   // Navigator.pushNamed(context, RecommendationScreen.id)
                 },
