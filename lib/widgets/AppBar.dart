@@ -24,6 +24,7 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
         MediaQuery.of(context).size.height * 0.075, // 10% of the height
       ),
       child: AppBar(
+        automaticallyImplyLeading: false,
         key: key,
         centerTitle: true,
         title: Text(title, style: kLargeText, textAlign: TextAlign.center),
