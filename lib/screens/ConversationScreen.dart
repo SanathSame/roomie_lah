@@ -1,20 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/widgets/ChatAppBar.dart';
 import 'package:roomie_lah/constants.dart';
+import 'package:roomie_lah/controllers/chatRoomCtrller.dart';
 
-void main() => runApp(MaterialApp(
-      title: 'RoomieLah',
-      home: ConversationScreen(),
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Color(0xff656865),
-      ),
-    ));
+void main() async
+{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
+  title: 'RoomieLah',
+  home: ConversationScreen(
+  chatWithUsername: "atul"
+  ),
+  theme: ThemeData(
+  primaryColor: kPrimaryColor,
+  scaffoldBackgroundColor: Color(0xff656865),
+  ),
+  ));
+}
 
 class ConversationScreen extends StatefulWidget {
   static String id = "conversation_screen";
-
+  final currentUsername = "pratyush0411";
+  final String chatWithUsername;
+  ConversationScreen({required this.chatWithUsername});
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
 }
@@ -77,22 +89,73 @@ class MessageTile extends StatelessWidget {
 
 class _ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController messageController = new TextEditingController();
-  List<Map<String, dynamic>> msgs = [];
+  final ChatRoomCtrller chatRoomCtrller = new ChatRoomCtrller();
+  //List<Map<String, dynamic>> msgs = [];
+  Stream<QuerySnapshot> chats = new Stream.empty();
+
+  String getChatRoomID(){
+
+    String currentUsername = widget.currentUsername;
+    String chatWithUsername = widget.chatWithUsername;
+    if (currentUsername.compareTo(chatWithUsername)<0){
+      return widget.currentUsername +"_"+ widget.chatWithUsername;
+    }
+    else{
+      return widget.chatWithUsername +"_"+ widget.currentUsername;
+
+    }
+  }
 
   @override
   void initState() {
-    setState(() {
-      msgs.add({"message": "Hi! Hasbulla here", "sendByMe": false});
-      msgs.add({"message": "I need some urgent money", "sendByMe": false});
+    // setState(() {
+    //   msgs.add({"message": "Hi! Hasbulla here", "sendByMe": false});
+    //   msgs.add({"message": "I need some urgent money", "sendByMe": false});
+    //
+    // });
+    String chatRoomID = getChatRoomID();
+    print(chatRoomID);
+
+
+    chatRoomCtrller.checkSnapshot(chatRoomID).then((val){
+      var snap = val;
+      Map<String, dynamic> chatRoom = {
+        "chatRoomId" : chatRoomID,
+      };
+      if (snap == null || !snap.exists){
+
+        print ("Snap is null");
+        chatRoomCtrller.addChatRoom(chatRoom, chatRoomID);
+      }
     });
+
+    chatRoomCtrller.getChats(chatRoomID).then((val) {
+      setState(() {
+        chats = val;
+      });
+    });
+
     super.initState();
   }
 
-  void addMessgae() {
-    setState(() {
-      msgs.add({"message": this.messageController.text, "sendByMe": true});
-      messageController.text = "";
-    });
+  void addMessage() {
+    if (this.messageController.text.isNotEmpty) {
+      Map<String, dynamic> chatMessageMap = {
+        "sendBy": widget.currentUsername,
+        "message": this.messageController.text,
+        'time': DateTime
+            .now(),
+            //.millisecondsSinceEpoch,
+      };
+
+
+      String chatRoomID = getChatRoomID();
+      chatRoomCtrller.addMessage(chatRoomID, chatMessageMap);
+      setState(() {
+        // msgs.add({"message": this.messageController.text, "sendByMe": true});
+        messageController.text = "";
+      });
+    }
   }
 
   Widget messageBox([Color textColor = Colors.white, textController]) {
@@ -119,7 +182,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 GestureDetector(
                   onTap: () {
                     print("Send message ... ");
-                    this.addMessgae();
+                    addMessage();
                   },
                   child: Container(
                       height: 40,
@@ -148,6 +211,23 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
+  Widget chatMessages(){
+    return StreamBuilder(
+      stream: chats,
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+        print(snapshot.data);
+        return snapshot.hasData ?  ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index){
+              return MessageTile(
+                message: snapshot.data!.docs[index]["message"],
+                sendByMe: widget.currentUsername == snapshot.data!.docs[index]["sendBy"],
+              );
+            }) : Container();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,18 +244,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
             children: [
               Expanded(
                 child: Container(
-                  child: SingleChildScrollView(
-                    child: messageList(this.msgs),
+
+                    child: chatMessages(),
                   ),
                 ),
-              ),
               Expanded(
                 child: Container(
                   alignment: Alignment.bottomCenter,
-                    child: messageBox(Colors.white, messageController)),
+                      child: messageBox(Colors.white, messageController)),
               ),
             ],
           )),
     );
   }
+
 }
