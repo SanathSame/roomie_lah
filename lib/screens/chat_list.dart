@@ -14,6 +14,7 @@ import 'package:roomie_lah/screens/ConversationScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:roomie_lah/controllers/ProfilePicController.dart';
 import 'package:async/async.dart';
+import 'package:intl/intl.dart';
 //import 'firebase_options.dart';
 
 void main() async {
@@ -47,14 +48,26 @@ class ChatListBodyState extends State<ChatListBody> {
     var matches = listOfMatches['matches'];
     Matches().matches = matches;
 
+    // Sort based on time... Might need to reverse the order
+    matches.sort((a, b) =>
+        (b['timestamp'] as DateTime).compareTo(a['timestamp'] as DateTime));
+
+    DateFormat formatter = DateFormat('MM-dd hh:mm');
+
     for (int i = 0; i < Matches().matches!.length; ++i) {
       var name = matches[i]['username'];
       var lastMessage = matches[i]['lastMessage'];
-      var time = matches[i]['timestamp'];
+      var time = formatter.format(matches[i]['timestamp'] as DateTime);
       var profilePic = matches[i]["profilePicURL"];
       Widget chatPreview = new InkWell(
         onTap: () {
-          Navigator.pushNamed(context, ConversationScreen.id);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConversationScreen(
+                  chatWithUsername: name, profilePicURL: profilePic),
+            ),
+          );
         },
         child: ChatPreview(name, lastMessage, time, profilePic),
       );

@@ -15,6 +15,7 @@ import "package:roomie_lah/widgets/rounded_button.dart";
 import "package:roomie_lah/widgets/rounded_input_field.dart";
 import "package:roomie_lah/screens/recommendation_screen.dart";
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import "package:roomie_lah/screens/SignupScreen.dart";
 
 class LoginScreen extends StatefulWidget {
   static String id = "login_screen";
@@ -181,7 +182,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-                SizedBox(height: size.height * 0.03),
+                SizedBox(height: size.height * 0.01),
+                TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      primary: kPrimaryColor,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
+                  onPressed: () =>
+                      {Navigator.pushNamed(context, SignupScreen.id)},
+                  child: Text(
+                    "First time user? Signup here",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
               ],
             ),
           ),

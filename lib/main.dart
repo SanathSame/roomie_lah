@@ -29,14 +29,17 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: LoginScreen.id,
+      initialRoute: WelcomeScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         SignupScreen.id: (context) => SignupScreen(),
         RecommendationScreen.id: (context) => RecommendationScreen(),
         ChatListPage.id: (context) => ChatListPage(),
-        ConversationScreen.id: (context) => ConversationScreen(),
+        ConversationScreen.id: (context) => ConversationScreen(
+              chatWithUsername: 'atul',
+              profilePicURL: '',
+            ),
         UserProfileUI.id: (context) => UserProfileUI(
               age: '20',
               course: 'CS',
