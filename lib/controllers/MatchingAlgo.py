@@ -85,6 +85,6 @@ def get_recommendations(username):
     return recommended_usernames
 
 
-rec = get_recommendations('user1')
-for i in rec:
-    print(i)
+# rec = get_recommendations('user1')
+# for i in rec:
+#     print(i)
