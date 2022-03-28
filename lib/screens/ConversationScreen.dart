@@ -57,37 +57,35 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(
-            top: 8,
-            bottom: 8,
-            left: sendByMe ? 0 : 24,
-            right: sendByMe ? 24 : 0),
-        alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          margin:
-              sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-          padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-          decoration: BoxDecoration(
-              borderRadius: sendByMe
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(23),
-                      topRight: Radius.circular(23),
-                      bottomLeft: Radius.circular(23))
-                  : BorderRadius.only(
-                      topLeft: Radius.circular(23),
-                      topRight: Radius.circular(23),
-                      bottomRight: Radius.circular(23)),
-              gradient: LinearGradient(
-                colors: sendByMe
-                    ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                    : [const Color(0xCD908D8D), const Color(0xADA8A4A4)],
-              )),
-          child: Text(
-            message,
-            textAlign: TextAlign.start,
-            style: kMediumText,
-          ),
-        ));
+      padding: EdgeInsets.only(
+          top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin:
+            sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+        decoration: BoxDecoration(
+            borderRadius: sendByMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomLeft: Radius.circular(23))
+                : BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomRight: Radius.circular(23)),
+            gradient: LinearGradient(
+              colors: sendByMe
+                  ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
+                  : [const Color(0xCD908D8D), const Color(0xADA8A4A4)],
+            )),
+        child: Text(
+          message,
+          textAlign: TextAlign.start,
+          style: kMediumText,
+        ),
+      ),
+    );
   }
 }
 
@@ -199,17 +197,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
                             end: FractionalOffset.bottomRight),
                         borderRadius: BorderRadius.circular(40)),
                     padding: EdgeInsets.all(12),
-                    child: widget.profilePicURL == ""
-                        ? Image.asset(
-                            "assets/images/send.png",
-                            height: 25,
-                            width: 25,
-                          )
-                        : Image.network(
-                            widget.profilePicURL,
-                            height: 25,
-                            width: 25,
-                          ),
+                    child: Image.asset(
+                      "assets/images/send.png",
+                      height: 25,
+                      width: 25,
+                    ),
                   ),
                 )
               ],
@@ -254,11 +246,20 @@ class _ConversationScreenState extends State<ConversationScreen> {
           MediaQuery.of(context).size.height * 0.075, // 10% of the height
         ),
         child: ChatAppBar(
-            context,
-            widget.chatWithUsername,
-            widget.profilePicURL == ""
-                ? Image.asset('assets/images/hasbullah.jpg', height: 50)
-                : Image.network(widget.profilePicURL)),
+          context,
+          widget.chatWithUsername,
+          widget.profilePicURL == ""
+              ? Image.asset(
+                  'assets/images/hasbullah.jpg',
+                  height: 50,
+                  width: 50,
+                )
+              : Image.network(
+                  widget.profilePicURL,
+                  height: 50,
+                  width: 50,
+                ),
+        ),
       ),
       body: Container(
         color: Color(0xff656865),

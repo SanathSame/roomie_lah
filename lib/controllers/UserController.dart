@@ -7,6 +7,7 @@ import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/entity/Matches.dart';
 import 'package:async/async.dart';
 import 'package:roomie_lah/entity/user.dart';
+import 'package:roomie_lah/screens/EditProfileScreen.dart';
 
 class UserController {
   static CollectionReference users =
@@ -19,6 +20,7 @@ class UserController {
       String gender,
       String course,
       String university,
+      String nationality,
       int age,
       bool smoker,
       bool drinker,
@@ -35,6 +37,7 @@ class UserController {
             'username': username,
             'course': course,
             'university': university,
+            'nationality': nationality,
             'age': age,
             'gender': gender,
             'smoke': smoker,
@@ -43,7 +46,7 @@ class UserController {
             'veg': veg,
             'profilePicURL': profilePicURL,
             'interests': interests,
-            'stayinIn': stayingIn,
+            'stayingIn': stayingIn,
           },
         )
         .then((value) => print("User Added"))
@@ -72,7 +75,9 @@ class UserController {
         currentUser.stayinIn = documentSnapshot['stayingIn'];
         currentUser.dayPerson = documentSnapshot['dayPerson'];
         currentUser.vegetarian = documentSnapshot['veg'];
-        currentUser.interests = documentSnapshot['interests'];
+        currentUser.interests =
+            List<String>.from(documentSnapshot['interests']);
+        currentUser.profilePicURL = documentSnapshot['profilePicURL'];
       } else {
         print('Document does not exist on the database');
       }

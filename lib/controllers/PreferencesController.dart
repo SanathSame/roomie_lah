@@ -26,10 +26,10 @@ class PreferencesController {
           {
             'username:': username,
             'smoke': smoker,
-            'drink': drinker,
+            'alcohol': drinker,
             'dayPerson': dayPerson,
             'veg': veg,
-            'stayinIn': stayingIn,
+            'stayingIn': stayingIn,
           },
         )
         .then((value) => print("User Added"))

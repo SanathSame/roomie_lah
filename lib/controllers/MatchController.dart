@@ -1,6 +1,8 @@
 // ignore_for_file: invalid_return_type_for_catch_error
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:roomie_lah/controllers/ProfilePicController.dart';
+import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/screens/EditProfileScreen.dart';
 import 'dart:async';
 
@@ -37,15 +39,35 @@ class MatchController {
       await matches.doc(rightMatch).set({'matches': []});
     }
 
+    var pofilePicURL = "";
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(rightMatch + '@gmail.com')
+        .get()
+        .then((DocumentSnapshot documentSnapshot) => {
+              if (documentSnapshot.exists)
+                {pofilePicURL = documentSnapshot['profilePicURL']}
+            });
+
+    var l = "";
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(leftMatch + '@gmail.com')
+        .get()
+        .then((DocumentSnapshot documentSnapshot) => {
+              if (documentSnapshot.exists)
+                {l = documentSnapshot['profilePicURL']}
+            });
+
     var leftMap = {
       'username': rightMatch,
-      'profilePicURL': "",
+      'profilePicURL': pofilePicURL,
       'lastMessage': "",
       'timestamp': Timestamp.now()
     };
     var rightMap = {
       'username': leftMatch,
-      'profilePicURL': "",
+      'profilePicURL': l,
       'lastMessage': "",
       'timestamp': Timestamp.now()
     };
@@ -165,6 +187,8 @@ class MatchController {
     );
   }
 
+  // Not required... The network URL name remains the same: /profilePic/username
+  // The token is different, it wouldnt matter
   Future<void> editProfilePic(String username, String url) async {
     var doc = await matches.doc(username).get();
     if (!doc.exists) {

@@ -109,29 +109,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     _characterPref = widget.firstTime
         ? DayNight.Day
-        : CurrentUser().dayPerson
+        : CurrentUser().dayPersonPref
             ? DayNight.Day
             : DayNight.Night;
 
     _smokingPref = widget.firstTime
         ? Smoking.No
-        : CurrentUser().smoker
+        : CurrentUser().smokePref
             ? Smoking.Yes
             : Smoking.No;
     _alcoholPref = widget.firstTime
         ? Alcohol.No
-        : CurrentUser().alcohol
+        : CurrentUser().alcoholPref
             ? Alcohol.Yes
             : Alcohol.No;
     _vegPref = widget.firstTime
         ? Veg.veg
-        : CurrentUser().vegetarian
+        : CurrentUser().vegPref
             ? Veg.veg
             : Veg.Nonveg;
 
     _inPref = widget.firstTime
         ? InOut.StayingIn
-        : CurrentUser().stayingIn
+        : CurrentUser().stayingInPref
             ? InOut.StayingIn
             : InOut.GoingOut;
 
@@ -175,7 +175,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           await ProfilePicController().downloadURL(CurrentUser().username);
     }
     CurrentUser().profilePicURL = downloadURL;
-    await MatchController().editProfilePic(CurrentUser().username, downloadURL);
+    //await MatchController().editProfilePic(CurrentUser().username, downloadURL);
     if ((_validateusername == false) &&
         (_validateuni == false) &&
         (_validatenationality == false) &&
@@ -192,6 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _gender,
               course.text,
               university.text,
+              nationality.text,
               int.parse(age.text),
               _smoking == Smoking.Yes,
               _alcohol == Alcohol.Yes,
@@ -225,6 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       currentUser.interests = _selectedItems;
       currentUser.stayinIn = _in == InOut.StayingIn;
       currentUser.vegetarian = _veg == Veg.veg;
+      currentUser.nationality = nationality.text;
 
       currentUser.smokePref = _smokingPref == Smoking.Yes;
       currentUser.alcoholPref = _alcoholPref == Alcohol.Yes;
@@ -299,7 +301,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               File(filePath),
                               fit: BoxFit.cover,
                             ).image
-                          : AssetImage('assets/hasbullah.jpeg'),
+                          : (widget.firstTime)
+                              ? AssetImage('assets/hasbullah.jpeg')
+                                  as ImageProvider
+                              : NetworkImage(CurrentUser().profilePicURL),
                       radius: 50,
                     ),
                   ),

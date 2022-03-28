@@ -15,6 +15,7 @@ import 'package:roomie_lah/screens/EditProfileScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  //MatchController().addMatch('pratyush', 'atul');
   runApp(MyApp());
   //AlgorithmController().getRecommedations("currentUsername");
 }

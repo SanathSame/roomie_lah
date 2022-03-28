@@ -58,7 +58,7 @@ class CurrentUser {
   bool get stayingInPref => _stayingInPref;
   bool get smokePref => _smokePref;
   bool get alcoholPref => _alcoholPref;
-  bool get datPersonPref => _dayPersonPref;
+  bool get dayPersonPref => _dayPersonPref;
   bool get vegPref => _vegPref;
 
   set name(String name) {
