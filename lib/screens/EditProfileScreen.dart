@@ -168,13 +168,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       course.text.isEmpty ? _validatecourse = true : _validatecourse = false;
     });
 
-    var downloadURL = "";
-    if (filePath != "") {
-      await ProfilePicController().uploadFile(CurrentUser().username, filePath);
-      downloadURL =
-          await ProfilePicController().downloadURL(CurrentUser().username);
-    }
-    CurrentUser().profilePicURL = downloadURL;
     //await MatchController().editProfilePic(CurrentUser().username, downloadURL);
     if ((_validateusername == false) &&
         (_validateuni == false) &&
@@ -183,6 +176,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         (_validatecourse == false) &&
         _selectedItems.isEmpty == false) {
       // Parallel Execution
+      var downloadURL = "";
+      if (filePath != "") {
+        await ProfilePicController()
+            .uploadFile(CurrentUser().username, filePath);
+        downloadURL =
+            await ProfilePicController().downloadURL(CurrentUser().username);
+      }
+
+      if (widget.firstTime)
+        CurrentUser().profilePicURL = downloadURL;
+      else if (!widget.firstTime && filePath != "")
+        CurrentUser().profilePicURL = downloadURL;
       await Future.wait(
         [
           UserController().setUserProfile(

@@ -252,12 +252,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
               ? Image.asset(
                   'assets/images/hasbullah.jpg',
                   height: 50,
-                  width: 50,
+                  width: 30,
                 )
               : Image.network(
                   widget.profilePicURL,
                   height: 50,
-                  width: 50,
+                  width: 30,
                 ),
         ),
       ),
