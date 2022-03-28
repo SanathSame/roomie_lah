@@ -41,13 +41,13 @@ class MatchController {
       'username': rightMatch,
       'profilePicURL': "",
       'lastMessage': "",
-      'timestamp': DateTime.now()
+      'timestamp': Timestamp.now()
     };
     var rightMap = {
       'username': leftMatch,
       'profilePicURL': "",
       'lastMessage': "",
-      'timestamp': DateTime.now()
+      'timestamp': Timestamp.now()
     };
 
     Future.wait(
@@ -121,7 +121,7 @@ class MatchController {
   }
 
   Future<void> updateLastMessage(String leftUser, String rightUser,
-      String lastMessage, DateTime timestamp) async {
+      String lastMessage, Timestamp timestamp) async {
     print("Updated message");
     List<dynamic> leftMatchesList = [];
     List<dynamic> rightMatchesList = [];

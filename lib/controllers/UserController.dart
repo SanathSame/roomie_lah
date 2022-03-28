@@ -32,7 +32,7 @@ class UserController {
         .set(
           {
             'name': name,
-            'username:': username,
+            'username': username,
             'course': course,
             'university': university,
             'age': age,

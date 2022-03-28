@@ -148,8 +148,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
       String chatRoomID = getChatRoomID();
       chatRoomCtrller.addMessage(chatRoomID, chatMessageMap);
-      MatchController().updateLastMessage(CurrentUser().username,
-          widget.chatWithUsername, this.messageController.text, DateTime.now());
+      MatchController().updateLastMessage(
+          CurrentUser().username,
+          widget.chatWithUsername,
+          this.messageController.text,
+          Timestamp.now());
       setState(() {
         // msgs.add({"message": this.messageController.text, "sendByMe": true});
         messageController.text = "";

@@ -178,8 +178,13 @@ class _SignupScreenState extends State<SignupScreen> {
                         CurrentUser currentUser = CurrentUser();
                         currentUser.email = enteredUsername;
                         currentUser.username = enteredPassword.split("@")[0];
-                        Navigator.pushNamed(context, EditProfileScreen.id,
-                            arguments: {'firstTime': true});
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EditProfileScreen(firstTime: true),
+                          ),
+                        );
                       } else {
                         setState(() {
                           showSpinner = false;

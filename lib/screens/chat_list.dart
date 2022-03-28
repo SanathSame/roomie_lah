@@ -20,6 +20,9 @@ import 'package:intl/intl.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  CurrentUser currentUser = CurrentUser();
+  currentUser.username = "user1";
+  currentUser.profilePicURL = "";
   runApp(MaterialApp(
     title: 'RoomieLah',
     home: ChatListPage(),
@@ -49,15 +52,18 @@ class ChatListBodyState extends State<ChatListBody> {
     Matches().matches = matches;
 
     // Sort based on time... Might need to reverse the order
-    matches.sort((a, b) =>
-        (b['timestamp'] as DateTime).compareTo(a['timestamp'] as DateTime));
+    matches.sort(
+      (a, b) =>
+          (b['timestamp'] as Timestamp).compareTo(a['timestamp'] as Timestamp),
+    );
 
     DateFormat formatter = DateFormat('MM-dd hh:mm');
 
     for (int i = 0; i < Matches().matches!.length; ++i) {
       var name = matches[i]['username'];
       var lastMessage = matches[i]['lastMessage'];
-      var time = formatter.format(matches[i]['timestamp'] as DateTime);
+      var time =
+          formatter.format((matches[i]['timestamp'] as Timestamp).toDate());
       var profilePic = matches[i]["profilePicURL"];
       Widget chatPreview = new InkWell(
         onTap: () {

@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,18 @@ import '../entity/CurrentUser.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: EditProfileScreen(),
+    home: EditProfileScreen(
+      firstTime: true,
+    ),
   ));
 }
 
 // ignore: must_be_immutable
 class EditProfileScreen extends StatefulWidget {
+  final bool firstTime;
   static final String id = "edit_profile";
+
+  EditProfileScreen({required this.firstTime});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -36,24 +42,17 @@ enum Alcohol { Yes, No }
 
 enum Veg { veg, Nonveg }
 
-final username = (CurrentUser().name == null)
-    ? TextEditingController()
-    : TextEditingController(text: CurrentUser().name);
-final age = (CurrentUser().age == null)
-    ? TextEditingController()
-    : TextEditingController(text: CurrentUser().age.toString());
-final university = (CurrentUser().name == null)
-    ? TextEditingController()
-    : TextEditingController(text: CurrentUser().universityName);
-final nationality = (CurrentUser().nationality == null)
-    ? TextEditingController()
-    : TextEditingController(text: CurrentUser().nationality);
-final course = (CurrentUser().course == null)
-    ? TextEditingController()
-    : TextEditingController(text: CurrentUser().course);
+var username = TextEditingController();
+var age = TextEditingController();
+
+var university = TextEditingController();
+
+var nationality = TextEditingController();
+
+var course = TextEditingController();
 
 List<String> _selectedItems = [];
-String _gender = (CurrentUser().gender == null) ? "Male" : CurrentUser().gender;
+String _gender = "Male";
 bool _validateusername = false;
 bool _validateage = false;
 bool _validateuni = false;
@@ -77,6 +76,83 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late Alcohol _alcoholPref;
   late Veg _vegPref;
   late InOut? _inPref;
+
+  // ignore: must_call_super
+  void initState() {
+    _character = widget.firstTime
+        ? DayNight.Day
+        : CurrentUser().dayPerson
+            ? DayNight.Day
+            : DayNight.Night;
+
+    _smoking = widget.firstTime
+        ? Smoking.No
+        : CurrentUser().smoker
+            ? Smoking.Yes
+            : Smoking.No;
+    _alcohol = widget.firstTime
+        ? Alcohol.No
+        : CurrentUser().alcohol
+            ? Alcohol.Yes
+            : Alcohol.No;
+    _veg = widget.firstTime
+        ? Veg.veg
+        : CurrentUser().vegetarian
+            ? Veg.veg
+            : Veg.Nonveg;
+
+    _in = widget.firstTime
+        ? InOut.StayingIn
+        : CurrentUser().stayingIn
+            ? InOut.StayingIn
+            : InOut.GoingOut;
+
+    _characterPref = widget.firstTime
+        ? DayNight.Day
+        : CurrentUser().dayPerson
+            ? DayNight.Day
+            : DayNight.Night;
+
+    _smokingPref = widget.firstTime
+        ? Smoking.No
+        : CurrentUser().smoker
+            ? Smoking.Yes
+            : Smoking.No;
+    _alcoholPref = widget.firstTime
+        ? Alcohol.No
+        : CurrentUser().alcohol
+            ? Alcohol.Yes
+            : Alcohol.No;
+    _vegPref = widget.firstTime
+        ? Veg.veg
+        : CurrentUser().vegetarian
+            ? Veg.veg
+            : Veg.Nonveg;
+
+    _inPref = widget.firstTime
+        ? InOut.StayingIn
+        : CurrentUser().stayingIn
+            ? InOut.StayingIn
+            : InOut.GoingOut;
+
+    username = widget.firstTime
+        ? TextEditingController()
+        : TextEditingController(text: CurrentUser().name);
+    age = widget.firstTime
+        ? TextEditingController()
+        : TextEditingController(text: CurrentUser().age.toString());
+    university = widget.firstTime
+        ? TextEditingController()
+        : TextEditingController(text: CurrentUser().universityName);
+    nationality = widget.firstTime
+        ? TextEditingController()
+        : TextEditingController(text: CurrentUser().nationality);
+    course = widget.firstTime
+        ? TextEditingController()
+        : TextEditingController(text: CurrentUser().course);
+
+    _gender = widget.firstTime ? "Male" : CurrentUser().gender;
+  }
 
   void onSubmit() async {
     setState(() {
@@ -138,7 +214,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       // Set Singelton User Object
       CurrentUser currentUser = CurrentUser();
-      currentUser.username = username.text;
+      currentUser.name = username.text;
       currentUser.age = int.parse(age.text);
       currentUser.gender = _gender;
       currentUser.universityName = university.text;
@@ -191,64 +267,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map temp = ModalRoute.of(context)?.settings.arguments as Map;
-    bool firstTime = temp['firstTime'];
-
-    _character = firstTime
-        ? DayNight.Day
-        : CurrentUser().dayPerson
-            ? DayNight.Day
-            : DayNight.Night;
-
-    _smoking = firstTime
-        ? Smoking.No
-        : CurrentUser().smoker
-            ? Smoking.Yes
-            : Smoking.No;
-    _alcohol = firstTime
-        ? Alcohol.No
-        : CurrentUser().alcohol
-            ? Alcohol.Yes
-            : Alcohol.No;
-    _veg = firstTime
-        ? Veg.veg
-        : CurrentUser().vegetarian
-            ? Veg.veg
-            : Veg.Nonveg;
-
-    _in = firstTime
-        ? InOut.StayingIn
-        : CurrentUser().stayingIn
-            ? InOut.StayingIn
-            : InOut.GoingOut;
-
-    _characterPref = firstTime
-        ? DayNight.Day
-        : CurrentUser().dayPerson
-            ? DayNight.Day
-            : DayNight.Night;
-
-    _smokingPref = firstTime
-        ? Smoking.No
-        : CurrentUser().smoker
-            ? Smoking.Yes
-            : Smoking.No;
-    _alcoholPref = firstTime
-        ? Alcohol.No
-        : CurrentUser().alcohol
-            ? Alcohol.Yes
-            : Alcohol.No;
-    _vegPref = firstTime
-        ? Veg.veg
-        : CurrentUser().vegetarian
-            ? Veg.veg
-            : Veg.Nonveg;
-
-    _inPref = firstTime
-        ? InOut.StayingIn
-        : CurrentUser().stayingIn
-            ? InOut.StayingIn
-            : InOut.GoingOut;
+    // Map temp = ModalRoute.of(context)?.settings.arguments as Map;
+    // bool firstTime = temp['firstTime'];
 
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -270,9 +290,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(height: 10.0),
                   //Username
                   GestureDetector(
-                    onTap: (addProfilePicture),
+                    onTap: () {
+                      addProfilePicture();
+                    },
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/hasbullah.jpeg'),
+                      backgroundImage: (filePath != "")
+                          ? Image.file(
+                              File(filePath),
+                              fit: BoxFit.cover,
+                            ).image
+                          : AssetImage('assets/hasbullah.jpeg'),
+                      radius: 50,
                     ),
                   ),
                   ListTile(
@@ -865,7 +893,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       onPressed: (onSubmit),
                       child: Text(
-                          firstTime ? 'Create' : 'Edit Profile Preferences',
+                          widget.firstTime
+                              ? 'Create'
+                              : 'Edit Profile Preferences',
                           style: kMediumText)),
                 ],
               ),
