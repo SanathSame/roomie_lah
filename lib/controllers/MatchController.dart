@@ -70,34 +70,54 @@ class MatchController {
   Future<void> deleteMatch(dynamic leftMatch, dynamic rightMatch) async {
     var doc = await matches.doc(leftMatch).get();
     if (!doc.exists) {
-      await matches.doc(leftMatch).set(
-        {
-          'matches': [],
-          'lastMessage': [],
-          "profilePicURL": [],
-        },
-      );
+      return;
     }
 
     doc = await matches.doc(rightMatch).get();
     if (!doc.exists) {
-      await matches.doc(rightMatch).set(
-        {
-          'matches': [],
-          'lastMessage': [],
-          "profilePicURL": [],
-        },
-      );
+      return;
     }
 
-    Future.wait([
-      matches.doc(leftMatch).update({
-        'matches': FieldValue.arrayRemove([rightMatch])
-      }),
-      matches.doc(rightMatch).update({
-        'matches': FieldValue.arrayRemove([leftMatch])
-      })
-    ]);
+    var leftMatchesList = [];
+    var rightMatchesList = [];
+    Future.wait(
+      [
+        matches.doc(leftMatch).get().then(
+          (DocumentSnapshot documentSnapshot) async {
+            if (documentSnapshot.exists) {
+              leftMatchesList = documentSnapshot['matches'];
+              print(leftMatchesList);
+              for (int i = 0; i < leftMatchesList.length; ++i) {
+                if (leftMatchesList[i]['username'] == rightMatch) {
+                  leftMatchesList.removeAt(i);
+                  await matches
+                      .doc(leftMatch)
+                      .set({'matches': leftMatchesList});
+                  break;
+                }
+              }
+            }
+          },
+        ),
+        matches.doc(rightMatch).get().then(
+          (DocumentSnapshot documentSnapshot) async {
+            if (documentSnapshot.exists) {
+              rightMatchesList = documentSnapshot['matches'];
+              print(rightMatchesList);
+              for (int i = 0; i < rightMatchesList.length; ++i) {
+                if (rightMatchesList[i]['username'] == leftMatch) {
+                  rightMatchesList.removeAt(i);
+                  await matches
+                      .doc(rightMatch)
+                      .set({'matches': rightMatchesList});
+                  break;
+                }
+              }
+            }
+          },
+        ),
+      ],
+    );
   }
 
   Future<void> updateLastMessage(String leftUser, String rightUser,
@@ -117,7 +137,7 @@ class MatchController {
                   leftMatchesList[i]['lastMessage'] = lastMessage;
                   leftMatchesList[i]['timestamp'] = timestamp;
                   await matches.doc(leftUser).set({'matches': leftMatchesList});
-                  return;
+                  break;
                 }
               }
             }
@@ -135,7 +155,7 @@ class MatchController {
                   await matches
                       .doc(rightUser)
                       .set({'matches': rightMatchesList});
-                  return;
+                  break;
                 }
               }
             }
@@ -183,7 +203,7 @@ class MatchController {
           if (matchesList[i]['username'] == userToChange) {
             matchesList[i]['profilePic'] = url;
             await matches.doc(username).set({'matches': matchesList});
-            return;
+            break;
           }
         }
       }

@@ -69,7 +69,8 @@ class ChatListBodyState extends State<ChatListBody> {
             ),
           );
         },
-        child: ChatPreview(name, lastMessage, time, profilePic),
+        child: ChatPreview(
+            CurrentUser().username, name, lastMessage, time, profilePic),
       );
       widgetList.add(chatPreview);
       widgetList.add(SizedBox(height: 0.015 * height));
