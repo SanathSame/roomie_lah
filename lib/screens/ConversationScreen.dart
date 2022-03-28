@@ -236,7 +236,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
           MediaQuery.of(context).size.width,
           MediaQuery.of(context).size.height * 0.075, // 10% of the height
         ),
-        child: ChatAppBar(context),
+        child: ChatAppBar(context, "Atul Acharya", Image.asset(
+            'assets/images/hasbullah.jpg',
+            height: 50
+        )),
       ),
       body: Container(
           color: Color(0xff656865),

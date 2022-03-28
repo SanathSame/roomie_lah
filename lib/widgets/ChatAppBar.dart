@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:roomie_lah/constants.dart';
 
-Widget ChatAppBar(BuildContext context) {
+Widget ChatAppBar(BuildContext context, String NameOfChatWith, Widget ProfilePic) {
   return AppBar(
     backgroundColor: kPrimaryColor,
     title: Row(
       children: [
         Expanded(child: Text(
-          "Hasbullah",
+          NameOfChatWith,
           style: biggerTextStyle(),
 
           )
         ),
         ClipRRect(
           borderRadius: BorderRadius.circular(30.0),
-          child: Image.asset(
-            'assets/images/hasbullah.jpg',
-            height: 50
-          ),
+          child: ProfilePic,
         ),
       ],
     ),
