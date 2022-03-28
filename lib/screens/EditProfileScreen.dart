@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:multiselect/multiselect.dart';
+import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/controllers/PreferencesController.dart';
 import 'package:roomie_lah/controllers/ProfilePicController.dart';
 import 'package:roomie_lah/controllers/UserController.dart';
@@ -98,6 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           await ProfilePicController().downloadURL(CurrentUser().username);
     }
     CurrentUser().profilePicURL = downloadURL;
+    await MatchController().editProfilePic(CurrentUser().username, downloadURL);
     if ((_validateusername == false) &&
         (_validateuni == false) &&
         (_validatenationality == false) &&

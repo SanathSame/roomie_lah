@@ -15,8 +15,8 @@ import 'package:roomie_lah/screens/EditProfileScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  //runApp(MyApp());
-  AlgorithmController().getRecommedations("currentUsername");
+  runApp(MyApp());
+  //AlgorithmController().getRecommedations("currentUsername");
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: SignupScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
