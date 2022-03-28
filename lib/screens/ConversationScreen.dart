@@ -245,17 +245,15 @@ class _ConversationScreenState extends State<ConversationScreen> {
           color: Color(0xff656865),
           child: Column(
             children: [
-              Expanded(
-                child: Container(
+              
+              Expanded(child: chatMessages()),
 
-                    child: chatMessages(),
-                  ),
-                ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                      child: messageBox(Colors.white, messageController)),
-              ),
+          Container(
+              alignment: Alignment.bottomCenter,
+              child: messageBox(Colors.white, messageController
+                      )
+          ),
+
             ],
           )),
     );
