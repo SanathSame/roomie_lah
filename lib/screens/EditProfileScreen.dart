@@ -14,11 +14,13 @@ import 'package:roomie_lah/screens/recommendation_screen.dart';
 import '../entity/CurrentUser.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: EditProfileScreen(
-      firstTime: true,
+  runApp(
+    MaterialApp(
+      home: EditProfileScreen(
+        firstTime: true,
+      ),
     ),
-  ));
+  );
 }
 
 // ignore: must_be_immutable
@@ -152,6 +154,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         : TextEditingController(text: CurrentUser().course);
 
     _gender = widget.firstTime ? "Male" : CurrentUser().gender;
+
+    _selectedItems = widget.firstTime ? [] : CurrentUser().interests;
   }
 
   void onSubmit() async {
@@ -535,7 +539,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 20.0),
                   Text('Enter your profile',
-                      style: kLargeBoldText, textAlign: TextAlign.center),
+                      style: kLargeBlackText, textAlign: TextAlign.center),
                   SizedBox(height: 30),
                   ListTile(
                     leading: const Icon(Icons.person),
@@ -732,7 +736,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   Text(
                       'Complete these statements for us to better understand your preferences',
-                      style: kLargeBoldText,
+                      style: kLargeBlackText,
                       textAlign: TextAlign.center),
                   ListTile(
                       leading: Icon(Icons.adb_outlined),

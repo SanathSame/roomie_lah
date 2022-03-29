@@ -14,3 +14,6 @@ final TextStyle kLargeText =
     TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: Colors.white);
 final TextStyle kLargeBoldText =
     TextStyle(fontSize: 30, fontWeight: FontWeight.w600, color: Colors.white);
+
+final kLargeBlackText =
+    TextStyle(fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black);

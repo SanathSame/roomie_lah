@@ -44,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       inAsyncCall: spinner,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           elevation: 5.0,
           backgroundColor: kPrimaryColor,
           title: Center(
