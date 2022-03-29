@@ -28,7 +28,7 @@ class SwipingController {
       String currentUser, String swipedUser, String swipeDirection) async {
     bool exists = await checkNewUser(currentUser);
     if (!exists) {
-      createNewUser(currentUser);
+      await createNewUser(currentUser);
     }
     await _swipingCollection.doc(currentUser).update({
       swipeDirection: FieldValue.arrayUnion([swipedUser])
@@ -40,6 +40,9 @@ class SwipingController {
   // if yes, show pop up otherwise pass
   // if yes, add to matches collection
   Future<bool> checkMatch(String currentUser, String swipedUser) async {
+    if (!await checkNewUser(swipedUser)) {
+      return false;
+    }
     var doc = await _swipingCollection.doc(swipedUser).get();
     var rightSwipes = doc['right'];
     if (rightSwipes.contains(currentUser)) {

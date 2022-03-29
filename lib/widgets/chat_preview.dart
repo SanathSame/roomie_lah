@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:roomie_lah/controllers/MatchController.dart';
 
 // CHANGE OPACITY DEPENDING ON IF THE MESSAGE HAS BEEN READ OR NOT
 // CHANGE THE SIZE OF WIDGETS DEPENDING ON SIZE OF SCREEN
@@ -8,16 +9,21 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ChatPreview extends StatelessWidget {
-  late Image _profilePic;
+  late String _profilePicURL;
   late String _name;
   late String _lastMessage;
   late String _time;
+  late String _currentUser;
 
-  ChatPreview(String name, String lastMessage, String time) {
-    //this._profilePic = profilePic;
+  ChatPreview(String currentUser, String name, String lastMessage, String time,
+      String profilePicURL) {
+    print("Profile Pic: $profilePicURL");
+    this._profilePicURL = profilePicURL;
+    this._currentUser = currentUser;
     this._name = name;
     this._lastMessage = lastMessage;
     this._time = time;
+    print('Created Chat Preview :$_profilePicURL');
   }
 
   @override
@@ -31,7 +37,9 @@ class ChatPreview extends StatelessWidget {
       child: Row(
         children: <Widget>[
           new CircleAvatar(
-            backgroundImage: AssetImage('assets/images/hasbullah.jpg'),
+            backgroundImage: this._profilePicURL == ""
+                ? AssetImage('assets/images/hasbullah.jpg') as ImageProvider
+                : NetworkImage(this._profilePicURL),
             radius: 0.03 * max(width, height),
           ),
           Expanded(
@@ -62,12 +70,23 @@ class ChatPreview extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Opacity(
-              opacity: 0.64,
-              child: Text(
-                this._time,
-                style: TextStyle(fontSize: 0.025 * width),
-              )),
+          Column(
+            children: [
+              IconButton(
+                  onPressed: (() {
+                    MatchController()
+                        .deleteMatch(this._currentUser, this._name);
+                  }),
+                  icon: Icon(Icons.more_horiz)),
+              Opacity(
+                opacity: 0.64,
+                child: Text(
+                  this._time,
+                  style: TextStyle(fontSize: 0.025 * width),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

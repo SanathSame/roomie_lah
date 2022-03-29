@@ -1,20 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:roomie_lah/controllers/MatchController.dart';
+import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/widgets/ChatAppBar.dart';
 import 'package:roomie_lah/constants.dart';
+import 'package:roomie_lah/controllers/chatRoomCtrller.dart';
 
-void main() => runApp(MaterialApp(
-      title: 'RoomieLah',
-      home: ConversationScreen(),
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Color(0xff656865),
-      ),
-    ));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
+    title: 'RoomieLah',
+    home: ConversationScreen(
+      chatWithUsername: "atul",
+      profilePicURL: "",
+    ),
+    theme: ThemeData(
+      primaryColor: kPrimaryColor,
+      scaffoldBackgroundColor: Color(0xff656865),
+    ),
+  ));
+}
 
 class ConversationScreen extends StatefulWidget {
   static String id = "conversation_screen";
-
+  final currentUsername = CurrentUser().username;
+  final String chatWithUsername;
+  final String profilePicURL;
+  ConversationScreen(
+      {required this.chatWithUsername, required this.profilePicURL});
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
 }
@@ -41,58 +57,105 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(
-            top: 8,
-            bottom: 8,
-            left: sendByMe ? 0 : 24,
-            right: sendByMe ? 24 : 0),
-        alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          margin:
-              sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-          padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-          decoration: BoxDecoration(
-              borderRadius: sendByMe
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(23),
-                      topRight: Radius.circular(23),
-                      bottomLeft: Radius.circular(23))
-                  : BorderRadius.only(
-                      topLeft: Radius.circular(23),
-                      topRight: Radius.circular(23),
-                      bottomRight: Radius.circular(23)),
-              gradient: LinearGradient(
-                colors: sendByMe
-                    ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                    : [const Color(0xCD908D8D), const Color(0xADA8A4A4)],
-              )),
-          child: Text(
-            message,
-            textAlign: TextAlign.start,
-            style: kMediumText,
-          ),
-        ));
+      padding: EdgeInsets.only(
+          top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin:
+            sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+        decoration: BoxDecoration(
+            borderRadius: sendByMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomLeft: Radius.circular(23))
+                : BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomRight: Radius.circular(23)),
+            gradient: LinearGradient(
+              colors: sendByMe
+                  ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
+                  : [const Color(0xCD908D8D), const Color(0xADA8A4A4)],
+            )),
+        child: Text(
+          message,
+          textAlign: TextAlign.start,
+          style: kMediumText,
+        ),
+      ),
+    );
   }
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController messageController = new TextEditingController();
-  List<Map<String, dynamic>> msgs = [];
+  final ChatRoomCtrller chatRoomCtrller = new ChatRoomCtrller();
+  //List<Map<String, dynamic>> msgs = [];
+  Stream<QuerySnapshot> chats = new Stream.empty();
+
+  String getChatRoomID() {
+    String currentUsername = widget.currentUsername;
+    String chatWithUsername = widget.chatWithUsername;
+    if (currentUsername.compareTo(chatWithUsername) < 0) {
+      return widget.currentUsername + "_" + widget.chatWithUsername;
+    } else {
+      return widget.chatWithUsername + "_" + widget.currentUsername;
+    }
+  }
 
   @override
   void initState() {
-    setState(() {
-      msgs.add({"message": "Hi! Hasbulla here", "sendByMe": false});
-      msgs.add({"message": "I need some urgent money", "sendByMe": false});
+    // setState(() {
+    //   msgs.add({"message": "Hi! Hasbulla here", "sendByMe": false});
+    //   msgs.add({"message": "I need some urgent money", "sendByMe": false});
+    //
+    // });
+    String chatRoomID = getChatRoomID();
+    print(chatRoomID);
+
+    chatRoomCtrller.checkSnapshot(chatRoomID).then((val) {
+      var snap = val;
+      Map<String, dynamic> chatRoom = {
+        "chatRoomId": chatRoomID,
+      };
+      if (snap == null || !snap.exists) {
+        print("Snap is null");
+        chatRoomCtrller.addChatRoom(chatRoom, chatRoomID);
+      }
     });
+
+    chatRoomCtrller.getChats(chatRoomID).then((val) {
+      setState(() {
+        chats = val;
+      });
+    });
+
     super.initState();
   }
 
-  void addMessgae() {
-    setState(() {
-      msgs.add({"message": this.messageController.text, "sendByMe": true});
-      messageController.text = "";
-    });
+  void addMessage() {
+    if (this.messageController.text.isNotEmpty) {
+      Map<String, dynamic> chatMessageMap = {
+        "sendBy": widget.currentUsername,
+        "message": this.messageController.text,
+        'time': DateTime.now(),
+        //.millisecondsSinceEpoch,
+      };
+
+      String chatRoomID = getChatRoomID();
+      chatRoomCtrller.addMessage(chatRoomID, chatMessageMap);
+      MatchController().updateLastMessage(
+          CurrentUser().username,
+          widget.chatWithUsername,
+          this.messageController.text,
+          Timestamp.now());
+      setState(() {
+        // msgs.add({"message": this.messageController.text, "sendByMe": true});
+        messageController.text = "";
+      });
+    }
   }
 
   Widget messageBox([Color textColor = Colors.white, textController]) {
@@ -119,26 +182,27 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 GestureDetector(
                   onTap: () {
                     print("Send message ... ");
-                    this.addMessgae();
+                    addMessage();
                   },
                   child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [
-                                const Color(0x36FFFFFF),
-                                const Color(0x0FFFFFFF)
-                              ],
-                              begin: FractionalOffset.topLeft,
-                              end: FractionalOffset.bottomRight),
-                          borderRadius: BorderRadius.circular(40)),
-                      padding: EdgeInsets.all(12),
-                      child: Image.asset(
-                        "assets/images/send.png",
-                        height: 25,
-                        width: 25,
-                      )),
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                              const Color(0x36FFFFFF),
+                              const Color(0x0FFFFFFF)
+                            ],
+                            begin: FractionalOffset.topLeft,
+                            end: FractionalOffset.bottomRight),
+                        borderRadius: BorderRadius.circular(40)),
+                    padding: EdgeInsets.all(12),
+                    child: Image.asset(
+                      "assets/images/send.png",
+                      height: 25,
+                      width: 25,
+                    ),
+                  ),
                 )
               ],
             ),
@@ -148,34 +212,66 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
+  Widget chatMessages() {
+    return StreamBuilder(
+      stream: chats,
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        print(snapshot.data);
+        return snapshot.hasData
+            ? ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  return MessageTile(
+                    message: snapshot.data!.docs[index]["message"],
+                    sendByMe: widget.currentUsername ==
+                        snapshot.data!.docs[index]["sendBy"],
+                  );
+                })
+            : Container();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Map temp = ModalRoute.of(context)?.settings.arguments as Map;
+    // String currentUser = temp['currentUsername'];
+    // String chatWith = temp['chatWith'];
+    // String profilePic = temp['profilePic'];
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(
           MediaQuery.of(context).size.width,
           MediaQuery.of(context).size.height * 0.075, // 10% of the height
         ),
-        child: ChatAppBar(context),
+        child: ChatAppBar(
+          context,
+          widget.chatWithUsername,
+          widget.profilePicURL == ""
+              ? Image.asset(
+                  'assets/images/hasbullah.jpg',
+                  height: 50,
+                  width: 30,
+                )
+              : Image.network(
+                  widget.profilePicURL,
+                  height: 50,
+                  width: 30,
+                ),
+        ),
       ),
       body: Container(
-          color: Color(0xff656865),
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: messageList(this.msgs),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                    child: messageBox(Colors.white, messageController)),
-              ),
-            ],
-          )),
+        color: Color(0xff656865),
+        child: Column(
+          children: [
+            Expanded(child: chatMessages()),
+            Container(
+                alignment: Alignment.bottomCenter,
+                child: messageBox(Colors.white, messageController)),
+          ],
+        ),
+      ),
     );
   }
 }

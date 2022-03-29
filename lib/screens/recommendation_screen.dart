@@ -2,12 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:roomie_lah/controllers/AlgorithmController.dart';
 import 'package:roomie_lah/controllers/swiping_controller.dart';
+import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/entity/user.dart';
 import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/widgets/AppBar.dart';
+import 'package:roomie_lah/widgets/Drawer.dart';
 import 'package:roomie_lah/widgets/NavBar.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
+import 'package:roomie_lah/widgets/recommendations.dart';
 
 void main() => runApp(MaterialApp(
       title: 'RoomieLah',
@@ -36,132 +40,160 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
   @override
   void initState() {
     super.initState();
-    currentUser = new User(
-        fullName: "Test Test",
-        username: "test1",
-        password: "password",
-        age: 20,
-        universityName: "NTU",
-        tagLine: "tagLine",
-        tags: ["hello1", "hello2", "hello 3"]);
-    recommendedProfiles.addAll([
-      new User(
-          fullName: "Gopal Agarwal",
-          username: "gopal_19",
-          age: 20,
-          password: "password",
-          universityName: "Nanyang Technological University",
-          tagLine: "I am the tag line for Gopal",
-          tags: ["hello1", "hello2", "hello 3"]),
-      new User(
-          fullName: "Aks Tayal",
-          username: "test2",
-          age: 21,
-          password: "password1",
-          universityName: "Singapore Management University",
-          tagLine: "I am the tag line for Aks",
-          tags: ["hello4", "hello5", "hello6"]),
-      new User(
-          fullName: "Jasraj Singh",
-          username: "test3",
-          age: 21,
-          password: "password3",
-          universityName: "National University of Singapore",
-          tagLine: "I am the tag line for Jas",
-          tags: ["hello7", "hello8", "hello 9"]),
-    ]);
+
     showFront = true;
     bgColor = Colors.transparent;
+  }
+
+  Widget buildRecommendations(List<User>? users) {
+    return new Recommendations(users: users);
+    // CardController controller;
+    // recommendedProfiles =
+    //     await AlgorithmController().getRecommendedUsers("currentUsername");
+    // return [];
+    // [
+    //   new Center(
+    //     child: Container(
+    //       color: bgColor,
+    //       height: height * 0.6,
+    //       child: GestureDetector(
+    //         onTap: () {
+    //           setState(() {
+    //             showFront = !showFront;
+    //           });
+    //         },
+    //         child: new TinderSwapCard(
+    //           swipeUp: false,
+    //           swipeDown: false,
+    //           orientation: AmassOrientation.BOTTOM,
+    //           totalNum: recommendedProfiles.length,
+    //           stackNum: recommendedProfiles.length,
+    //           swipeEdge: 4.0,
+    //           maxWidth: width * 0.9,
+    //           maxHeight: width * 0.9,
+    //           minWidth: width * 0.8,
+    //           minHeight: width * 0.8,
+    //           cardBuilder: (context, index) => Card(
+    //             shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(30.0),
+    //             ),
+    //             elevation: 5,
+    //             color: Colors.grey[200],
+    //             child: showFront
+    //                 ? getCardFrontColumn(index)
+    //                 : getCardBackColumn(index),
+    //           ),
+    //           cardController: controller = CardController(),
+    //           swipeUpdateCallback:
+    //               (DragUpdateDetails details, Alignment align) {
+    //             /// Get swiping card's alignment
+    //             if (align.x < 0) {
+    //               //Card is LEFT swiping
+
+    //             } else if (align.x > 0) {
+    //               //Card is RIGHT swiping
+
+    //             }
+    //           },
+    //           swipeCompleteCallback:
+    //               (CardSwipeOrientation orientation, int index) async {
+    //             if (orientation == CardSwipeOrientation.RIGHT) {
+    //               print("swiped right");
+    //               SwipingController().updateSwipeData(CurrentUser().username,
+    //                   recommendedProfiles[index].username, "right");
+    //               // remove hard-coded username
+    //               if (await SwipingController()
+    //                   .checkMatch(CurrentUser().username, recommendedProfiles[index].username)) {
+    //                 MatchController()
+    //                     .addMatch(CurrentUser().username, recommendedProfiles[index].username);
+    //                 showDialog(
+    //                   context: context,
+    //                   builder: (BuildContext context) => AlertDialog(
+    //                     title: const Text('Congratulations!'),
+    //                     content: Text(
+    //                         'You have matched with ${recommendedProfiles[index].username}. You can proceed to the Chat Screen to know them further.'),
+    //                     actions: <Widget>[
+    //                       TextButton(
+    //                         onPressed: () => Navigator.pop(context, 'OK'),
+    //                         child: const Text('OK'),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 );
+    //               }
+    //             } else if (orientation == CardSwipeOrientation.LEFT) {
+    //               print("swiped left");
+    //               SwipingController().updateSwipeData(currentUser.username,
+    //                   recommendedProfiles[index].username, "left");
+    //             }
+    //           },
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // ];
   }
 
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    CardController controller;
+
     return Scaffold(
       appBar: appBar(
         title: "Recommendations",
         key: UniqueKey(),
       ),
-      body: new Center(
-        child: Container(
-          color: bgColor,
-          height: height * 0.4,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                showFront = !showFront;
-              });
-            },
-            child: new TinderSwapCard(
-              swipeUp: false,
-              swipeDown: false,
-              orientation: AmassOrientation.BOTTOM,
-              totalNum: recommendedProfiles.length,
-              stackNum: 2,
-              swipeEdge: 4.0,
-              maxWidth: width * 0.9,
-              maxHeight: width * 0.9,
-              minWidth: width * 0.8,
-              minHeight: width * 0.8,
-              cardBuilder: (context, index) => Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+      body: FutureBuilder<List<User>>(
+        future:
+            AlgorithmController().getRecommendedUsers(CurrentUser().username),
+        builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+          Widget child;
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            print(snapshot.requireData.length);
+            if (snapshot.data != null && snapshot.requireData.length > 0) {
+              child = buildRecommendations(snapshot.data);
+            } else {
+              print("Snapshot");
+              print(snapshot.data);
+              child = Text("No Matches");
+            }
+          } else if (snapshot.hasError) {
+            child = Column(
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
                 ),
-                elevation: 5,
-                color: Colors.grey[200],
-                child: showFront
-                    ? getCardFrontColumn(index)
-                    : getCardBackColumn(index),
-              ),
-              cardController: controller = CardController(),
-              swipeUpdateCallback:
-                  (DragUpdateDetails details, Alignment align) {
-                /// Get swiping card's alignment
-                if (align.x < 0) {
-                  //Card is LEFT swiping
-
-                } else if (align.x > 0) {
-                  //Card is RIGHT swiping
-
-                }
-              },
-              swipeCompleteCallback:
-                  (CardSwipeOrientation orientation, int index) async {
-                if (orientation == CardSwipeOrientation.RIGHT) {
-                  print("swiped right");
-                  SwipingController().updateSwipeData(currentUser.username,
-                      recommendedProfiles[index].username, "right");
-                  // remove hard-coded username
-                  if (await SwipingController()
-                      .checkMatch("test1", "gopal_19")) {
-                    MatchController().addMatch("test1", "gopal_19");
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Congratulations!'),
-                        content: Text(
-                            'You have matched with ${recommendedProfiles[index].username}. You can proceed to the Chat Screen to know them further.'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                } else if (orientation == CardSwipeOrientation.LEFT) {
-                  print("swiped left");
-                  SwipingController().updateSwipeData(currentUser.username,
-                      recommendedProfiles[index].username, "left");
-                }
-              },
-            ),
-          ),
-        ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ],
+            );
+          } else {
+            child = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: SizedBox(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    width: 200,
+                    height: 200,
+                  ),
+                ),
+              ],
+            );
+          }
+          return child;
+        },
       ),
       bottomNavigationBar: BasicBottomNavBar(),
+      endDrawer: CustomDrawer(),
     );
   }
 
@@ -175,16 +207,17 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
             width: width * 0.8,
             decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage(
-                    'assets/images/Profile Picture ${index + 1}.png'),
-              ),
+                  fit: BoxFit.fill,
+                  image: recommendedProfiles[index].profilePicURL == ""
+                      ? AssetImage('assets/images/hasbullah.jpg')
+                          as ImageProvider
+                      : NetworkImage(recommendedProfiles[index].profilePicURL)),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(recommendedProfiles[index].fullname),
+              Text(recommendedProfiles[index].name),
               Text(recommendedProfiles[index].age.toString())
             ],
           ),
@@ -196,7 +229,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [Text("Back Side of ${recommendedProfiles[index].fullname}")],
+      children: [Text("Back Side of ${recommendedProfiles[index].name}")],
     );
   }
 }

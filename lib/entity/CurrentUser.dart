@@ -2,22 +2,22 @@
 
 import 'package:flutter/cupertino.dart';
 
-class User {
-  late String _name; // done
-  late String _email; // done
-  late String _username; // done
-  late int _age; // done
-  late String _gender; // done
-  late String _universityName; // done
-  late String _profilePictureURL; // done
+class CurrentUser {
+  late String _name;
+  late String _email;
+  late String _username;
+  late int _age;
+  late String _gender;
+  late String _universityName;
+  late String _profilePictureURL;
   late List<String> _interests;
-  late bool _smoker; // done
+  late bool _smoker;
   late bool _drinker;
-  late bool _dayPerson; // done
-  late bool _vegetarian; // done
-  late bool _alcohol; // done
-  late String _course; // done
-  late String _nationality; // done
+  late bool _dayPerson;
+  late bool _vegetarian;
+  late bool _alcohol;
+  late String _course;
+  late String _nationality;
   late bool _stayingIn;
 
   // preferences below
@@ -26,6 +26,15 @@ class User {
   late bool _alcoholPref;
   late bool _vegPref;
   late bool _dayPersonPref;
+
+  // Singleton Pattern
+  static final CurrentUser _singleton = CurrentUser._internal();
+
+  factory CurrentUser() {
+    return _singleton;
+  }
+
+  CurrentUser._internal();
 
   String get email => _email;
   String get name => _name;
@@ -64,7 +73,7 @@ class User {
     _username = userName;
   }
 
-  set stayingIn(bool stayingIn) {
+  set stayinIn(bool stayingIn) {
     _stayingIn = stayingIn;
   }
 
@@ -136,9 +145,5 @@ class User {
 
   set vegPref(bool vegPref) {
     _vegPref = vegPref;
-  }
-
-  String toString() {
-    return this._email;
   }
 }

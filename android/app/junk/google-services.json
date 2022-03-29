@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1064093100276",
-    "project_id": "roomielahbackup",
-    "storage_bucket": "roomielahbackup.appspot.com"
+    "project_number": "803171771489",
+    "project_id": "roomielah",
+    "storage_bucket": "roomielah.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1064093100276:android:856ad13a6fdac9eb9ad6a1",
+        "mobilesdk_app_id": "1:803171771489:android:cf2d7b8359384562f7f620",
         "android_client_info": {
           "package_name": "com.example.roomie_lah"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1064093100276-6oof6dracop2chvs4ima8ffmrtjahase.apps.googleusercontent.com",
+          "client_id": "803171771489-l443lip1iso8pvm9o6hvnjnlf77o60ve.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-omjS9lQ-Ivjq70MfhKmqzoBVdn7m1oM"
+          "current_key": "AIzaSyDINAR3iu9xkMbR8GTunMe1CFDsNKanMLs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1064093100276-6oof6dracop2chvs4ima8ffmrtjahase.apps.googleusercontent.com",
+              "client_id": "803171771489-l443lip1iso8pvm9o6hvnjnlf77o60ve.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
