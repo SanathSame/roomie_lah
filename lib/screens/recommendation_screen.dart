@@ -173,15 +173,20 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
             );
           } else {
             child = Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: SizedBox(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    width: 200,
+                    height: 200,
                   ),
-                ]);
+                ),
+              ],
+            );
           }
           return child;
         },

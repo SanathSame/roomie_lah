@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/controllers/swiping_controller.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
@@ -122,10 +124,17 @@ class _RecommendationsState extends State<Recommendations> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(widget.users![index].name),
-              Text(widget.users![index].age.toString())
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                widget.users![index].name +
+                    ', ' +
+                    (widget.users![index].age).toString(),
+                style: kLargeBlackText,
+              ),
             ],
           ),
           Text(widget.users![index].universityName)
