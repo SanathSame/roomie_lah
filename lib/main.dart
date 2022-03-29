@@ -40,15 +40,7 @@ class MyApp extends StatelessWidget {
               chatWithUsername: 'atul',
               profilePicURL: '',
             ),
-        UserProfileUI.id: (context) => UserProfileUI(
-              age: '20',
-              course: 'CS',
-              gender: 'Male',
-              interests: '',
-              nationality: 'Indian',
-              university: 'NTU',
-              username: '',
-            ),
+        UserProfileScreen.id: (context) => UserProfileScreen(),
         EditProfileScreen.id: (context) => EditProfileScreen(
               firstTime: false,
             )
