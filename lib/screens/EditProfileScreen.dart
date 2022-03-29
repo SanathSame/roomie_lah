@@ -35,7 +35,7 @@ getItemAndNavigate(BuildContext context) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => UserProfileUI(
+          builder: (context) => UserProfileScreen(
                 username: username.text,
                 age: age.text,
                 university: university.text,

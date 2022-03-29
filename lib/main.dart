@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ChatListPage.id: (context) => ChatListPage(),
         ConversationScreen.id: (context) => ConversationScreen(),
         PreferencesScreen.id: (context) => PreferencesScreen(),
-        UserProfileUI.id: (context) => UserProfileUI(
+        UserProfileScreen.id: (context) => UserProfileScreen(
               age: '20',
               course: 'CS',
               gender: 'Male',

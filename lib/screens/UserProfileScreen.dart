@@ -4,7 +4,24 @@ import 'package:flutter/material.dart';
 import 'EditProfileScreen.dart';
 import "package:roomie_lah/constants.dart";
 
-class UserProfileUI extends StatefulWidget {
+void main() => runApp(MaterialApp(
+      title: 'RoomieLah',
+      home: UserProfileScreen(
+        age: '20',
+        course: 'CS',
+        gender: 'Male',
+        interests: '',
+        nationality: 'Indian',
+        university: 'NTU',
+        username: '',
+      ),
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+    ));
+
+class UserProfileScreen extends StatefulWidget {
   late String username = "";
   late String university = "";
   String age = "";
@@ -14,7 +31,7 @@ class UserProfileUI extends StatefulWidget {
   String interests = "";
   static String id = "user_profile_screen";
 
-  UserProfileUI(
+  UserProfileScreen(
       {Key? key,
       required this.username,
       required this.age,
@@ -26,10 +43,10 @@ class UserProfileUI extends StatefulWidget {
       : super(key: key);
 
   @override
-  _UserProfileUIState createState() => _UserProfileUIState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _UserProfileUIState extends State<UserProfileUI> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   List<String> attributes = <String>[
     'Name:',
     'Age:',

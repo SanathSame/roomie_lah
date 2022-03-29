@@ -148,7 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: () => {
                   // TODO: If domain is valid, then continue, else show error
                   if (true)
-                    {Navigator.pushNamed(context, UserProfileUI.id)}
+                    {Navigator.pushNamed(context, UserProfileScreen.id)}
                   else
                     {
                       showDialog(
