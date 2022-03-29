@@ -24,8 +24,8 @@ class AlgorithmController {
   }
 
   Future<List<User>> getRecommendedUsers(String username) async {
-    List<String> usernames = await getRecommedations(username);
-    // List<String> usernames = ["user17", "Nami14", "Nami5", "Jinbe6", "Jinbe2"];
+    // List<String> usernames = await getRecommedations(username);
+    List<String> usernames = ["user17", "Nami14", "Nami5", "Jinbe6", "Jinbe2"];
     List<User> profiles = [];
 
     print(usernames);
@@ -69,7 +69,7 @@ class AlgorithmController {
         user.nationality = documentSnapshot['nationality'];
         user.smoker = documentSnapshot['smoke'];
         user.alcohol = documentSnapshot['alcohol'];
-        user.stayinIn = documentSnapshot['stayingIn'];
+        user.stayingIn = documentSnapshot['stayingIn'];
         user.dayPerson = documentSnapshot['dayPerson'];
         user.vegetarian = documentSnapshot['veg'];
         user.interests = List<String>.from(documentSnapshot['interests']);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roomie_lah/constants.dart';
 import 'package:roomie_lah/screens/UserProfileScreen.dart';
 import 'package:roomie_lah/screens/chat_list.dart';
 import 'package:roomie_lah/screens/recommendation_screen.dart';
@@ -35,6 +36,8 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: kPrimaryColor,
+      selectedItemColor: Colors.white,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),

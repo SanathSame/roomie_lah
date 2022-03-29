@@ -29,7 +29,7 @@ class _RecommendationsState extends State<Recommendations> {
     return new Center(
       child: Container(
         color: bgColor,
-        height: height * 0.6,
+        height: height * 0.9,
         child: GestureDetector(
           onTap: () {
             setState(() {
@@ -43,12 +43,13 @@ class _RecommendationsState extends State<Recommendations> {
             totalNum: widget.users?.length,
             stackNum: widget.users?.length,
             swipeEdge: 4.0,
-            maxWidth: width * 0.9,
-            maxHeight: width * 0.9,
-            minWidth: width * 0.8,
-            minHeight: width * 0.8,
+            maxWidth: width,
+            maxHeight: height,
+            minWidth: width * 0.7,
+            minHeight: height * 0.9,
             cardBuilder: (context, index) => Card(
               shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.black, width: 5),
                 borderRadius: BorderRadius.circular(30.0),
               ),
               elevation: 5,
@@ -112,8 +113,8 @@ class _RecommendationsState extends State<Recommendations> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: height * 0.3,
-            width: width * 0.8,
+            height: height * 0.7,
+            width: width * 0.9,
             decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
@@ -124,28 +125,162 @@ class _RecommendationsState extends State<Recommendations> {
             ),
           ),
           Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 20,
-              ),
+              // SizedBox(
+              //   width: 20,
+              // ),
               Text(
                 widget.users![index].name +
-                    ', ' +
-                    (widget.users![index].age).toString(),
-                style: kLargeBlackText,
+                    ',   ' +
+                    (widget.users![index].age).toString() +
+                    " " +
+                    (widget.users![index].gender)[0],
+                style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black),
               ),
             ],
           ),
-          Text(widget.users![index].universityName)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // SizedBox(
+              //   width: 20,
+              // ),
+              Text(
+                "University:   " + widget.users![index].universityName,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black),
+              ),
+            ],
+          )
         ]);
   }
 
   Widget getCardBackColumn(int index) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [Text("Back Side of ${widget.users![index].name}")],
+      mainAxisAlignment: MainAxisAlignment.center,
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      // children: buildInterests(widget.users![index].interests),
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          "Nationality: ${widget.users![index].nationality}",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          "Course: ${widget.users![index].course}",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          "${widget.users![index].name}'s characterisctics:",
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildTags(widget.users![index].smoker ? "Smokes" : "No Smoke",
+                Colors.red),
+            buildTags(widget.users![index].alcohol ? "Drinks" : "No Drinks",
+                Colors.red),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildTags(
+                widget.users![index].vegetarian
+                    ? "Vegetarian"
+                    : "Non-vegetarian",
+                Colors.red),
+            buildTags(
+                widget.users![index].dayPerson ? "Day Person" : "Night Person",
+                Colors.red),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        buildTags(
+            widget.users![index].stayingIn
+                ? "Prefers to Stay in"
+                : "Prfers to go out",
+            Colors.red),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          "${widget.users![index].name}'s interests:",
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        // buildTags((widget.users![index].interests)[0], Colors.blue),
+        // Column(children: buildInterests(widget.users![index].interests)),
+      ],
+    );
+  }
+
+  List<Widget> buildInterests(List<String> interests) {
+    int l = interests.length;
+    // int n_rows = (l / 2).ceil();
+    List<Widget> widgetList = [];
+    for (int i = 0; i < l; i + 2) {
+      widgetList.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildTags(interests[i], Colors.blue),
+            i + 1 < l ? buildTags(interests[i + 1], Colors.blue) : Text(""),
+          ],
+        ),
+      );
+    }
+    return widgetList;
+  }
+
+  Widget buildTags(String text, Color bgColor) {
+    return Container(
+      height: 30,
+      width: 120,
+      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+      decoration: new BoxDecoration(
+        color: bgColor,
+        border: Border.all(color: Colors.black, width: 0.0),
+        borderRadius: new BorderRadius.all(Radius.elliptical(90, 45)),
+      ),
+      child: Center(
+          child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+      )),
     );
   }
 }
