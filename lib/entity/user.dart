@@ -27,15 +27,6 @@ class User {
   late bool _vegPref;
   late bool _dayPersonPref;
 
-  // Singleton Pattern
-  static final User _singleton = User._internal();
-
-  factory User() {
-    return _singleton;
-  }
-
-  User._internal();
-
   String get email => _email;
   String get name => _name;
   String get username => _username;
@@ -145,5 +136,9 @@ class User {
 
   set vegPref(bool vegPref) {
     _vegPref = vegPref;
+  }
+
+  String toString() {
+    return this._email;
   }
 }

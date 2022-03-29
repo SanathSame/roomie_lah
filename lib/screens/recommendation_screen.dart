@@ -40,7 +40,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
   void initState() async {
     super.initState();
     recommendedProfiles =
-        await AlgorithmController().getRecommendedUsers("currentUsername");
+        await AlgorithmController().getRecommendedUsers(CurrentUser().username);
     showFront = true;
     bgColor = Colors.transparent;
   }

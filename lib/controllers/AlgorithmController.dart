@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:async/async.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
@@ -15,8 +16,9 @@ class AlgorithmController {
     final response = await http.post(Uri.parse(host), body: currentUsername);
     print("here");
     final decoded = json.decode(response.body) as Map<String, dynamic>;
+
     List<String> recommendations =
-        List<String>.from(decoded['list of profiles']);
+        List<String>.from(decoded['List of Usernames']);
     print(recommendations);
     return recommendations;
   }
@@ -24,15 +26,44 @@ class AlgorithmController {
   Future<List<User>> getRecommendedUsers(String username) async {
     List<String> usernames = await getRecommedations(username);
     List<User> profiles = [];
-    usernames.forEach((element) async {
-      profiles.add(await retrieveDetails(element));
-    });
+
+    print(usernames);
+
+    FutureGroup futureGroup = FutureGroup();
+    for (int i = 0; i < usernames.length; ++i) {
+      print("Starting future : $i");
+      futureGroup.add(retrieveDetails(usernames[i] + '@gmail.com'));
+    }
+    futureGroup.close();
+    await futureGroup.future.then(
+      (value) => {
+        print(value),
+        profiles = List<User>.from(value),
+      },
+    );
+
+    print(profiles.length);
+    for (int i = 0; i < profiles.length; i++) {
+      print(profiles[i].email);
+    }
+    return profiles;
+    // await Future.forEach(usernames, (element) async {
+    //   User dummy = await retrieveDetails((element as String) + '@gmail.com');
+    //   print(dummy.username);
+    //   profiles.add(dummy);
+    // });
+    // usernames.forEach((element) async {
+    //   User dummy = await retrieveDetails(element + '@gmail.com');
+    //   print(dummy.username);
+    //   profiles.add(dummy);
+    // });
+    print(profiles.length);
     return profiles;
   }
 
   Future<User> retrieveDetails(String email) async {
-    print(email);
     User user = User();
+    print(email);
     await FirebaseFirestore.instance
         .collection('users')
         .doc(email)

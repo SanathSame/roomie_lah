@@ -8,6 +8,11 @@ import json
 
 app = Flask(__name__)
 
+path = os.path.abspath(
+    "secrets/roomielah-firebase-adminsdk-nu0rq-713c6fcae8.json"
+)
+cred = credentials.Certificate(path)
+firebase_admin.initialize_app(cred)
 
 @app.route("/", methods=["GET"])
 def home():
@@ -23,11 +28,7 @@ def getRecommendation():
         request_data = request_data.decode("utf-8")
         print("received == ", request_data)
         username = request_data
-        path = os.path.abspath(
-            "lib/secrets/roomielah-firebase-adminsdk-nu0rq-713c6fcae8.json"
-        )
-        cred = credentials.Certificate(path)
-        firebase_admin.initialize_app(cred)
+
         db = firestore.client()
 
         # Reading matches data
@@ -114,6 +115,7 @@ def getRecommendation():
                 recommended_usernames.insert(i, user)
             else:
                 recommended_usernames.append(user)
+        print(f'Recommended: {recommended_usernames}')        
         return jsonify({"List of Usernames": recommended_usernames})
     else:
         return jsonify({"name": ["user4", "user5", "user6"]})

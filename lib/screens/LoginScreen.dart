@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import "package:flutter/material.dart";
 import "package:roomie_lah/constants.dart";
+import 'package:roomie_lah/controllers/AlgorithmController.dart';
 import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/controllers/MatchController.dart';
 import 'package:roomie_lah/controllers/ProfilePicController.dart';

@@ -16,8 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   //MatchController().addMatch('pratyush', 'atul');
-  //runApp(MyApp());
-  await AlgorithmController().getRecommedations("currentUsername");
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
