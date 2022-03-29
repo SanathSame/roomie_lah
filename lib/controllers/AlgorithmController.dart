@@ -24,8 +24,8 @@ class AlgorithmController {
   }
 
   Future<List<User>> getRecommendedUsers(String username) async {
-    // List<String> usernames = await getRecommedations(username);
-    List<String> usernames = ["user17", "Nami14", "Nami5", "Jinbe6", "Jinbe2"];
+    List<String> usernames = await getRecommedations(username);
+    // List<String> usernames = ["user17", "Nami14", "Nami5", "Jinbe6", "Jinbe2"];
     List<User> profiles = [];
 
     print(usernames);
@@ -38,7 +38,7 @@ class AlgorithmController {
     futureGroup.close();
     await futureGroup.future.then(
       (value) => {
-        print(value),
+        //print(value),
         profiles = List<User>.from(value),
       },
     );

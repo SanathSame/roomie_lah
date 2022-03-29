@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import "package:roomie_lah/constants.dart";
 import 'package:roomie_lah/controllers/AuthenticationController.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
+import 'package:roomie_lah/screens/EditProfileScreen.dart';
 import 'package:roomie_lah/screens/LoginScreen.dart';
+import 'package:roomie_lah/screens/UserProfileScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,7 +78,9 @@ class CustomDrawer extends StatelessWidget {
                   color: Color(0xfffafaff),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, UserProfileScreen.id);
+              },
             ),
             Divider(
               color: Colors.black,
@@ -89,7 +93,9 @@ class CustomDrawer extends StatelessWidget {
                   color: Color(0xfffafaff),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, EditProfileScreen.id);
+              },
             ),
             Divider(
               color: Colors.black,

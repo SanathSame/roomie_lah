@@ -29,7 +29,7 @@ class _RecommendationsState extends State<Recommendations> {
     return new Center(
       child: Container(
         color: bgColor,
-        height: height * 0.9,
+        height: height * 0.8,
         child: GestureDetector(
           onTap: () {
             setState(() {
@@ -39,21 +39,23 @@ class _RecommendationsState extends State<Recommendations> {
           child: new TinderSwapCard(
             swipeUp: false,
             swipeDown: false,
-            orientation: AmassOrientation.BOTTOM,
+            orientation: AmassOrientation.TOP,
             totalNum: widget.users?.length,
             stackNum: widget.users?.length,
             swipeEdge: 4.0,
             maxWidth: width,
-            maxHeight: height,
+            maxHeight: height * 0.85,
             minWidth: width * 0.7,
-            minHeight: height * 0.9,
+            minHeight: height * 0.7,
             cardBuilder: (context, index) => Card(
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: Colors.black, width: 5),
                 borderRadius: BorderRadius.circular(30.0),
               ),
               elevation: 5,
-              color: Colors.grey[200],
+              color: showFront
+                  ? Colors.grey[200]
+                  : Color.fromARGB(255, 117, 179, 93),
               child: showFront
                   ? getCardFrontColumn(index)
                   : getCardBackColumn(index),
@@ -71,6 +73,9 @@ class _RecommendationsState extends State<Recommendations> {
             },
             swipeCompleteCallback:
                 (CardSwipeOrientation orientation, int index) async {
+              setState(() {
+                showFront = true;
+              });
               if (orientation == CardSwipeOrientation.RIGHT) {
                 print("swiped right");
                 SwipingController().updateSwipeData(CurrentUser().username,
@@ -113,7 +118,7 @@ class _RecommendationsState extends State<Recommendations> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: height * 0.7,
+            height: height * 0.65,
             width: width * 0.9,
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -240,8 +245,9 @@ class _RecommendationsState extends State<Recommendations> {
         SizedBox(
           height: 10,
         ),
-        // buildTags((widget.users![index].interests)[0], Colors.blue),
-        // Column(children: buildInterests(widget.users![index].interests)),
+        //buildTags((widget.users![index].interests)[0], Colors.blue),
+        Column(children: buildInterests(widget.users![index].interests)),
+        //...buildInterests(widget.users![index].interests)
       ],
     );
   }
@@ -250,7 +256,7 @@ class _RecommendationsState extends State<Recommendations> {
     int l = interests.length;
     // int n_rows = (l / 2).ceil();
     List<Widget> widgetList = [];
-    for (int i = 0; i < l; i + 2) {
+    for (int i = 0; i < l; i = i + 2) {
       widgetList.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -262,6 +268,7 @@ class _RecommendationsState extends State<Recommendations> {
         ),
       );
     }
+    print(widgetList.length);
     return widgetList;
   }
 
@@ -273,7 +280,7 @@ class _RecommendationsState extends State<Recommendations> {
       decoration: new BoxDecoration(
         color: bgColor,
         border: Border.all(color: Colors.black, width: 0.0),
-        borderRadius: new BorderRadius.all(Radius.elliptical(90, 45)),
+        borderRadius: new BorderRadius.all(Radius.elliptical(10, 10)),
       ),
       child: Center(
           child: Text(

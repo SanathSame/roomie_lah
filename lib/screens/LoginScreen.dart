@@ -119,8 +119,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             obscureBool = !obscureBool;
                           });
-                          await AlgorithmController()
-                              .getRecommendedUsers("Zoro1");
+                          // await AlgorithmController()
+                          //     .getRecommendedUsers("Zoro1");
                         },
                         icon: Icon(
                           obscureBool ? Icons.visibility : Icons.visibility_off,

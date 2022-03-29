@@ -286,7 +286,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.teal,
+          backgroundColor: Color(0xFF5DB075),
           elevation: 5.0,
           title: Text('Preferences'),
         ),

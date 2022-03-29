@@ -150,6 +150,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           Widget child;
 
           if (snapshot.connectionState == ConnectionState.done) {
+            print(snapshot.requireData.length);
             if (snapshot.data != null && snapshot.requireData.length > 0) {
               child = buildRecommendations(snapshot.data);
             } else {
