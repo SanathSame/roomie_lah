@@ -28,6 +28,7 @@ class _RecommendationsState extends State<Recommendations> {
     width = MediaQuery.of(context).size.width;
     return new Center(
       child: Container(
+
         color: bgColor,
         height: height * 0.8,
         child: GestureDetector(
@@ -49,16 +50,35 @@ class _RecommendationsState extends State<Recommendations> {
             minHeight: height * 0.7,
             cardBuilder: (context, index) => Card(
               shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.black, width: 5),
+                side: BorderSide(color: Colors.white, width: 1),
                 borderRadius: BorderRadius.circular(30.0),
               ),
               elevation: 5,
-              color: showFront
-                  ? Colors.grey[200]
-                  : Color.fromARGB(255, 117, 179, 93),
-              child: showFront
-                  ? getCardFrontColumn(index)
-                  : getCardBackColumn(index),
+              // color: showFront
+              //     ? Colors.grey[200]
+              //     : Color.fromARGB(255, 187, 236, 172),
+              child: Container(
+                decoration: showFront?
+                BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(255, 88, 92, 88)
+                          ,Colors.white])):
+                BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+              gradient: LinearGradient(
+              begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromARGB(255, 176, 229, 176)
+                  ,Colors.white])),
+                child: showFront
+                    ? getCardFrontColumn(index)
+                    : getCardBackColumn(index),
+              ),
             ),
             cardController: controller = CardController(),
             swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
@@ -204,9 +224,9 @@ class _RecommendationsState extends State<Recommendations> {
           mainAxisSize: MainAxisSize.min,
           children: [
             buildTags(widget.users![index].smoker ? "Smokes" : "No Smoke",
-                Colors.red),
+                Color.fromARGB(255, 208, 194, 125)),
             buildTags(widget.users![index].alcohol ? "Drinks" : "No Drinks",
-                Colors.red),
+                Color.fromARGB(255, 208, 194, 125)),
           ],
         ),
         SizedBox(
@@ -220,10 +240,10 @@ class _RecommendationsState extends State<Recommendations> {
                 widget.users![index].vegetarian
                     ? "Vegetarian"
                     : "Non-vegetarian",
-                Colors.red),
+                Color.fromARGB(255, 208, 194, 125)),
             buildTags(
                 widget.users![index].dayPerson ? "Day Person" : "Night Person",
-                Colors.red),
+                Color.fromARGB(255, 208, 194, 125)),
           ],
         ),
         SizedBox(
@@ -233,7 +253,7 @@ class _RecommendationsState extends State<Recommendations> {
             widget.users![index].stayingIn
                 ? "Prefers to Stay in"
                 : "Prfers to go out",
-            Colors.red),
+            Color.fromARGB(255, 208, 194, 125)),
         SizedBox(
           height: 20,
         ),
@@ -262,8 +282,8 @@ class _RecommendationsState extends State<Recommendations> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: [
-            buildTags(interests[i], Colors.blue),
-            i + 1 < l ? buildTags(interests[i + 1], Colors.blue) : Text(""),
+            buildTags(interests[i], Color.fromARGB(255, 116, 202, 217)),
+            i + 1 < l ? buildTags(interests[i + 1], Color.fromARGB(255, 116, 202, 217)) : Text(""),
           ],
         ),
       );
