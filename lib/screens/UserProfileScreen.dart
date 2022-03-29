@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'EditProfileScreen.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
@@ -25,45 +26,40 @@ void main() {
   ));
 }
 
-class UserProfileScreen extends StatefulWidget {
-  late String username = "";
-  late String university = "";
-  late String age = "";
-  late String course = "";
-  late String nationality = "";
-  late String gender = "";
-  late String interests = "";
-  static String id = "user_profile_screen";
+class TextRow extends StatelessWidget {
+  late double width = 0;
+  late String text = "";
+  TextRow({Key? key, required this.width, required this.text})
+      : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(width: width),
+        Text(
+          text,
+          textAlign: TextAlign.left,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              overflow: TextOverflow.ellipsis),
+        ),
+      ],
+    );
+  }
+}
+
+class UserProfileScreen extends StatefulWidget {
+  static String id = 'userProfileScreen';
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  List<String> attributes = <String>[
-    'Name:',
-    'Age:',
-    'Gender:',
-    'Course:',
-    //'Year of Study:',
-    'Nationality:',
-    'University:',
-    'Interests:',
-  ];
-  List<String> tst = [];
-  void initState() {
-    super.initState();
-    tst = <String>[
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -188,86 +184,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       color: kPrimaryColor,
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: size.width * 0.05),
-                        Text(
-                          "Name: {CurrentUser.name}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Name: {CurrentUser.name}",
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: size.width * 0.05),
-                        Text(
-                          "Email: {CurrentUser.email}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Email: {CurrentUser.email}",
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: size.width * 0.05),
-                        Text(
-                          "Age: {CurrentUser.age}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Age: {CurrentUser.age}",
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: size.width * 0.05),
-                        Text(
-                          "Course: {CurrentUser.course}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Course: {CurrentUser.course}",
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: size.width * 0.05),
-                        Text(
-                          "Nationality: {CurrentUser.nationality}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Nationality: {CurrentUser.nationality}",
                     ),
                     SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Gender: {CurrentUser.gender}",
+                    ),
+                    SizedBox(height: size.height * 0.02),
                   ],
                 ),
                 controller: ExpandableController(
@@ -303,9 +249,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 collapsed: Row(),
                 expanded: Column(
                   children: [
-                    SizedBox(
-                      height: size.height * 0.2,
-                    )
+                    const Divider(
+                      thickness: 1,
+                      color: kPrimaryColor,
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Smoker: {CurrentUser.smoker}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Drinker: {CurrentUser.drinker}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Day Person: {CurrentUser.dayPerson}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Vegetarian: {CurrentUser.vegetarian}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Prefer Staying In: {CurrentUser.stayingIn}",
+                    ),
+                    SizedBox(height: size.height * 0.02),
                   ],
                 ),
                 controller: ExpandableController(
@@ -341,9 +314,37 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 collapsed: Row(),
                 expanded: Column(
                   children: [
-                    SizedBox(
-                      height: size.height * 0.2,
-                    )
+                    const Divider(
+                      thickness: 1,
+                      color: kPrimaryColor,
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Prefer a smoker: {CurrentUser.smokePref}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Prefer a drinker: {CurrentUser.alcoholPref}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Prefer a day person: {CurrentUser.dayPersonPref}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text: "Prefer a vegetarian: {CurrentUser.vegPref}",
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextRow(
+                      width: size.width * 0.05,
+                      text:
+                          "Prefer roommate staying in: {CurrentUser.stayingInPref}",
+                    ),
+                    SizedBox(height: size.height * 0.02),
                   ],
                 ),
                 controller: ExpandableController(
