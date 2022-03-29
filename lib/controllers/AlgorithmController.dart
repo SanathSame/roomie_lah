@@ -13,8 +13,7 @@ class AlgorithmController {
     print(currentUsername);
     String host = url + "getRecommendations";
     print("host == $host");
-    final response =
-        await http.get(Uri.parse(host)); //, body: currentUsername);
+    final response = await http.post(Uri.parse(host), body: currentUsername);
     print("here");
     final decoded = json.decode(response.body) as Map<String, dynamic>;
 
