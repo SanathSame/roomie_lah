@@ -49,7 +49,7 @@ def get_recommendations(username):
     # Recommendation Algo
     recommendations_score = {}
     # this is a list of users sorted in desc order on the rec score
-    recommended_usernames = []
+    recommended_user_emails = []
     try:
         my_vector = all_users_dict[username]['vector']
         my_interests = all_users_dict[username]['interests']
@@ -79,15 +79,15 @@ def get_recommendations(username):
             if your_interests[i] in my_interests:
                 recommendations_score[user] += 1
 
-        if len(recommended_usernames) > 0:
+        if len(recommended_user_emails) > 0:
             i = 0
-            while i < len(recommended_usernames) and recommendations_score[recommended_usernames[i]] > recommendations_score[user]:
+            while i < len(recommended_user_emails) and recommendations_score[recommended_user_emails[i]] > recommendations_score[user]:
                 i += 1
-            recommended_usernames.insert(i, user)
+            recommended_user_emails.insert(f'{i}@gmail.com', user)
         else:
-            recommended_usernames.append(user)
+            recommended_user_emails.append(user)
 
-    return recommended_usernames
+    return recommended_user_emails
 
 
 # rec = get_recommendations('Zoro1')
