@@ -1,71 +1,149 @@
+// ignore_for_file: unnecessary_getters_setters
+
 import 'package:flutter/cupertino.dart';
 
 class User {
-  String _fullName;
-  String _username;
-  String _password;
-  int _age;
-  String _universityName;
-  String _tagLine;
-  // Image _profilePicture;
-  List<String> _tags;
+  late String _name;
+  late String _email;
+  late String _username;
+  late int _age;
+  late String _gender;
+  late String _universityName;
+  late String _profilePictureURL;
+  late List<String> _interests;
+  late bool _smoker;
+  late bool _drinker;
+  late bool _dayPerson;
+  late bool _vegetarian;
+  late bool _alcohol;
+  late String _course;
+  late String _nationality;
+  late bool _stayingIn;
 
-  User(
-      {required String fullName,
-      required String username,
-      required String password,
-      required int age,
-      required String universityName,
-      required String tagLine,
-      //required Image profilePicture,
-      required List<String> tags})
-      : _fullName = fullName,
-        _username = username,
-        _password = password,
-        _age = age,
-        _universityName = universityName,
-        _tagLine = tagLine,
-        // _profilePicture = profilePicture,
-        _tags = tags;
+  // preferences below
+  late bool _stayingInPref;
+  late bool _smokePref;
+  late bool _alcoholPref;
+  late bool _vegPref;
+  late bool _dayPersonPref;
 
-  String get fullname => _fullName;
+  // Singleton Pattern
+  static final User _singleton = User._internal();
+
+  factory User() {
+    return _singleton;
+  }
+
+  User._internal();
+
+  String get email => _email;
+  String get name => _name;
   String get username => _username;
-  String get password => _password;
   int get age => _age;
   String get universityName => _universityName;
-  String get tagLine => _tagLine;
-  // Image get profilePicture => _profilePicture;
-  List<String> get tags => _tags;
+  String get course => _course;
+  String get nationality => _nationality;
+  String get profilePicURL => _profilePictureURL;
+  List<String> get interests => _interests;
+  bool get smoker => _smoker;
+  bool get drinker => _drinker;
+  bool get dayPerson => _dayPerson;
+  String get gender => _gender;
+  bool get alcohol => _alcohol;
+  bool get vegetarian => _vegetarian;
+  bool get stayingIn => _stayingIn;
 
-  set fullname(String fullName) {
-    _fullName = fullName;
+  // Preference below
+
+  bool get stayingInPref => _stayingInPref;
+  bool get smokePref => _smokePref;
+  bool get alcoholPref => _alcoholPref;
+  bool get dayPersonPref => _dayPersonPref;
+  bool get vegPref => _vegPref;
+
+  set name(String name) {
+    _name = name;
+  }
+
+  set vegetarian(bool vegetarian) {
+    _vegetarian = vegetarian;
   }
 
   set username(String userName) {
     _username = userName;
   }
 
-  set password(String password) {
-    _password = password;
+  set stayinIn(bool stayingIn) {
+    _stayingIn = stayingIn;
   }
 
   set age(int age) {
     _age = age;
   }
 
+  set course(String course) {
+    _course = course;
+  }
+
+  set gender(String gender) {
+    _gender = gender;
+  }
+
+  set alcohol(bool alcohol) {
+    _alcohol = alcohol;
+  }
+
   set universityName(String universityName) {
     _universityName = universityName;
   }
 
-  set tagLine(String tagLine) {
-    _tagLine = tagLine;
+  set nationality(String nationality) {
+    _nationality = nationality;
   }
 
-  // set profilePicture(Image profilePicture) {
-  //   _profilePicture = profilePicture;
-  // }
+  set drinker(bool drinker) {
+    _drinker = drinker;
+  }
 
-  set tags(List<String> tags) {
-    _tags = tags;
+  set smoker(bool smoker) {
+    _smoker = smoker;
+  }
+
+  set dayPerson(bool dayPerson) {
+    _dayPerson = dayPerson;
+  }
+
+  set profilePicURL(String profilePictureURL) {
+    _profilePictureURL = profilePictureURL;
+  }
+
+  set interests(List<String> interests) {
+    _interests = interests;
+  }
+
+  set email(String email) {
+    _email = email;
+  }
+
+  // Preferences
+
+  set stayinInPref(bool stayingInPref) {
+    _stayingInPref = stayingInPref;
+  }
+
+  set dayPersonPref(bool dayPersonPref) {
+    _dayPersonPref = dayPersonPref;
+  }
+
+  set smokePref(bool smokePref) {
+    _smokePref = smokePref;
+  }
+
+  set alcoholPref(bool alcoholPref) {
+    _alcoholPref = alcoholPref;
+  }
+
+  set vegPref(bool vegPref) {
+    _vegPref = vegPref;
   }
 }

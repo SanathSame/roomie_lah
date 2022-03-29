@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:roomie_lah/controllers/AlgorithmController.dart';
 import 'package:roomie_lah/controllers/swiping_controller.dart';
 import 'package:roomie_lah/entity/CurrentUser.dart';
 import 'package:roomie_lah/entity/user.dart';
@@ -36,42 +37,10 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
   late User currentUser;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    currentUser = new User(
-        fullName: "Test Test",
-        username: "test1",
-        password: "password",
-        age: 20,
-        universityName: "NTU",
-        tagLine: "tagLine",
-        tags: ["hello1", "hello2", "hello 3"]);
-    recommendedProfiles.addAll([
-      new User(
-          fullName: "Gopal Agarwal",
-          username: "gopal_19",
-          age: 20,
-          password: "password",
-          universityName: "Nanyang Technological University",
-          tagLine: "I am the tag line for Gopal",
-          tags: ["hello1", "hello2", "hello 3"]),
-      new User(
-          fullName: "Aks Tayal",
-          username: "test2",
-          age: 21,
-          password: "password1",
-          universityName: "Singapore Management University",
-          tagLine: "I am the tag line for Aks",
-          tags: ["hello4", "hello5", "hello6"]),
-      new User(
-          fullName: "Jasraj Singh",
-          username: "test3",
-          age: 21,
-          password: "password3",
-          universityName: "National University of Singapore",
-          tagLine: "I am the tag line for Jas",
-          tags: ["hello7", "hello8", "hello 9"]),
-    ]);
+    recommendedProfiles =
+        await AlgorithmController().getRecommendedUsers("currentUsername");
     showFront = true;
     bgColor = Colors.transparent;
   }
@@ -188,7 +157,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(recommendedProfiles[index].fullname),
+              Text(recommendedProfiles[index].name),
               Text(recommendedProfiles[index].age.toString())
             ],
           ),
@@ -200,7 +169,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [Text("Back Side of ${recommendedProfiles[index].fullname}")],
+      children: [Text("Back Side of ${recommendedProfiles[index].name}")],
     );
   }
 }
