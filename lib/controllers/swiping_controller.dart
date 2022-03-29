@@ -40,6 +40,9 @@ class SwipingController {
   // if yes, show pop up otherwise pass
   // if yes, add to matches collection
   Future<bool> checkMatch(String currentUser, String swipedUser) async {
+    if (!await checkNewUser(swipedUser)) {
+      return false;
+    }
     var doc = await _swipingCollection.doc(swipedUser).get();
     var rightSwipes = doc['right'];
     if (rightSwipes.contains(currentUser)) {

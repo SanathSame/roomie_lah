@@ -25,6 +25,7 @@ class AlgorithmController {
 
   Future<List<User>> getRecommendedUsers(String username) async {
     List<String> usernames = await getRecommedations(username);
+    // List<String> usernames = ["user17", "Nami14", "Nami5", "Jinbe6", "Jinbe2"];
     List<User> profiles = [];
 
     print(usernames);
@@ -46,18 +47,6 @@ class AlgorithmController {
     for (int i = 0; i < profiles.length; i++) {
       print(profiles[i].email);
     }
-    return profiles;
-    // await Future.forEach(usernames, (element) async {
-    //   User dummy = await retrieveDetails((element as String) + '@gmail.com');
-    //   print(dummy.username);
-    //   profiles.add(dummy);
-    // });
-    // usernames.forEach((element) async {
-    //   User dummy = await retrieveDetails(element + '@gmail.com');
-    //   print(dummy.username);
-    //   profiles.add(dummy);
-    // });
-    print(profiles.length);
     return profiles;
   }
 

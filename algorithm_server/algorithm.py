@@ -22,7 +22,7 @@ def home():
 
 @app.route("/getRecommendations", methods=["GET", "POST"])
 def getRecommendation():
-    print("here")
+    # print("here")
     if request.method == "POST":
         request_data = request.data
         request_data = request_data.decode("utf-8")
@@ -90,6 +90,7 @@ def getRecommendation():
                 != all_users_dict[username]["university"]
             ):
                 continue
+            # print(my_pref)
             for i in my_pref:
                 if my_pref[i] != all_users_dict[user][i]:
                     continue
