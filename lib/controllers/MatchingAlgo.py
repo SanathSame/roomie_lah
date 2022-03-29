@@ -2,6 +2,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import os
+
+from matplotlib.style import use
 # from scipy import spatial
 
 
@@ -31,8 +33,8 @@ def get_recommendations(username):
         for doc in docs:
             usr_dict = doc.to_dict()
 
-            vec = [int(usr_dict['dayPerson']), int(usr_dict['drink']), int(usr_dict['football']), int(usr_dict['movies']),
-                   int(usr_dict['Smoking']), int(usr_dict['vegetarian']), int(usr_dict['party'])]
+            vec = [int(usr_dict['dayPerson']), int(usr_dict['alcohol']),
+                   int(usr_dict['smoke']), int(usr_dict['veg']), int(usr_dict['stayingIn'])]
             usr_dict['vector'] = vec
             all_users_dict[usr_dict['username']] = usr_dict
     except:
@@ -41,11 +43,8 @@ def get_recommendations(username):
     # Reading user preferences
     pref = db.collection('preferences')
     docs = pref.stream()
-
-    for doc in docs:
-        pref_dict = doc.to_dict()
-        if pref_dict['username'] == username:
-            my_pref = pref_dict
+    doc = pref.document(f'{username}@gmail.com').get()
+    my_pref = doc.to_dict()
 
     # Recommendation Algo
     recommendations_score = {}
@@ -53,8 +52,9 @@ def get_recommendations(username):
     recommended_usernames = []
     try:
         my_vector = all_users_dict[username]['vector']
+        my_interests = all_users_dict[username]['interests']
     except:
-        print(username, ' does not exist')
+        print(f'{username} does not exist')
 
     for user in all_users_dict:
         if user == username:
@@ -74,6 +74,11 @@ def get_recommendations(username):
             if your_vector[i] == my_vector[i]:
                 recommendations_score[user] += 1
 
+        your_interests = all_users_dict[user]['interests']
+        for i in range(len(your_interests)):
+            if your_interests[i] in my_interests:
+                recommendations_score[user] += 1
+
         if len(recommended_usernames) > 0:
             i = 0
             while i < len(recommended_usernames) and recommendations_score[recommended_usernames[i]] > recommendations_score[user]:
@@ -85,6 +90,6 @@ def get_recommendations(username):
     return recommended_usernames
 
 
-# rec = get_recommendations('user1')
+# rec = get_recommendations('Zoro1')
 # for i in rec:
 #     print(i)
