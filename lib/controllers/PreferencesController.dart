@@ -24,7 +24,7 @@ class PreferencesController {
         .doc(email)
         .set(
           {
-            'username:': username,
+            'username': username,
             'smoke': smoker,
             'alcohol': drinker,
             'dayPerson': dayPerson,

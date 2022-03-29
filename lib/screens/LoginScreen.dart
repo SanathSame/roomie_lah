@@ -115,10 +115,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: kPrimaryColor,
                       ),
                       suffixIcon: IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             obscureBool = !obscureBool;
                           });
+                          await AlgorithmController()
+                              .getRecommendedUsers("Zoro1");
                         },
                         icon: Icon(
                           obscureBool ? Icons.visibility : Icons.visibility_off,
