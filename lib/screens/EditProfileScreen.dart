@@ -306,7 +306,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               File(filePath),
                               fit: BoxFit.cover,
                             ).image
-                          : (widget.firstTime)
+                          : (widget.firstTime ||
+                                  (!widget
+                                          .firstTime && // Check just to make sure
+                                      CurrentUser().profilePicURL == ""))
                               ? AssetImage('assets/hasbullah.jpeg')
                                   as ImageProvider
                               : NetworkImage(CurrentUser().profilePicURL),

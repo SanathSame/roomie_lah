@@ -177,7 +177,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       if (success) {
                         CurrentUser currentUser = CurrentUser();
                         currentUser.email = enteredUsername;
-                        currentUser.username = enteredPassword.split("@")[0];
+                        currentUser.username = enteredUsername.split("@")[0];
                         Navigator.push(
                           context,
                           MaterialPageRoute(
