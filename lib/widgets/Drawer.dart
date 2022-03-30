@@ -116,6 +116,34 @@ class CustomDrawer extends StatelessWidget {
             Divider(
               color: Colors.black,
             ),
+            ListTile(
+              title: Text(
+                'Help',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color(0xfffafaff),
+                ),
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('How to use the app?'),
+                    content: Text(
+                        'Right Swipe on the card if you want to match with the user, Swipe left on the card if you do not like the user '),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            Divider(
+              color: Colors.black,
+            ),
           ],
         ),
       ),

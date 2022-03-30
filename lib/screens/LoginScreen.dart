@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      hintText: "Enter your username",
+                      hintText: "Enter your email",
                       border: InputBorder.none,
                     ),
                   ),
@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context: context,
                                     builder: (BuildContext context) => buildPopUp(
                                         "Error",
-                                        'Please enter correct username and/or password.'),
+                                        'Please enter correct email and/or password.'),
                                   )
                                 }
                             },

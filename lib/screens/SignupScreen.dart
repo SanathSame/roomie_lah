@@ -34,7 +34,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 String enteredUsername = "";
-String reenteredUsername = "";
+String reenteredPassword = "";
 String enteredPassword = "";
 bool obscureBool = true;
 
@@ -96,27 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      hintText: "Enter your username",
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                    // color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(29),
-                    border: Border.all(color: kPrimaryColor),
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      reenteredUsername = value;
-                    },
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      hintText: "Re-enter your username",
+                      hintText: "Enter your email",
                       border: InputBorder.none,
                     ),
                   ),
@@ -157,6 +137,42 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.9,
+                  decoration: BoxDecoration(
+                    // color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(29),
+                    border: Border.all(color: kPrimaryColor),
+                  ),
+                  child: TextField(
+                    obscureText: obscureBool,
+                    onChanged: (value) {
+                      reenteredPassword = value;
+                    },
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      hintText: "Re-enter password",
+                      icon: Icon(
+                        Icons.lock,
+                        color: kPrimaryColor,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obscureBool = !obscureBool;
+                          });
+                        },
+                        icon: Icon(
+                          obscureBool ? Icons.visibility : Icons.visibility_off,
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
                 TextButton(
                   style: TextButton.styleFrom(
                       backgroundColor: kPrimaryColor,
@@ -167,7 +183,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     AuthenticationController auth =
                         new AuthenticationController();
                     bool success = false;
-                    if (enteredUsername == reenteredUsername) {
+                    if (enteredPassword == reenteredPassword) {
                       setState(() {
                         showSpinner = true;
                       });
